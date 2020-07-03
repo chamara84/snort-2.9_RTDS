@@ -1,0 +1,19 @@
+#!/bin/bash
+sudo make uninstall
+sudo make distclean
+aclocal
+autoconf
+automake
+touch ./src/preprocessors/*.c
+touch ./src/preprocessors/*.h
+touch /home/rtds-cybersec/repos/snort/snort-2.9.14.1/snort-2.9/src/dynamic-preprocessors/dnp3/dnp3_reassembly.c
+touch ./src/dynamic-preprocessors/dnp3/*.h
+touch ./src/detection-plugins/*.c
+touch ./src/detection-plugins/*.h
+touch ./src/*.c
+touch ./src/*.h
+export SNORT_DEBUG=0x0000000000000080LL
+./configure   --enable-gdb --enable-debug  --disable-reload-error-restart  --enable-build-dynamic-examples --enable-dependency-tracking  --enable-zlib --enable-active-response  --enable-reload --enable-react --enable-flexresp3 --enable-inline
+make -j8 && sudo make install
+
+

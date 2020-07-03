@@ -1,0 +1,1 @@
+-g -O0 -DSF_VISIBILITY -fvisibility=hidden -g -ggdb -Wall

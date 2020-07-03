@@ -1,0 +1,8 @@
+#!/bin/bash -eu
+
+sudo modprobe netmap
+sudo make unitest
+sudo rmmod netmap
+
+# Run integration tests
+sudo make intest
