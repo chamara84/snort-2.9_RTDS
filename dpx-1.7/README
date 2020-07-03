@@ -1,0 +1,114 @@
+You can think of this as a dynamic preprocessor "starter kit", the goal of
+which is to make it as simple as possible to prototype a dynamic preprocessor.
+This one is called DPX, for "Dynamic Preprocessor Example".  You can build DPX,
+which is very trivial, and then change it to do what you need.
+
+
+Here is how to build DPX:
+
+1.  Download the 2.9.0.X tarball.  Unpack and build in /path/to/snort/topdir
+    (the directory where you run ./configure). 
+
+    ./configure --enable-build-dynamic-examples
+    make
+
+    No need to make install.
+
+2.  Download and install this tarball (dpx-*.tar.gz) in some other directory.
+
+3.  echo "SNORT=/path/to/snort/topdir" > setup.sh
+
+4.  ./build.sh (see Issue 1 at end)
+
+5.  ./test.sh
+
+There are a number of things that can trip you up so pay special attention to
+the following details:
+
+* Unfortunately, Snort doesn't install the development headers required and the
+  example in the source tree assumes you work in that source tree.  This example
+  can be built outside the Snort source tree and w/o installing Snort.  
+
+* configure.ac ensures that dpx is compiled with exactly same options as snort
+  by using pkg-config and snort.pc which is built automatically.  If you don't
+  do this, key structures may be defined differently in Snort proper and in DPX
+  which would result in nasty things like segfaults.
+
+* Snort uses hidden visibility by default for compilers that support it to
+  reduce runtime overhead when accessing dynamically loaded modules like DPX.
+  This means you must get the visibility correct to get InitializePreprocessor()
+  and LibVersion() exported so Snort can load the module.
+
+* Dynamically loaded modules need file and line numbers for proper debug output.
+  Just be sure to call DebugMessage() instead of directly calling _dpd.debugMsg()
+  and that will happen automatically.
+
+* You can use SNORT_DEBUG to get helpful output.  test.sh shows how.  You must
+  configure Snort with --enable-debug --enable-debug-msgs for this to work.
+
+
+Test output:
+
+dpx.c:86: registered
+dpx.c:123: pod[0](test/snort.conf:3): port = 8
+dpx.c:159: pod[0]: initialized
+dpx.c:123: pod[1](test/10.1.conf:2): port = 80
+dpx.c:159: pod[1]: initialized
+dpx.c:186: pod[1]: src = 12345, dst = 8
+dpx.c:186: pod[1]: src = 8, dst = 12345
+dpx.c:186: pod[1]: src = 12345, dst = 80
+3       256     2       0
+dpx.c:186: pod[0]: src = 12345, dst = 8
+4       256     2       0
+dpx.c:186: pod[0]: src = 8, dst = 12345
+5       256     1       0
+dpx.c:186: pod[0]: src = 12345, dst = 80
+
+
+To see what happens on reload:
+
+terminal 1 command:
+. ./setup.sh
+sudo sh -c "export SNORT_DEBUG=0x10; \
+    $SNORT/src/snort -q -c test/snort.conf -A cmg -i lo"
+
+terminal 2 command:
+sudo kill -s sighup <snort pid>
+
+terminal 1 output:
+dpx.c:86: registered
+dpx.c:123: pod[0](test/snort.conf:3): port = 8
+dpx.c:159: pod[0]: initialized
+dpx.c:123: pod[1](test/10.1.conf:2): port = 80
+dpx.c:159: pod[1]: initialized
+dpx.c:123: pod[0](test/snort.conf:3): port = 8
+dpx.c:159: pod[0]: reloaded
+dpx.c:123: pod[1](test/10.1.conf:2): port = 80
+dpx.c:159: pod[1]: reloaded
+dpx.c:223: swapped
+dpx.c:237: pod[0]: freed
+dpx.c:237: pod[1]: freed
+dpx.c:252: deleted
+
+
+Next steps:
+
+Just change dpx.c to do what you want, but bear in mind:
+
+* If you change the name from dpx.c or add other files, you will need to update
+  Makefile.am.
+
+* If you change the actual name from preprocessor dpx to preprocessor foo, you
+  need to change PREPROC_NAME in sf_preproc_info.h.
+
+* If you change the setup function, you need to change DYNAMIC_PREPROC_SETUP in
+  sf_preproc_info.h too.
+
+
+Issues:
+
+1. build.sh currently hard defines HAVE_WCHAR_H in config.h.  This is a due
+   to a flaw in this tarball's autofoo.  If this isn't true on your system,
+   then comment that out of build.sh.  You'll know if it is a problem because
+   it will lead to a size mismatch error on startup.
+

@@ -1,0 +1,20 @@
+d ( stack="eth:ip4:tcp" )
+c ( 3:a="10.1.2.3", b="10.9.8.7" )
+c ( 4:a=12345, b=8 )
+
+a ( syn )
+b ( syn, ack )
+
+c ( 4:dst=80 )
+a ( ack )
+#a ( ack, len=16 )
+
+c ( 3:a="10.4.5.6" )
+c ( 4:b=8 )
+
+a ( syn )
+b ( syn, ack )
+#b ( ack, len=16 )
+
+c ( 4:b=80 )
+a ( ack )
