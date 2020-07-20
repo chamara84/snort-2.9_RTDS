@@ -1,0 +1,27 @@
+#!/bin/bash
+sudo apt-get update
+sudo apt-get install openssh-server
+sudo apt-get install ethtool
+sudo apt-get install -y build-essential
+sudo apt-get install -y libpcap-dev
+sudo apt-get install  libpcre3-dev
+sudo apt-get install -y libdumbnet-dev
+sudo apt-get install zlib1g-dev
+apt-get install bison flex
+
+
+
+
+cd glib-2.59.0/
+meson --prefix=/usr  _build
+ninja -C _build
+sudo ninja install -C _build
+
+cd cd ../daq-2.0.6/
+./configure --prefix=/usr
+make
+sudo make install
+
+
+
+
