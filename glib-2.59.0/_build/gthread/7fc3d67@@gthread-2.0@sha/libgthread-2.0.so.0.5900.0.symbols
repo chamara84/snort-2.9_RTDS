@@ -1,8 +1,0 @@
- 0x000000000000000e (SONAME)             Library soname: [libgthread-2.0.so.0]
-__bss_start B
-_edata D
-_end B
-_fini T
-g_thread_init T 0000000000000021
-g_thread_init_with_errorcheck_mutexes T 000000000000004a
-_init T
