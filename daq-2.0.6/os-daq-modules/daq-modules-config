@@ -5,7 +5,7 @@
 # to use when building code that uses LibDAQ modules.
 #
 
-prefix=/usr/local
+prefix=/usr
 exec_prefix=${prefix}
 LIBDIR=${exec_prefix}/lib
 STATIC_LIBS=" -lsfbpf -lpcap -lsfbpf -lnfnetlink -lnetfilter_queue -lsfbpf -lpcap -lsfbpf -L/usr/local/lib -ldnet"

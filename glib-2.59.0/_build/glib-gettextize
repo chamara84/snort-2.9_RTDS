@@ -41,15 +41,15 @@ version=2.59.0
 try_ln_s=:
 
 # Directory where the sources are stored.
-prefix=/usr/local
+prefix=/usr
 case `uname` in
 MINGW32*)
     prefix="`dirname $0`/.."
     ;;
 esac
 
-datarootdir=/usr/local/share
-datadir=/usr/local/share
+datarootdir=/usr/share
+datadir=/usr/share
 
 gettext_dir=$datadir/glib-2.0/gettext
 

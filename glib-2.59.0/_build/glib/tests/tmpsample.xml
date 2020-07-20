@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <gtester>
-  <testbinary path="/home/rtds-cybersec/repos/glib-2.59.0/_build/glib/gtester">
-    <binary file="/home/rtds-cybersec/repos/glib-2.59.0/_build/glib/gtester"/>
-    <random-seed>R02Sfd36467ec49c17539fbec3ca3e805be5</random-seed>
+  <testbinary path="/home/rtds-cybersec/repos/snort/snort-2.9_RTDS/glib-2.59.0/_build/glib/gtester">
+    <binary file="/home/rtds-cybersec/repos/snort/snort-2.9_RTDS/glib-2.59.0/_build/glib/gtester"/>
+    <random-seed>R02S46dd342e44a85ded8501caf1a215c475</random-seed>
     <testcase path="/gtester/fixture-test">
       <message>
 This is a test message API test message.
@@ -16,6 +16,6 @@ Bug Reference: http://www.example.com/bugtracker?bugnum=456;cmd=showbug
       <duration>0.000015</duration>
       <status exit-status="0" n-forks="0" result="success"/>
     </testcase>
-    <duration>0.015057</duration>
+    <duration>0.004678</duration>
   </testbinary>
 </gtester>

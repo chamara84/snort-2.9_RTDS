@@ -1,5 +1,5 @@
-prefix=/usr/local
-libdir=${prefix}/lib
+prefix=/usr
+libdir=${prefix}/lib64
 includedir=${prefix}/include
 
 datadir=${prefix}/share

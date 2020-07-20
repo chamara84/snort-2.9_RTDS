@@ -21,7 +21,7 @@
 
 #define GLIB_INTERFACE_AGE 0
 
-#define GLIB_LOCALE_DIR "/usr/local/share/locale"
+#define GLIB_LOCALE_DIR "/usr/share/locale"
 
 #define GLIB_MAJOR_VERSION 2
 
@@ -116,6 +116,8 @@
 #define HAVE_LCHOWN 1
 
 #define HAVE_LC_MESSAGES 1
+
+#define HAVE_LIBELF 1
 
 #define HAVE_LIBMOUNT 1
 

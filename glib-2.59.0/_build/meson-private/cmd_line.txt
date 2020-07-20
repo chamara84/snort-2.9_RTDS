@@ -1,5 +1,5 @@
 [options]
-libdir = lib
+prefix = /usr
 
 [properties]
 

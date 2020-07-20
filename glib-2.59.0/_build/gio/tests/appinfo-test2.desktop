@@ -6,6 +6,6 @@ X-GNOME-FullName=example
 X-GNOME-FullName[de]=Beispiel
 Comment=GAppInfo example
 Comment[de]=GAppInfo Beispiel
-Exec=/home/rtds-cybersec/repos/glib-2.59.0/_build/gio/tests/appinfo-test --option
+Exec=/home/rtds-cybersec/repos/snort/snort-2.9_RTDS/glib-2.59.0/_build/gio/tests/appinfo-test --option
 TryExec=does-not-exist
 Icon=testicon
