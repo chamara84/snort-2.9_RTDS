@@ -59,13 +59,13 @@
 # all the intel drivers are compiled in much the same way, so we factor them
 # here. $(1) is the driver name, while $(2) is the driver version
 define intel_driver
-$(1)@fetch	:= test -e /home/rtds-cybersec/repos/snort/snort-2.9.14.1/netmap/LINUX/ext-drivers/$(1)-$(2).tar.gz || wget https://sourceforge.net/projects/e1000/files/$(1)%20stable/$(2)/$(1)-$(2).tar.gz -P /home/rtds-cybersec/repos/snort/snort-2.9.14.1/netmap/LINUX/ext-drivers/
-$(1)@src 	:= tar xf /home/rtds-cybersec/repos/snort/snort-2.9.14.1/netmap/LINUX/ext-drivers/$(1)-$(2).tar.gz && ln -s $(1)-$(2)/src $(1)
+$(1)@fetch	:= test -e /home/rtds-cybersec/repos/snort/snort-2.9_RTDS/netmap/LINUX/ext-drivers/$(1)-$(2).tar.gz || wget https://sourceforge.net/projects/e1000/files/$(1)%20stable/$(2)/$(1)-$(2).tar.gz -P /home/rtds-cybersec/repos/snort/snort-2.9_RTDS/netmap/LINUX/ext-drivers/
+$(1)@src 	:= tar xf /home/rtds-cybersec/repos/snort/snort-2.9_RTDS/netmap/LINUX/ext-drivers/$(1)-$(2).tar.gz && ln -s $(1)-$(2)/src $(1)
 $(1)@patch 	:= patches/intel--$(1)--$(2)
 $(1)@prepare	:=
-$(1)@build 	 = make -C $(1) CFLAGS_EXTRA="$$($(1)@cflags) $(EXTRA_CFLAGS)"  NETMAP_DRIVER_SUFFIX= KSRC=/usr/src/kernels/3.10.0-1127.13.1.el7.x86_64
-$(1)@install 	 = make -C $(1) install INSTALL_MOD_PATH= CFLAGS_EXTRA="$$($(1)@cflags) $(EXTRA_CFLAGS)" NETMAP_DRIVER_SUFFIX= KSRC=/usr/src/kernels/3.10.0-1127.13.1.el7.x86_64
-$(1)@clean 	 = if [ -d $(1) ]; then make -C $(1) clean CFLAGS_EXTRA="$$($(1)@cflags) $(EXTRA_CFLAGS)" NETMAP_DRIVER_SUFFIX= KSRC=/usr/src/kernels/3.10.0-1127.13.1.el7.x86_64; fi
+$(1)@build 	 = make -C $(1) CFLAGS_EXTRA="$$($(1)@cflags) $(EXTRA_CFLAGS)"  NETMAP_DRIVER_SUFFIX= KSRC=/lib/modules/3.10.0-1127.13.1.el7.x86_64/build
+$(1)@install 	 = make -C $(1) install INSTALL_MOD_PATH= CFLAGS_EXTRA="$$($(1)@cflags) $(EXTRA_CFLAGS)" NETMAP_DRIVER_SUFFIX= KSRC=/lib/modules/3.10.0-1127.13.1.el7.x86_64/build
+$(1)@clean 	 = if [ -d $(1) ]; then make -C $(1) clean CFLAGS_EXTRA="$$($(1)@cflags) $(EXTRA_CFLAGS)" NETMAP_DRIVER_SUFFIX= KSRC=/lib/modules/3.10.0-1127.13.1.el7.x86_64/build; fi
 $(1)@distclean	:= rm -rf $(1)-$(2)
 $(1)@force	:= 1
 endef
@@ -91,10 +91,10 @@ $(eval $(call default,i40e,2.4.6))
 $(foreach d,$(filter ixgbe ixgbevf e1000e igb i40e,$(E_DRIVERS)),$(eval $(call intel_driver,$d,$($(d)@v))))
 
 define mellanox_driver
-$(1)@fetch	:= test -e /home/rtds-cybersec/repos/snort/snort-2.9.14.1/netmap/LINUX/ext-drivers/mlnx-en-$(2)-ubuntu18.04-x86_64.tgz || wget http://content.mellanox.com/ofed/MLNX_EN-$(2)/mlnx-en-$(2)-ubuntu18.04-x86_64.tgz -P /home/rtds-cybersec/repos/snort/snort-2.9.14.1/netmap/LINUX/ext-drivers
-$(1)@src	:= tar xf /home/rtds-cybersec/repos/snort/snort-2.9.14.1/netmap/LINUX/ext-drivers/mlnx-en-$(2)-ubuntu18.04-x86_64.tgz && tar xf mlnx-en-$(2)-ubuntu18.04-x86_64/src/MLNX_EN_SRC-$(2).tgz && tar xf MLNX_EN_SRC-$(2)/SOURCES/mlnx-en_$($(1)@pv).orig.tar.gz && ln -s mlnx-en-$($(1)@pv) $(1)
+$(1)@fetch	:= test -e /home/rtds-cybersec/repos/snort/snort-2.9_RTDS/netmap/LINUX/ext-drivers/mlnx-en-$(2)-ubuntu18.04-x86_64.tgz || wget http://content.mellanox.com/ofed/MLNX_EN-$(2)/mlnx-en-$(2)-ubuntu18.04-x86_64.tgz -P /home/rtds-cybersec/repos/snort/snort-2.9_RTDS/netmap/LINUX/ext-drivers
+$(1)@src	:= tar xf /home/rtds-cybersec/repos/snort/snort-2.9_RTDS/netmap/LINUX/ext-drivers/mlnx-en-$(2)-ubuntu18.04-x86_64.tgz && tar xf mlnx-en-$(2)-ubuntu18.04-x86_64/src/MLNX_EN_SRC-$(2).tgz && tar xf MLNX_EN_SRC-$(2)/SOURCES/mlnx-en_$($(1)@pv).orig.tar.gz && ln -s mlnx-en-$($(1)@pv) $(1)
 $(1)@patch	:= patches/mellanox--$(1)--$($(1)@pv)
-$(1)@prepare	:= /home/rtds-cybersec/repos/snort/snort-2.9.14.1/netmap/LINUX/mlx5-prepare.sh /usr/src/kernels/3.10.0-1127.13.1.el7.x86_64
+$(1)@prepare	:= /home/rtds-cybersec/repos/snort/snort-2.9_RTDS/netmap/LINUX/mlx5-prepare.sh /lib/modules/3.10.0-1127.13.1.el7.x86_64/build
 $(1)@build	:= make -C $(1) NETMAP_DRIVER_SUFFIX= EXTRA_CFLAGS="$(EXTRA_CFLAGS)"
 $(1)@install	:= make -C $(1) install_modules INSTALL_MOD_PATH= NETMAP_DRIVER_SUFFIX=
 $(1)@clean	:= if [ -d $(1) ]; then make -C $(1) clean; fi NETMAP_DRIVER_SUFFIX=
@@ -109,13 +109,13 @@ mlx5@conf	= CONFIG_MLX5_CORE_EN
 $(foreach d,$(filter mlx5,$(E_DRIVERS)),$(eval $(call mellanox_driver,$d,$($(d)@v))))
 
 define virtio_net
-virtio_net.c@fetch	:= test -e /home/rtds-cybersec/repos/snort/snort-2.9.14.1/netmap/LINUX/ext-drivers/virtio_net.c || wget https://raw.githubusercontent.com/torvalds/linux/v4.9/drivers/net/virtio_net.c -P /home/rtds-cybersec/repos/snort/snort-2.9.14.1/netmap/LINUX/ext-drivers/
-virtio_net.c@src	:= mkdir -p virtio_net.c && cp /home/rtds-cybersec/repos/snort/snort-2.9.14.1/netmap/LINUX/ext-drivers/virtio_net.c virtio_net.c/
+virtio_net.c@fetch	:= test -e /home/rtds-cybersec/repos/snort/snort-2.9_RTDS/netmap/LINUX/ext-drivers/virtio_net.c || wget https://raw.githubusercontent.com/torvalds/linux/v4.9/drivers/net/virtio_net.c -P /home/rtds-cybersec/repos/snort/snort-2.9_RTDS/netmap/LINUX/ext-drivers/
+virtio_net.c@src	:= mkdir -p virtio_net.c && cp /home/rtds-cybersec/repos/snort/snort-2.9_RTDS/netmap/LINUX/ext-drivers/virtio_net.c virtio_net.c/
 virtio_net.c@patch	:= patches/custom--virtio_net.c--4.9
 virtio_net.c@prepare	:=
-virtio_net.c@build 	:= [ -z "$(EXTRA_CFLAGS)" ] || make -C virtio_net.c EXTRA_CFLAGS="$(EXTRA_CFLAGS)"  NETMAP_DRIVER_SUFFIX= KSRC=/usr/src/kernels/3.10.0-1127.13.1.el7.x86_64
-virtio_net.c@install 	:= make -C virtio_net.c install INSTALL_MOD_PATH= EXTRA_CFLAGS="$(EXTRA_CFLAGS)" NETMAP_DRIVER_SUFFIX= KSRC=/usr/src/kernels/3.10.0-1127.13.1.el7.x86_64
-virtio_net.c@clean 	:= if [ -d virtio_net.c ]; then make -C virtio_net.c clean EXTRA_CFLAGS="$(EXTRA_CFLAGS)" NETMAP_DRIVER_SUFFIX= KSRC=/usr/src/kernels/3.10.0-1127.13.1.el7.x86_64; fi
+virtio_net.c@build 	:= [ -z "$(EXTRA_CFLAGS)" ] || make -C virtio_net.c EXTRA_CFLAGS="$(EXTRA_CFLAGS)"  NETMAP_DRIVER_SUFFIX= KSRC=/lib/modules/3.10.0-1127.13.1.el7.x86_64/build
+virtio_net.c@install 	:= make -C virtio_net.c install INSTALL_MOD_PATH= EXTRA_CFLAGS="$(EXTRA_CFLAGS)" NETMAP_DRIVER_SUFFIX= KSRC=/lib/modules/3.10.0-1127.13.1.el7.x86_64/build
+virtio_net.c@clean 	:= if [ -d virtio_net.c ]; then make -C virtio_net.c clean EXTRA_CFLAGS="$(EXTRA_CFLAGS)" NETMAP_DRIVER_SUFFIX= KSRC=/lib/modules/3.10.0-1127.13.1.el7.x86_64/build; fi
 virtio_net.c@distclean	:=
 virtio_net.c@force	:= 1
 endef

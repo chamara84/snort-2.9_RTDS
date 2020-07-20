@@ -437,7 +437,7 @@ Copyright (C) 2012 Free Software Foundation, Inc.
 This config.status script is free software; the Free Software Foundation
 gives unlimited permission to copy, distribute and modify it."
 
-ac_pwd='/home/rtds-cybersec/repos/snort/daq-2.0.6'
+ac_pwd='/home/rtds-cybersec/repos/snort/snort-2.9_RTDS/daq-2.0.6'
 srcdir='.'
 INSTALL='/usr/bin/install -c'
 MKDIR_P='/usr/bin/mkdir -p'
@@ -907,12 +907,12 @@ S["mkdir_p"]="$(MKDIR_P)"
 S["MKDIR_P"]="/usr/bin/mkdir -p"
 S["INSTALL_STRIP_PROGRAM"]="$(install_sh) -c -s"
 S["STRIP"]="strip"
-S["install_sh"]="${SHELL} /home/rtds-cybersec/repos/snort/daq-2.0.6/install-sh"
-S["MAKEINFO"]="${SHELL} /home/rtds-cybersec/repos/snort/daq-2.0.6/missing makeinfo"
-S["AUTOHEADER"]="${SHELL} /home/rtds-cybersec/repos/snort/daq-2.0.6/missing autoheader"
-S["AUTOMAKE"]="${SHELL} /home/rtds-cybersec/repos/snort/daq-2.0.6/missing automake-1.13"
-S["AUTOCONF"]="${SHELL} /home/rtds-cybersec/repos/snort/daq-2.0.6/missing autoconf"
-S["ACLOCAL"]="${SHELL} /home/rtds-cybersec/repos/snort/daq-2.0.6/missing aclocal-1.13"
+S["install_sh"]="${SHELL} /home/rtds-cybersec/repos/snort/snort-2.9_RTDS/daq-2.0.6/install-sh"
+S["MAKEINFO"]="${SHELL} /home/rtds-cybersec/repos/snort/snort-2.9_RTDS/daq-2.0.6/missing makeinfo"
+S["AUTOHEADER"]="${SHELL} /home/rtds-cybersec/repos/snort/snort-2.9_RTDS/daq-2.0.6/missing autoheader"
+S["AUTOMAKE"]="${SHELL} /home/rtds-cybersec/repos/snort/snort-2.9_RTDS/daq-2.0.6/missing automake-1.13"
+S["AUTOCONF"]="${SHELL} /home/rtds-cybersec/repos/snort/snort-2.9_RTDS/daq-2.0.6/missing autoconf"
+S["ACLOCAL"]="${SHELL} /home/rtds-cybersec/repos/snort/snort-2.9_RTDS/daq-2.0.6/missing aclocal-1.13"
 S["VERSION"]="2.0.6"
 S["PACKAGE"]="daq"
 S["CYGPATH_W"]="echo"

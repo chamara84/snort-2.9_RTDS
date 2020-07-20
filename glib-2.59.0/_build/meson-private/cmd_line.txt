@@ -1,0 +1,5 @@
+[options]
+libdir = lib
+
+[properties]
+

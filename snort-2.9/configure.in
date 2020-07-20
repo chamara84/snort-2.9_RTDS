@@ -26,6 +26,13 @@ sunos4="no"
 macos="no"
 so_with_static_lib="yes"
 
+export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
+
+PKG_CHECK_MODULES( GLIB, glib-2.0 )
+AC_SUBST( GLIB_CFLAGS )
+AC_SUBST( GLIB_LIBS )
+
+
 case "$host" in
   *-openbsd2.6|*-openbsd2.5|*-openbsd2.4|*-openbsd2.3*)
     AC_DEFINE([OPENBSD],[1],[Define if OpenBSD])
@@ -1432,7 +1439,6 @@ AS_IF([test x$enable_file_inspect = xyes],
     [AC_DEFINE([FEAT_FILE_INSPECT],[1],[Build with extended file inspection features. (Experimental)]) ])
 AM_CONDITIONAL([FEAT_FILE_INSPECT],[test x$enable_file_inspect = xyes])
 
-export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
 
 ###### Start OpenAppId
 AC_ARG_ENABLE([open-appid],
@@ -1597,7 +1603,7 @@ fi
 echo $CFLAGS > cflags.out
 echo $CPPFLAGS > cppflags.out
 
-INCLUDES='-I$(top_srcdir) -I$(top_srcdir)/src -I$(top_srcdir)/src/sfutil $(extra_incl) -I$(top_srcdir)/src/output-plugins -I$(top_srcdir)/src/detection-plugins -I$(top_srcdir)/src/dynamic-plugins -I$(top_srcdir)/src/preprocessors -I$(top_srcdir)/src/preprocessors/portscan -I$(top_srcdir)/src/preprocessors/HttpInspect/include -I$(top_srcdir)/src/preprocessors/Session -I$(top_srcdir)/src/preprocessors/Stream6 -I$(top_srcdir)/src/target-based -I$(top_srcdir)/src/control -I$(top_srcdir)/src/file-process -I$(top_srcdir)/src/file-process/libs -I$(top_srcdir)/src/side-channel -I$(top_srcdir)/src/side-channel/plugins -I$(top_srcdir)/src/reload-adjust -I/usr/local/include/glib-2.0 -I/usr/local/lib/glib-2.0/include -I/usr/local/include'
+INCLUDES='-I$(top_srcdir) -I$(top_srcdir)/src -I$(top_srcdir)/src/sfutil $(extra_incl) -I$(top_srcdir)/src/output-plugins -I$(top_srcdir)/src/detection-plugins -I$(top_srcdir)/src/dynamic-plugins -I$(top_srcdir)/src/preprocessors -I$(top_srcdir)/src/preprocessors/portscan -I$(top_srcdir)/src/preprocessors/HttpInspect/include -I$(top_srcdir)/src/preprocessors/Session -I$(top_srcdir)/src/preprocessors/Stream6 -I$(top_srcdir)/src/target-based -I$(top_srcdir)/src/control -I$(top_srcdir)/src/file-process -I$(top_srcdir)/src/file-process/libs -I$(top_srcdir)/src/side-channel -I$(top_srcdir)/src/side-channel/plugins -I$(top_srcdir)/src/reload-adjust -I/usr/local/include $GLIB_CFLAGS'
 
 AC_SUBST(INCLUDES)
 AC_SUBST(CONFIGFLAGS)

@@ -1,8 +1,7 @@
 ## $Id
 AUTOMAKE_OPTIONS=foreign no-dependencies
 
-INCLUDES = -I../include -I${srcdir}/../libs `pkg-config --cflags --libs glib-2.0`
-
+INCLUDES = -I../include -I${srcdir}/../libs $GLIB_CFLAGS
 dynamicpreprocessordir = ${libdir}/snort_dynamicpreprocessor
 
 dynamicpreprocessor_LTLIBRARIES = libsf_pmu_preproc.la

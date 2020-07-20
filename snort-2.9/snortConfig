@@ -1,12 +1,12 @@
 #!/bin/bash
-sudo make uninstall
-sudo make distclean
+libtoolize --force
 aclocal
-autoconf
-automake
+autoheader
+automake --force-missing --add-missing
+autoreconf -i -f
+
 touch ./src/preprocessors/*.c
 touch ./src/preprocessors/*.h
-touch /home/rtds-cybersec/repos/snort/snort-2.9.14.1/snort-2.9/src/dynamic-preprocessors/dnp3/dnp3_reassembly.c
 touch ./src/dynamic-preprocessors/dnp3/*.h
 touch ./src/detection-plugins/*.c
 touch ./src/detection-plugins/*.h

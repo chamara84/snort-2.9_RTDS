@@ -1,0 +1,14 @@
+ 0x000000000000000e (SONAME)             Library soname: [libgmodule-2.0.so.0]
+__bss_start B
+_edata D
+_end B
+_fini T
+g_module_build_path T 00000000000000be
+g_module_close T 0000000000000166
+g_module_error T 000000000000000c
+g_module_make_resident T 000000000000002a
+g_module_name T 0000000000000049
+g_module_open T 000000000000093a
+g_module_supported T 000000000000002f
+g_module_symbol T 00000000000001b7
+_init T
