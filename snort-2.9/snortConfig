@@ -3,7 +3,7 @@ libtoolize --force
 aclocal
 autoheader
 automake --force-missing --add-missing
-autoreconf -i -f
+autoreconf -i -f -I m4
 
 touch ./src/preprocessors/*.c
 touch ./src/preprocessors/*.h

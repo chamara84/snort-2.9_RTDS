@@ -1,7 +1,7 @@
 ## $Id
 AUTOMAKE_OPTIONS=foreign no-dependencies
 
-INCLUDES = -I../include -I${srcdir}/../libs $GLIB_CFLAGS
+INCLUDES = -I../include -I${srcdir}/../libs ${glib_CFLAGS}
 dynamicpreprocessordir = ${libdir}/snort_dynamicpreprocessor
 
 dynamicpreprocessor_LTLIBRARIES = libsf_pmu_preproc.la

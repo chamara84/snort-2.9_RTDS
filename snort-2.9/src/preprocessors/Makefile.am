@@ -10,7 +10,7 @@ if BUILD_PROCPIDSTATS
 PROCPIDSTATS_SOURCE = sfprocpidstats.c sfprocpidstats.h
 endif
 INCLUDES = @INCLUDES@ 
-libspp_a_LDFLAGS = GLIB_LIBS
+libspp_a_LDFLAGS = ${glib_LIBS}
 libspp_a_SOURCES = spp_arpspoof.c spp_arpspoof.h spp_bo.c spp_bo.h \
 spp_sv.c spp_sv.h \
 spp_goose.c spp_goose.h \ 
