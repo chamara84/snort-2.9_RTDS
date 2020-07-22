@@ -566,7 +566,7 @@ static void IEC61850FullReassembly(Packet *packet, void* context)
 {
 
 
-	uint16_t offset = 0;
+	int offset = 0;
 	uint16_t offsetStNum = 0;
 	uint16_t offsetTime = 0;
 	int elementLengthStNum = 0;
@@ -576,7 +576,7 @@ static void IEC61850FullReassembly(Packet *packet, void* context)
 	pdu->goID=NULL;
 	pdu->gocbRef=NULL;
 	GSList * dataSet = NULL;
-	 uint16_t dataOffset = 0;
+	 int dataOffset = 0;
 	 uint64_t timeval = 0;
 	 uint16_t dataLength = 0;
 	 iec61850_Object_header_t* data =NULL;
