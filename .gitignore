@@ -1,2 +1,20 @@
 
 *.o
+
+*.build
+
+*.buildinfo
+
+daq-2.0.6/debian/
+
+*.gz
+
+*.ddeb
+
+*.deb
+
+*.xz
+
+*.dsc
+
+*.changes
