@@ -1,0 +1,5 @@
+/etc/default/snort
+/etc/init.d/snort
+/etc/logrotate.d/snort
+/etc/ppp/ip-down.d/snort
+/etc/ppp/ip-up.d/snort

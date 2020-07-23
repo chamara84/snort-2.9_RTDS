@@ -18,3 +18,5 @@ daq-2.0.6/debian/
 *.dsc
 
 *.changes
+
+*.swp

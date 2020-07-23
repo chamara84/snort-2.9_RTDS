@@ -1,0 +1,602 @@
+\babel@toc {english}{}
+\contentsline {chapter}{\numberline {1}Snort Overview}{9}
+\contentsline {section}{\numberline {1.1}Getting Started}{9}
+\contentsline {section}{\numberline {1.2}Sniffer Mode}{9}
+\contentsline {section}{\numberline {1.3}Packet Logger Mode}{10}
+\contentsline {section}{\numberline {1.4}Network Intrusion Detection System Mode}{11}
+\contentsline {subsection}{\numberline {1.4.1}NIDS Mode Output Options}{11}
+\contentsline {subsection}{\numberline {1.4.2}Understanding Standard Alert Output}{12}
+\contentsline {subsection}{\numberline {1.4.3}High Performance Configuration}{12}
+\contentsline {subsection}{\numberline {1.4.4}Changing Alert Order}{13}
+\contentsline {section}{\numberline {1.5}Packet Acquisition}{13}
+\contentsline {subsection}{\numberline {1.5.1}Configuration}{13}
+\contentsline {subsection}{\numberline {1.5.2}pcap}{14}
+\contentsline {subsection}{\numberline {1.5.3}AFPACKET}{15}
+\contentsline {subsection}{\numberline {1.5.4}NFQ}{15}
+\contentsline {subsection}{\numberline {1.5.5}IPQ}{16}
+\contentsline {subsection}{\numberline {1.5.6}IPFW}{16}
+\contentsline {subsection}{\numberline {1.5.7}Dump}{16}
+\contentsline {subsection}{\numberline {1.5.8}Statistics Changes}{17}
+\contentsline {section}{\numberline {1.6}Reading pcap files}{17}
+\contentsline {subsection}{\numberline {1.6.1}Command line arguments}{17}
+\contentsline {subsection}{\numberline {1.6.2}Examples}{17}
+\contentsline {subsubsection}{Read a single pcap}{17}
+\contentsline {subsubsection}{Read pcaps from a file}{18}
+\contentsline {subsubsection}{Read pcaps from a command line list}{18}
+\contentsline {subsubsection}{Read pcaps under a directory}{18}
+\contentsline {subsubsection}{Using filters}{18}
+\contentsline {subsubsection}{Resetting state}{19}
+\contentsline {subsubsection}{Printing the pcap}{19}
+\contentsline {section}{\numberline {1.7}Basic Output}{19}
+\contentsline {subsection}{\numberline {1.7.1}Timing Statistics}{19}
+\contentsline {subsection}{\numberline {1.7.2}Packet I/O Totals}{19}
+\contentsline {subsection}{\numberline {1.7.3}Protocol Statistics}{20}
+\contentsline {subsection}{\numberline {1.7.4}Snort Memory Statistics}{21}
+\contentsline {subsection}{\numberline {1.7.5}Actions, Limits, and Verdicts}{21}
+\contentsline {section}{\numberline {1.8}Tunneling Protocol Support}{22}
+\contentsline {subsection}{\numberline {1.8.1}Multiple Encapsulations}{23}
+\contentsline {subsection}{\numberline {1.8.2}Logging}{23}
+\contentsline {section}{\numberline {1.9}Miscellaneous}{23}
+\contentsline {subsection}{\numberline {1.9.1}Running Snort as a Daemon}{23}
+\contentsline {subsubsection}{Snort PID File}{24}
+\contentsline {subsection}{\numberline {1.9.2}Running in Rule Stub Creation Mode}{24}
+\contentsline {subsection}{\numberline {1.9.3}Obfuscating IP Address Printouts}{24}
+\contentsline {subsection}{\numberline {1.9.4}Specifying Multiple-Instance Identifiers}{24}
+\contentsline {subsection}{\numberline {1.9.5}Snort Modes}{25}
+\contentsline {subsubsection}{Explanation of Modes}{25}
+\contentsline {section}{\numberline {1.10}Control socket}{26}
+\contentsline {section}{\numberline {1.11}Configure signal value}{26}
+\contentsline {section}{\numberline {1.12}More Information}{27}
+\contentsline {chapter}{\numberline {2}Configuring Snort}{28}
+\contentsline {section}{\numberline {2.1}Includes}{28}
+\contentsline {subsection}{\numberline {2.1.1}Format}{28}
+\contentsline {subsection}{\numberline {2.1.2}Variables}{28}
+\contentsline {subsubsection}{IP Variables and IP Lists}{29}
+\contentsline {subsubsection}{Port Variables and Port Lists}{29}
+\contentsline {subsubsection}{Variable Modifiers}{30}
+\contentsline {subsubsection}{Limitations}{31}
+\contentsline {subsection}{\numberline {2.1.3}Config}{31}
+\contentsline {subsubsection}{Format}{31}
+\contentsline {section}{\numberline {2.2}Preprocessors}{40}
+\contentsline {subsection}{\numberline {2.2.1}Frag3}{40}
+\contentsline {subsubsection}{Frag 3 Configuration}{41}
+\contentsline {subsubsection}{Format}{42}
+\contentsline {paragraph}{Basic Configuration}{43}
+\contentsline {paragraph}{Advanced Configuration}{43}
+\contentsline {subsubsection}{Frag 3 Alert Output}{43}
+\contentsline {subsection}{\numberline {2.2.2}Session}{43}
+\contentsline {subsubsection}{Session API}{43}
+\contentsline {subsubsection}{Session Global Configuration}{43}
+\contentsline {subsubsection}{Session HA Configuration}{44}
+\contentsline {subsubsection}{Example Configurations}{44}
+\contentsline {subsection}{\numberline {2.2.3}Stream}{45}
+\contentsline {subsubsection}{Transport Protocols}{45}
+\contentsline {subsubsection}{Target-Based}{45}
+\contentsline {subsubsection}{Stream API}{45}
+\contentsline {subsubsection}{Anomaly Detection}{45}
+\contentsline {subsubsection}{Protocol Aware Flushing}{45}
+\contentsline {subsubsection}{Stream TCP Configuration}{46}
+\contentsline {subsubsection}{Stream UDP Configuration}{48}
+\contentsline {subsubsection}{Stream ICMP Configuration}{48}
+\contentsline {subsubsection}{Stream IP Configuration}{49}
+\contentsline {subsubsection}{Example Configurations}{49}
+\contentsline {subsection}{\numberline {2.2.4}sfPortscan}{49}
+\contentsline {subsubsection}{sfPortscan Configuration}{51}
+\contentsline {subsubsection}{Format}{52}
+\contentsline {subsubsection}{Example}{53}
+\contentsline {subsubsection}{sfPortscan Alert Output}{53}
+\contentsline {paragraph}{Unified Output}{53}
+\contentsline {paragraph}{Log File Output}{53}
+\contentsline {subsubsection}{Tuning sfPortscan}{54}
+\contentsline {subsection}{\numberline {2.2.5}RPC Decode}{55}
+\contentsline {subsubsection}{Format}{55}
+\contentsline {subsection}{\numberline {2.2.6}Performance Monitor}{55}
+\contentsline {subsubsection}{Examples}{60}
+\contentsline {subsection}{\numberline {2.2.7}HTTP Inspect}{60}
+\contentsline {subsubsection}{Global Configuration}{60}
+\contentsline {subsubsection}{Format}{60}
+\contentsline {paragraph}{Configuration}{60}
+\contentsline {subsubsection}{Example Global Configuration}{62}
+\contentsline {subsubsection}{Server Configuration}{62}
+\contentsline {paragraph}{Default}{62}
+\contentsline {subsubsection}{Example Default Configuration}{62}
+\contentsline {paragraph}{Configuration by IP Address}{62}
+\contentsline {subsubsection}{Example IP Configuration}{62}
+\contentsline {paragraph}{Configuration by Multiple IP Addresses}{62}
+\contentsline {subsubsection}{Example Multiple IP Configuration}{63}
+\contentsline {subsubsection}{Server Configuration Options}{63}
+\contentsline {subsubsection}{Example}{66}
+\contentsline {subsubsection}{Examples}{75}
+\contentsline {subsection}{\numberline {2.2.8}SMTP Preprocessor}{75}
+\contentsline {subsubsection}{Configuration}{76}
+\contentsline {subsubsection}{Example}{80}
+\contentsline {subsubsection}{Default}{80}
+\contentsline {subsubsection}{Note}{80}
+\contentsline {subsection}{\numberline {2.2.9}POP Preprocessor}{80}
+\contentsline {subsubsection}{Configuration}{81}
+\contentsline {subsubsection}{Example}{82}
+\contentsline {subsubsection}{Default}{83}
+\contentsline {subsection}{\numberline {2.2.10}IMAP Preprocessor}{83}
+\contentsline {subsubsection}{Configuration}{83}
+\contentsline {subsubsection}{Example}{85}
+\contentsline {subsubsection}{Default}{85}
+\contentsline {subsection}{\numberline {2.2.11}FTP/Telnet Preprocessor}{85}
+\contentsline {subsubsection}{Global Configuration}{85}
+\contentsline {subsubsection}{Format}{85}
+\contentsline {paragraph}{Configuration}{86}
+\contentsline {subsubsection}{Example Global Configuration}{86}
+\contentsline {subsubsection}{Telnet Configuration}{86}
+\contentsline {subsubsection}{Format}{86}
+\contentsline {paragraph}{Configuration}{87}
+\contentsline {subsubsection}{Example Telnet Configuration}{87}
+\contentsline {subsubsection}{FTP Server Configuration}{87}
+\contentsline {paragraph}{Default}{87}
+\contentsline {subsubsection}{Example Default FTP Server Configuration}{87}
+\contentsline {paragraph}{Configuration by IP Address}{87}
+\contentsline {subsubsection}{Example IP specific FTP Server Configuration}{87}
+\contentsline {subsubsection}{FTP Server Configuration Options}{88}
+\contentsline {subsubsection}{FTP Server Base Configuration Options}{89}
+\contentsline {subsubsection}{FTP Client Configuration}{90}
+\contentsline {paragraph}{Default}{90}
+\contentsline {subsubsection}{Example Default FTP Client Configuration}{90}
+\contentsline {paragraph}{Configuration by IP Address}{90}
+\contentsline {subsubsection}{Example IP specific FTP Client Configuration}{90}
+\contentsline {subsubsection}{FTP Client Configuration Options}{90}
+\contentsline {subsubsection}{Examples/Default Configuration from snort.conf}{91}
+\contentsline {subsection}{\numberline {2.2.12}SSH}{92}
+\contentsline {subsubsection}{Configuration}{92}
+\contentsline {subsubsection}{Example Configuration from snort.conf}{93}
+\contentsline {subsection}{\numberline {2.2.13}DNS}{93}
+\contentsline {subsubsection}{Configuration}{93}
+\contentsline {subsubsection}{Examples/Default Configuration from snort.conf}{94}
+\contentsline {subsection}{\numberline {2.2.14}SSL/TLS}{94}
+\contentsline {subsubsection}{Configuration}{94}
+\contentsline {subsubsection}{Examples/Default Configuration from snort.conf}{95}
+\contentsline {subsubsection}{Rule Options}{95}
+\contentsline {subsection}{\numberline {2.2.15}ARP Spoof Preprocessor}{96}
+\contentsline {subsubsection}{Format}{96}
+\contentsline {subsubsection}{Example Configuration}{96}
+\contentsline {subsection}{\numberline {2.2.16}DCE/RPC 2 Preprocessor}{96}
+\contentsline {subsubsection}{Dependency Requirements}{97}
+\contentsline {subsubsection}{Target Based}{97}
+\contentsline {subsubsection}{Configuration}{99}
+\contentsline {subsubsection}{Events}{105}
+\contentsline {subsubsection}{Rule Options}{108}
+\contentsline {subsection}{\numberline {2.2.17}Sensitive Data Preprocessor}{112}
+\contentsline {subsubsection}{Dependencies}{112}
+\contentsline {subsubsection}{Preprocessor Configuration}{112}
+\contentsline {subsubsection}{Rule Options}{113}
+\contentsline {subsection}{\numberline {2.2.18}Normalizer}{114}
+\contentsline {subsubsection}{IP4 Normalizations}{115}
+\contentsline {subsubsection}{IP6 Normalizations}{115}
+\contentsline {subsubsection}{ICMP4/6 Normalizations}{115}
+\contentsline {subsubsection}{TCP Normalizations}{116}
+\contentsline {subsubsection}{TTL Normalization}{117}
+\contentsline {subsection}{\numberline {2.2.19}SIP Preprocessor}{117}
+\contentsline {subsubsection}{Dependency Requirements}{117}
+\contentsline {subsubsection}{Configuration}{118}
+\contentsline {subsubsection}{Events}{120}
+\contentsline {subsubsection}{Rule Options}{121}
+\contentsline {subsection}{\numberline {2.2.20}Reputation Preprocessor}{123}
+\contentsline {subsubsection}{Configuration}{123}
+\contentsline {subsubsection}{Events}{125}
+\contentsline {subsubsection}{Shared memory support}{125}
+\contentsline {subsection}{\numberline {2.2.21}GTP Decoder and Preprocessor}{127}
+\contentsline {subsubsection}{Dependency Requirements}{128}
+\contentsline {subsubsection}{GTP Data Channel Decoder Configuration}{128}
+\contentsline {subsubsection}{GTP Control Channel Preprocessor Configuration}{128}
+\contentsline {subsubsection}{GTP Decoder Events}{128}
+\contentsline {subsubsection}{GTP Preprocessor Events}{129}
+\contentsline {subsubsection}{Rule Options}{129}
+\contentsline {subsection}{\numberline {2.2.22}Modbus Preprocessor}{135}
+\contentsline {subsubsection}{Dependency Requirements}{135}
+\contentsline {subsubsection}{Preprocessor Configuration}{136}
+\contentsline {subsubsection}{Rule Options}{136}
+\contentsline {subsubsection}{Preprocessor Events}{137}
+\contentsline {subsection}{\numberline {2.2.23}DNP3 Preprocessor}{138}
+\contentsline {subsubsection}{Dependency Requirements}{138}
+\contentsline {subsubsection}{Preprocessor Configuration}{138}
+\contentsline {subsubsection}{Rule Options}{139}
+\contentsline {subsubsection}{Preprocessor Events}{141}
+\contentsline {subsection}{\numberline {2.2.24}AppId Preprocessor}{141}
+\contentsline {subsubsection}{Dependency Requirements}{141}
+\contentsline {subsubsection}{Preprocessor Configuration}{142}
+\contentsline {subsubsection}{Rule Options}{144}
+\contentsline {subsubsection}{Application Rule Events}{144}
+\contentsline {subsubsection}{Application Usage Statistics}{144}
+\contentsline {subsubsection}{Open Detector Package (ODP) Installation}{145}
+\contentsline {subsubsection}{User Created Application Detectors}{145}
+\contentsline {section}{\numberline {2.3}Decoder and Preprocessor Rules}{145}
+\contentsline {subsection}{\numberline {2.3.1}Configuring}{145}
+\contentsline {subsection}{\numberline {2.3.2}Reverting to original behavior}{146}
+\contentsline {section}{\numberline {2.4}Event Processing}{146}
+\contentsline {subsection}{\numberline {2.4.1}Rate Filtering}{147}
+\contentsline {subsubsection}{Format}{147}
+\contentsline {subsubsection}{Examples}{148}
+\contentsline {subsection}{\numberline {2.4.2}Event Filtering}{149}
+\contentsline {subsubsection}{Format}{149}
+\contentsline {subsubsection}{Examples}{150}
+\contentsline {subsection}{\numberline {2.4.3}Event Suppression}{151}
+\contentsline {subsubsection}{Format}{151}
+\contentsline {subsubsection}{Examples}{151}
+\contentsline {subsection}{\numberline {2.4.4}Event Logging}{152}
+\contentsline {subsubsection}{Event Queue Configuration Options}{152}
+\contentsline {subsubsection}{Event Queue Configuration Examples}{152}
+\contentsline {subsection}{\numberline {2.4.5}Event Trace}{153}
+\contentsline {subsubsection}{Event Trace Examples}{153}
+\contentsline {section}{\numberline {2.5}Performance Profiling}{153}
+\contentsline {subsection}{\numberline {2.5.1}Rule Profiling}{154}
+\contentsline {subsubsection}{Format}{154}
+\contentsline {subsubsection}{Examples}{154}
+\contentsline {subsubsection}{Output}{155}
+\contentsline {subsection}{\numberline {2.5.2}Preprocessor Profiling}{155}
+\contentsline {subsubsection}{Format}{155}
+\contentsline {subsubsection}{Examples}{156}
+\contentsline {subsubsection}{Output}{156}
+\contentsline {subsection}{\numberline {2.5.3}Packet Performance Monitoring (PPM)}{158}
+\contentsline {subsubsection}{Configuration}{158}
+\contentsline {subsubsection}{Examples}{159}
+\contentsline {subsubsection}{Sample Snort Output}{160}
+\contentsline {subsubsection}{Implementation Details}{161}
+\contentsline {section}{\numberline {2.6}Output Modules}{161}
+\contentsline {subsection}{\numberline {2.6.1}alert\_syslog}{161}
+\contentsline {subsubsection}{Available Keywords}{161}
+\contentsline {paragraph}{Facilities}{161}
+\contentsline {paragraph}{Priorities}{162}
+\contentsline {paragraph}{Options}{162}
+\contentsline {subsubsection}{Format}{162}
+\contentsline {subsubsection}{Example}{163}
+\contentsline {subsection}{\numberline {2.6.2}alert\_fast}{163}
+\contentsline {subsubsection}{Format}{163}
+\contentsline {subsubsection}{Example}{163}
+\contentsline {subsection}{\numberline {2.6.3}alert\_full}{163}
+\contentsline {subsubsection}{Format}{163}
+\contentsline {subsubsection}{Example}{163}
+\contentsline {subsection}{\numberline {2.6.4}alert\_unixsock}{164}
+\contentsline {subsubsection}{Format}{164}
+\contentsline {subsubsection}{Example}{164}
+\contentsline {subsection}{\numberline {2.6.5}log\_tcpdump}{164}
+\contentsline {subsubsection}{Format}{164}
+\contentsline {subsubsection}{Example}{164}
+\contentsline {subsection}{\numberline {2.6.6}csv}{164}
+\contentsline {subsubsection}{Format}{165}
+\contentsline {subsubsection}{Example}{165}
+\contentsline {subsection}{\numberline {2.6.7}unified 2}{166}
+\contentsline {subsubsection}{Format}{166}
+\contentsline {subsubsection}{Example}{166}
+\contentsline {subsubsection}{Extra Data Configurations}{166}
+\contentsline {subsubsection}{Reading Unified2 Files}{167}
+\contentsline {subsubsection}{U2SpewFoo}{167}
+\contentsline {subsubsection}{U2Boat}{168}
+\contentsline {subsection}{\numberline {2.6.8}log null}{168}
+\contentsline {subsubsection}{Format}{168}
+\contentsline {subsubsection}{Example}{168}
+\contentsline {subsection}{\numberline {2.6.9}Log Limits}{169}
+\contentsline {section}{\numberline {2.7}Host Attribute Table}{169}
+\contentsline {subsection}{\numberline {2.7.1}Rule evaluation}{169}
+\contentsline {subsection}{\numberline {2.7.2}Snort Configuration}{169}
+\contentsline {subsection}{\numberline {2.7.3}Host Attribute Table File Format}{169}
+\contentsline {subsection}{\numberline {2.7.4}Attribute Table Example}{171}
+\contentsline {subsection}{\numberline {2.7.5}Attribute Table Affect on preprocessors}{172}
+\contentsline {subsubsection}{Attribute Table Affect on rules}{172}
+\contentsline {section}{\numberline {2.8}Dynamic Modules}{173}
+\contentsline {subsection}{\numberline {2.8.1}Format}{173}
+\contentsline {subsection}{\numberline {2.8.2}Directives}{173}
+\contentsline {section}{\numberline {2.9}Reloading a Snort Configuration}{174}
+\contentsline {subsection}{\numberline {2.9.1}Enabling support}{174}
+\contentsline {subsection}{\numberline {2.9.2}Reloading a configuration}{174}
+\contentsline {subsection}{\numberline {2.9.3}Non-reloadable configuration options}{174}
+\contentsline {section}{\numberline {2.10}Multiple Configurations}{176}
+\contentsline {subsection}{\numberline {2.10.1}Creating Multiple Configurations}{176}
+\contentsline {subsection}{\numberline {2.10.2}Configuration Specific Elements}{177}
+\contentsline {subsubsection}{Config Options}{177}
+\contentsline {subsubsection}{Rules}{177}
+\contentsline {subsubsection}{Variables}{177}
+\contentsline {subsubsection}{Preprocessors}{177}
+\contentsline {subsubsection}{Events and Output}{178}
+\contentsline {subsection}{\numberline {2.10.3}How Configuration is applied?}{178}
+\contentsline {section}{\numberline {2.11}Active Response}{178}
+\contentsline {subsection}{\numberline {2.11.1}Enabling Active Response}{179}
+\contentsline {subsection}{\numberline {2.11.2}Configure Sniping}{179}
+\contentsline {subsection}{\numberline {2.11.3}Flexresp}{179}
+\contentsline {subsection}{\numberline {2.11.4}React}{180}
+\contentsline {subsection}{\numberline {2.11.5}Rule Actions}{181}
+\contentsline {chapter}{\numberline {3}Writing Snort Rules}{182}
+\contentsline {section}{\numberline {3.1}The Basics}{182}
+\contentsline {section}{\numberline {3.2}Rules Headers}{182}
+\contentsline {subsection}{\numberline {3.2.1}Rule Actions}{182}
+\contentsline {subsection}{\numberline {3.2.2}Protocols}{183}
+\contentsline {subsection}{\numberline {3.2.3}IP Addresses}{183}
+\contentsline {subsection}{\numberline {3.2.4}Port Numbers}{184}
+\contentsline {subsection}{\numberline {3.2.5}The Direction Operator}{184}
+\contentsline {subsection}{\numberline {3.2.6}Activate/Dynamic Rules}{185}
+\contentsline {section}{\numberline {3.3}Rule Options}{185}
+\contentsline {section}{\numberline {3.4}General Rule Options}{185}
+\contentsline {subsection}{\numberline {3.4.1}msg}{185}
+\contentsline {subsubsection}{Format}{185}
+\contentsline {subsection}{\numberline {3.4.2}reference}{185}
+\contentsline {subsubsection}{Format}{186}
+\contentsline {subsubsection}{Examples}{186}
+\contentsline {subsection}{\numberline {3.4.3}gid}{186}
+\contentsline {subsubsection}{Format}{186}
+\contentsline {subsubsection}{Example}{186}
+\contentsline {subsection}{\numberline {3.4.4}sid}{187}
+\contentsline {subsubsection}{Format}{187}
+\contentsline {subsubsection}{Example}{187}
+\contentsline {subsection}{\numberline {3.4.5}rev}{187}
+\contentsline {subsubsection}{Format}{187}
+\contentsline {subsubsection}{Example}{187}
+\contentsline {subsection}{\numberline {3.4.6}classtype}{187}
+\contentsline {subsubsection}{Format}{187}
+\contentsline {subsubsection}{Example}{188}
+\contentsline {subsubsection}{Warnings}{189}
+\contentsline {subsection}{\numberline {3.4.7}priority}{189}
+\contentsline {subsubsection}{Format}{189}
+\contentsline {subsubsection}{Examples}{189}
+\contentsline {subsection}{\numberline {3.4.8}metadata}{189}
+\contentsline {subsubsection}{Format}{189}
+\contentsline {subsubsection}{Examples}{190}
+\contentsline {subsection}{\numberline {3.4.9}General Rule Quick Reference}{190}
+\contentsline {section}{\numberline {3.5}Payload Detection Rule Options}{190}
+\contentsline {subsection}{\numberline {3.5.1}content}{190}
+\contentsline {subsubsection}{Format}{191}
+\contentsline {subsubsection}{Examples}{191}
+\contentsline {subsubsection}{Changing content behavior}{191}
+\contentsline {subsection}{\numberline {3.5.2}protected\_content}{191}
+\contentsline {subsubsection}{Format}{192}
+\contentsline {subsubsection}{Examples}{192}
+\contentsline {subsection}{\numberline {3.5.3}hash}{192}
+\contentsline {subsubsection}{Format}{192}
+\contentsline {subsection}{\numberline {3.5.4}length}{193}
+\contentsline {subsubsection}{Format}{193}
+\contentsline {subsection}{\numberline {3.5.5}nocase}{193}
+\contentsline {subsubsection}{Format}{193}
+\contentsline {subsubsection}{Example}{193}
+\contentsline {subsection}{\numberline {3.5.6}rawbytes}{193}
+\contentsline {subsubsection}{format}{193}
+\contentsline {subsubsection}{Example}{193}
+\contentsline {subsection}{\numberline {3.5.7}depth}{193}
+\contentsline {subsubsection}{Format}{194}
+\contentsline {subsection}{\numberline {3.5.8}offset}{194}
+\contentsline {subsubsection}{Format}{194}
+\contentsline {subsubsection}{Example}{194}
+\contentsline {subsection}{\numberline {3.5.9}distance}{194}
+\contentsline {subsubsection}{Format}{194}
+\contentsline {subsubsection}{Example}{195}
+\contentsline {subsection}{\numberline {3.5.10}within}{195}
+\contentsline {subsubsection}{Format}{195}
+\contentsline {subsubsection}{Examples}{195}
+\contentsline {subsection}{\numberline {3.5.11}http\_client\_body}{195}
+\contentsline {subsubsection}{Format}{195}
+\contentsline {subsubsection}{Examples}{195}
+\contentsline {subsection}{\numberline {3.5.12}http\_cookie}{196}
+\contentsline {subsubsection}{Format}{196}
+\contentsline {subsubsection}{Examples}{196}
+\contentsline {subsection}{\numberline {3.5.13}http\_raw\_cookie}{196}
+\contentsline {subsubsection}{Format}{196}
+\contentsline {subsubsection}{Examples}{196}
+\contentsline {subsection}{\numberline {3.5.14}http\_header}{197}
+\contentsline {subsubsection}{Format}{197}
+\contentsline {subsubsection}{Examples}{197}
+\contentsline {subsection}{\numberline {3.5.15}http\_raw\_header}{197}
+\contentsline {subsubsection}{Format}{197}
+\contentsline {subsubsection}{Examples}{197}
+\contentsline {subsection}{\numberline {3.5.16}http\_method}{198}
+\contentsline {subsubsection}{Format}{198}
+\contentsline {subsubsection}{Examples}{198}
+\contentsline {subsection}{\numberline {3.5.17}http\_uri}{198}
+\contentsline {subsubsection}{Format}{198}
+\contentsline {subsubsection}{Examples}{198}
+\contentsline {subsection}{\numberline {3.5.18}http\_raw\_uri}{198}
+\contentsline {subsubsection}{Format}{199}
+\contentsline {subsubsection}{Examples}{199}
+\contentsline {subsection}{\numberline {3.5.19}http\_stat\_code}{199}
+\contentsline {subsubsection}{Format}{199}
+\contentsline {subsubsection}{Examples}{199}
+\contentsline {subsection}{\numberline {3.5.20}http\_stat\_msg}{199}
+\contentsline {subsubsection}{Format}{200}
+\contentsline {subsubsection}{Examples}{200}
+\contentsline {subsection}{\numberline {3.5.21}http\_encode}{200}
+\contentsline {subsubsection}{Format}{200}
+\contentsline {subsubsection}{Examples}{200}
+\contentsline {subsection}{\numberline {3.5.22}fast\_pattern}{201}
+\contentsline {subsubsection}{Format}{201}
+\contentsline {subsubsection}{Examples}{202}
+\contentsline {subsection}{\numberline {3.5.23}uricontent}{202}
+\contentsline {subsubsection}{Format}{203}
+\contentsline {subsection}{\numberline {3.5.24}urilen}{203}
+\contentsline {subsubsection}{Format}{203}
+\contentsline {subsection}{\numberline {3.5.25}isdataat}{204}
+\contentsline {subsubsection}{Format}{204}
+\contentsline {subsubsection}{Example}{204}
+\contentsline {subsection}{\numberline {3.5.26}pcre}{204}
+\contentsline {subsubsection}{Format}{204}
+\contentsline {subsubsection}{Example}{205}
+\contentsline {subsection}{\numberline {3.5.27}pkt\_data}{205}
+\contentsline {subsubsection}{Format}{205}
+\contentsline {subsubsection}{Example}{205}
+\contentsline {subsection}{\numberline {3.5.28}file\_data}{206}
+\contentsline {subsubsection}{Format}{207}
+\contentsline {subsubsection}{Example}{207}
+\contentsline {subsection}{\numberline {3.5.29}base64\_decode}{207}
+\contentsline {subsubsection}{Format}{207}
+\contentsline {subsubsection}{Examples}{207}
+\contentsline {subsection}{\numberline {3.5.30}base64\_data}{208}
+\contentsline {subsubsection}{Format}{208}
+\contentsline {subsubsection}{Example}{208}
+\contentsline {subsection}{\numberline {3.5.31}byte\_test}{208}
+\contentsline {subsubsection}{Format}{208}
+\contentsline {subsubsection}{Examples}{209}
+\contentsline {subsection}{\numberline {3.5.32}byte\_jump}{210}
+\contentsline {subsubsection}{Format}{210}
+\contentsline {subsubsection}{Example}{211}
+\contentsline {subsection}{\numberline {3.5.33}byte\_extract}{211}
+\contentsline {subsubsection}{Format}{212}
+\contentsline {subsubsection}{Other options which use byte\_extract variables}{212}
+\contentsline {subsubsection}{Examples}{212}
+\contentsline {subsection}{\numberline {3.5.34}byte\_math}{213}
+\contentsline {subsubsection}{Format}{213}
+\contentsline {subsubsection}{Other rule options which use byte\_math result variable}{214}
+\contentsline {subsubsection}{Examples}{214}
+\contentsline {subsection}{\numberline {3.5.35}ftpbounce}{215}
+\contentsline {subsubsection}{Format}{215}
+\contentsline {subsubsection}{Example}{215}
+\contentsline {subsection}{\numberline {3.5.36}asn1}{215}
+\contentsline {subsubsection}{Format}{215}
+\contentsline {subsubsection}{Examples}{216}
+\contentsline {subsection}{\numberline {3.5.37}cvs}{216}
+\contentsline {subsubsection}{Format}{216}
+\contentsline {subsubsection}{Examples}{216}
+\contentsline {subsection}{\numberline {3.5.38}dce\_iface}{217}
+\contentsline {subsection}{\numberline {3.5.39}dce\_opnum}{217}
+\contentsline {subsection}{\numberline {3.5.40}dce\_stub\_data}{217}
+\contentsline {subsection}{\numberline {3.5.41}sip\_method}{217}
+\contentsline {subsection}{\numberline {3.5.42}sip\_stat\_code}{217}
+\contentsline {subsection}{\numberline {3.5.43}sip\_header}{217}
+\contentsline {subsection}{\numberline {3.5.44}sip\_body}{217}
+\contentsline {subsection}{\numberline {3.5.45}gtp\_type}{217}
+\contentsline {subsection}{\numberline {3.5.46}gtp\_info}{217}
+\contentsline {subsection}{\numberline {3.5.47}gtp\_version}{217}
+\contentsline {subsection}{\numberline {3.5.48}ssl\_version}{217}
+\contentsline {subsection}{\numberline {3.5.49}ssl\_state}{217}
+\contentsline {subsection}{\numberline {3.5.50}Payload Detection Quick Reference}{218}
+\contentsline {section}{\numberline {3.6}Non-Payload Detection Rule Options}{218}
+\contentsline {subsection}{\numberline {3.6.1}fragoffset}{218}
+\contentsline {subsubsection}{Format}{219}
+\contentsline {subsubsection}{Example}{219}
+\contentsline {subsection}{\numberline {3.6.2}ttl}{219}
+\contentsline {subsubsection}{Format}{219}
+\contentsline {subsubsection}{Example}{219}
+\contentsline {subsection}{\numberline {3.6.3}tos}{219}
+\contentsline {subsubsection}{Format}{220}
+\contentsline {subsubsection}{Example}{220}
+\contentsline {subsection}{\numberline {3.6.4}id}{220}
+\contentsline {subsubsection}{Format}{220}
+\contentsline {subsubsection}{Example}{220}
+\contentsline {subsection}{\numberline {3.6.5}ipopts}{220}
+\contentsline {subsubsection}{Format}{221}
+\contentsline {subsubsection}{Example}{221}
+\contentsline {subsubsection}{Warning}{221}
+\contentsline {subsection}{\numberline {3.6.6}fragbits}{221}
+\contentsline {subsubsection}{Format}{221}
+\contentsline {subsubsection}{Example}{221}
+\contentsline {subsection}{\numberline {3.6.7}dsize}{221}
+\contentsline {subsubsection}{Format}{221}
+\contentsline {subsubsection}{Example}{222}
+\contentsline {subsubsection}{Warning}{222}
+\contentsline {subsection}{\numberline {3.6.8}flags}{222}
+\contentsline {subsubsection}{Format}{222}
+\contentsline {subsubsection}{Example}{223}
+\contentsline {subsection}{\numberline {3.6.9}flow}{223}
+\contentsline {subsubsection}{Format}{223}
+\contentsline {subsubsection}{Examples}{223}
+\contentsline {subsection}{\numberline {3.6.10}flowbits}{224}
+\contentsline {subsubsection}{General Format}{224}
+\contentsline {subsubsection}{set}{224}
+\contentsline {subsubsection}{setx}{224}
+\contentsline {subsubsection}{unset}{225}
+\contentsline {subsubsection}{toggle}{225}
+\contentsline {subsubsection}{isset}{225}
+\contentsline {subsubsection}{isnotset}{225}
+\contentsline {subsubsection}{noalert}{226}
+\contentsline {subsubsection}{reset}{226}
+\contentsline {subsubsection}{Examples}{226}
+\contentsline {subsection}{\numberline {3.6.11}seq}{226}
+\contentsline {subsubsection}{Format}{226}
+\contentsline {subsubsection}{Example}{227}
+\contentsline {subsection}{\numberline {3.6.12}ack}{227}
+\contentsline {subsubsection}{Format}{227}
+\contentsline {subsubsection}{Example}{227}
+\contentsline {subsection}{\numberline {3.6.13}window}{227}
+\contentsline {subsubsection}{Format}{227}
+\contentsline {subsubsection}{Example}{227}
+\contentsline {subsection}{\numberline {3.6.14}itype}{227}
+\contentsline {subsubsection}{Format}{227}
+\contentsline {subsubsection}{Example}{227}
+\contentsline {subsection}{\numberline {3.6.15}icode}{228}
+\contentsline {subsubsection}{Format}{228}
+\contentsline {subsubsection}{Examples}{228}
+\contentsline {subsection}{\numberline {3.6.16}icmp\_id}{228}
+\contentsline {subsubsection}{Format}{228}
+\contentsline {subsubsection}{Example}{228}
+\contentsline {subsection}{\numberline {3.6.17}icmp\_seq}{229}
+\contentsline {subsubsection}{Format}{229}
+\contentsline {subsubsection}{Example}{229}
+\contentsline {subsection}{\numberline {3.6.18}rpc}{229}
+\contentsline {subsubsection}{Format}{229}
+\contentsline {subsubsection}{Example}{229}
+\contentsline {subsubsection}{Warning}{229}
+\contentsline {subsection}{\numberline {3.6.19}ip\_proto}{229}
+\contentsline {subsubsection}{Format}{229}
+\contentsline {subsubsection}{Example}{229}
+\contentsline {subsection}{\numberline {3.6.20}sameip}{230}
+\contentsline {subsubsection}{Format}{230}
+\contentsline {subsubsection}{Example}{230}
+\contentsline {subsection}{\numberline {3.6.21}stream\_reassemble}{230}
+\contentsline {subsubsection}{Format}{230}
+\contentsline {subsubsection}{Example}{230}
+\contentsline {subsection}{\numberline {3.6.22}stream\_size}{230}
+\contentsline {subsubsection}{Format}{231}
+\contentsline {subsubsection}{Example}{231}
+\contentsline {subsection}{\numberline {3.6.23}Non-Payload Detection Quick Reference}{231}
+\contentsline {section}{\numberline {3.7}Post-Detection Rule Options}{232}
+\contentsline {subsection}{\numberline {3.7.1}logto}{232}
+\contentsline {subsubsection}{Format}{232}
+\contentsline {subsection}{\numberline {3.7.2}session}{232}
+\contentsline {subsubsection}{Format}{232}
+\contentsline {subsubsection}{Example}{232}
+\contentsline {subsubsection}{Warnings}{232}
+\contentsline {subsection}{\numberline {3.7.3}resp}{232}
+\contentsline {subsection}{\numberline {3.7.4}react}{233}
+\contentsline {subsection}{\numberline {3.7.5}tag}{233}
+\contentsline {subsubsection}{Format}{233}
+\contentsline {subsubsection}{Example}{234}
+\contentsline {subsection}{\numberline {3.7.6}replace}{234}
+\contentsline {subsection}{\numberline {3.7.7}detection\_filter}{234}
+\contentsline {subsection}{\numberline {3.7.8}Post-Detection Quick Reference}{235}
+\contentsline {section}{\numberline {3.8}Rule Thresholds}{235}
+\contentsline {paragraph}{Format}{235}
+\contentsline {subsubsection}{Examples}{235}
+\contentsline {section}{\numberline {3.9}Writing Good Rules}{236}
+\contentsline {subsection}{\numberline {3.9.1}Content Matching}{236}
+\contentsline {subsection}{\numberline {3.9.2}Catch the Vulnerability, Not the Exploit}{236}
+\contentsline {subsection}{\numberline {3.9.3}Catch the Oddities of the Protocol in the Rule}{237}
+\contentsline {subsection}{\numberline {3.9.4}Optimizing Rules}{237}
+\contentsline {subsection}{\numberline {3.9.5}Testing Numerical Values}{239}
+\contentsline {chapter}{\numberline {4}Dynamic Modules}{242}
+\contentsline {section}{\numberline {4.1}Data Structures}{242}
+\contentsline {subsection}{\numberline {4.1.1}DynamicPluginMeta}{242}
+\contentsline {subsection}{\numberline {4.1.2}DynamicPreprocessorData}{242}
+\contentsline {subsection}{\numberline {4.1.3}DynamicEngineData}{243}
+\contentsline {subsection}{\numberline {4.1.4}SFSnortPacket}{243}
+\contentsline {subsection}{\numberline {4.1.5}Dynamic Rules}{244}
+\contentsline {subsubsection}{Rule}{244}
+\contentsline {subsubsection}{RuleInformation}{244}
+\contentsline {subsubsection}{RuleReference}{245}
+\contentsline {subsubsection}{IPInfo}{245}
+\contentsline {subsubsection}{RuleOption}{245}
+\contentsline {section}{\numberline {4.2}Required Functions}{250}
+\contentsline {subsection}{\numberline {4.2.1}Preprocessors}{251}
+\contentsline {subsection}{\numberline {4.2.2}Detection Engine}{251}
+\contentsline {subsection}{\numberline {4.2.3}Rules}{253}
+\contentsline {section}{\numberline {4.3}Examples}{253}
+\contentsline {subsection}{\numberline {4.3.1}Preprocessor Example}{253}
+\contentsline {subsection}{\numberline {4.3.2}Rules}{255}
+\contentsline {chapter}{\numberline {5}Snort Development}{258}
+\contentsline {section}{\numberline {5.1}Submitting Patches}{258}
+\contentsline {section}{\numberline {5.2}Snort Data Flow}{258}
+\contentsline {subsection}{\numberline {5.2.1}Preprocessors}{258}
+\contentsline {subsection}{\numberline {5.2.2}Detection Plugins}{259}
+\contentsline {subsection}{\numberline {5.2.3}Output Plugins}{259}
+\contentsline {section}{\numberline {5.3}Unified2 File Format}{259}
+\contentsline {subsection}{\numberline {5.3.1}Serial Unified2 Header}{259}
+\contentsline {subsection}{\numberline {5.3.2}Unified2 Packet}{260}
+\contentsline {subsection}{\numberline {5.3.3}Unified2 IDS Event}{260}
+\contentsline {subsection}{\numberline {5.3.4}Unified2 IDS Event IP6}{260}
+\contentsline {subsection}{\numberline {5.3.5}Unified2 IDS Event (Version 2)}{261}
+\contentsline {subsection}{\numberline {5.3.6}Unified2 IDS Event IP6 (Version 2)}{261}
+\contentsline {subsection}{\numberline {5.3.7}Unified2 Extra Data}{262}
+\contentsline {subsection}{\numberline {5.3.8}Description of Fields}{262}
+\contentsline {section}{\numberline {5.4}Buffer dump utility}{264}
+\contentsline {subsection}{\numberline {5.4.1}Example Buffer Dump output}{265}
+\contentsline {section}{\numberline {5.5}The Snort Team}{266}

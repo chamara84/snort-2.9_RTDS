@@ -1,0 +1,8 @@
+43e8e644ea90de518679cf572a33f8a1  usr/sbin/snort-stat
+ef03750c872dd0337853d53f22031f2b  usr/share/doc/snort-common/NEWS.Debian.gz
+9748bd3a5613895cd068689009fc4c4b  usr/share/doc/snort-common/RELEASE.NOTES
+7ad49a315a7341d6e20632b1a548db1b  usr/share/doc/snort-common/changelog.Debian.gz
+7f3b5044e9a1a4d402aca4a4eaf21bb5  usr/share/doc/snort-common/changelog.gz
+a488f9639254a3a0b5c04a3fd582ca1d  usr/share/doc/snort-common/copyright
+77c95999ab3570d973fee96d149ad6e7  usr/share/doc/snort-common/examples/snort_rules_update
+7dbfab21d709137787eb9c4229f6cf33  usr/share/man/man8/snort-stat.8.gz

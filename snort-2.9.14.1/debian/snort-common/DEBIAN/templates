@@ -1,0 +1,204 @@
+
+Template: snort/deprecated_config
+Type: note
+Description: Deprecated options in configuration file
+ The Snort configuration file (/etc/snort/snort.conf) uses deprecated
+ options no longer available for this Snort release. Snort will not be able to
+ start unless you provide a correct configuration file. Either allow the
+ configuration file to be replaced with the one provided in this package or fix
+ it manually by removing deprecated options.
+ .
+ The following deprecated options were found in the configuration file:
+ ${DEP_CONFIG}
+Description-cs.UTF-8: Zastaralé volby v konfiguračním souboru
+ Konfigurační soubor Snortu (/etc/snort/snort.conf) používá zrušené volby, které již nejsou v tomto vydání Snortu dostupné. Snort se nebude moci spustit, dokud neposkytnete korektní konfigurační soubor. Můžete povolit nahrazení konfiguračního souboru souborem obsaženým v tomto balíku nebo to opravit ručně odstraněním zrušených voleb.
+ .
+ V konfiguračním souboru byly nalezeny následující zrušené volby: ${DEP_CONFIG}
+Description-da.UTF-8: Forældede (deprecated) indstillinger i konfigurationsfilen
+ Snorts konfigurationsfil (/etc/snort/snort.conf) bruger forældede indstillinger, som ikke længere er tilgængelige for denne Snortudgivelse. Snort vil ikke kunne starte med mindre, at du angiver en gyldig konfigurationsfil. Tillad enten at konfigurationsfilen bliver erstattet med konfigurationsfilen i denne pakke eller ret det manuelt ved at fjerne forældede indstillinger.
+ .
+ De følgende forældede indstillinger blev fundet i konfigurationsfilen: ${DEP_CONFIG}
+Description-de.UTF-8: Missbilligte Optionen in der Konfigurationsdatei
+ Die Snort-Konfigurationsdatei (/etc/snort/snort.conf) benutzt missbilligte Optionen, die ab dieser Version von Snort nicht mehr gültig sind. Snort kann solange nicht starten, bis Sie eine korrekte Konfigurationsdatei bereitstellen. Sie können entweder Ihre Konfigurationsdatei durch die disees Pakets ersetzen oder Sie entfernen die missbilligten Optionen selbst.
+ .
+ Folgende missbilligte Optionen wurden in der Konfigurationsdatei gefunden: ${DEP_CONFIG}.
+Description-es.UTF-8: Opciones obsolestas en el fichero de configuración
+ El fichero de configuración de Snort («/etc/snort/snort.conf») utiliza opciones obsoletas que ya no están disponibles en esta versión de Snort. Snort no podrá arrancar a menos que tenga un fichero de configuración correcto. Puede sustituir este fichero de configuración por el que ofrece este paquete o arreglarlo manualmente eliminando las opciones obsoletas.
+ .
+ Se encontraron las siguientes opciones obsoletas en el fichero de configuración: ${DEP_CONFIG}
+Description-fr.UTF-8: Fichier de configuration avec des options obsolètes
+ Le fichier de configuration de Snort (/etc/snort/snort.conf) utilise des options qui ne sont plus disponibles dans cette version du logiciel. Snort ne pourra pas démarrer tant que le fichier de configuration ne sera pas corrigé. Vous pouvez remplacer ce fichier par celui fourni avec le paquet ou le corriger vous-même pour supprimer les options obsolètes.
+ .
+ Liste des options obsolètes dans le fichier de configuration : ${DEP_CONFIG}
+Description-it.UTF-8: Opzioni deprecate nel file di configurazione
+ Il file di configurazione di Snort (/etc/snort/snort.conf) utilizza opzioni deprecate non più disponibili per questa versione di Snort. Snort non si potrà avviare finché non si fornisce un file di configurazione corretto. Si può sostituire il file di configurazione con quello incluso in questo pacchetto oppure correggerlo manualmente rimuovendo le opzioni deprecate.
+ .
+ Le seguenti opzioni deprecate sono state trovate nel file di configurazione: ${DEP_CONFIG}
+Description-ja.UTF-8: 設定ファイルに無効なオプションがあります
+ Snort の設定ファイル (/etc/snort/snort.conf) は、今回の Snort のリリース以降使えなくなっている無効なオプションを指定しています。設定ファイルを修正しない限り起動できなくなります。設定ファイルをこのパッケージが提供しているものに置換するか、無効なオプションを手動で削除するかすれば起動できるようになります。
+ .
+ 設定ファイルで以下の無効なオプションが見つかりました: ${DEP_CONFIG}
+Description-nl.UTF-8: Afgeschafte opties in het configuratiebestand
+ Uw snort-configuratiebestand (/etc/snort/snort.conf) maakt gebruik van afgeschafte opties die door deze versie niet meer ondersteund worden. Met een onjuist configuratiebestand kan Snort niet opstarten. U kunt uw bestaande configuratiebestand laten vervangen door het met dit pakket meegeleverde bestand, of u kunt de afgeschafte opties handmatig verwijderen.
+ .
+ De volgende afgeschafte opties werden in uw configuratiebestand aangetroffen: ${DEP_CONFIG}
+Description-pt.UTF-8: Opções depreciadas no ficheiro de configuração
+ O ficheiro de configuração do Snort (/etc/snort/snort.conf) utiliza opções depreciadas que já não estão disponíveis para este lançamento do Snort.  O Snort não irá ser capaz de iniciar a menos que você forneça um ficheiro de configuração correcto. Você pode substituir o seu ficheiro de configuração pelo que é disponibilizado neste pacote ou corrigi-lo manualmente removendo as opções depreciadas.
+ .
+ As seguintes opções depreciadas foram encontradas no ficheiro de configuração: ${DEP_CONFIG}.
+Description-ru.UTF-8: Устаревшие параметры в файле настройки
+ В файле настройки Snort (/etc/snort/snort.conf) используются устаревшие параметры, более недоступные в этом выпуске Snort. Snort не сможет запуститься, пока вы не предоставите корректный файл настройки. Вы можете подменить ваш файл настройки одним из поставляемых с этим пакетом или поправить его вручную, удалив устаревшие параметры.
+ .
+ В файле настройки были найдены следующие устаревшие параметры: ${DEP_CONFIG}
+Description-sv.UTF-8: Utdaterade inställningar i inställningsfil
+ Din Snort-konfigurationsfil (/etc/snort/snort.conf) använder gamla inställningar som inte längre används i denna Snort-utgåva.  Snort kan inte starta om du har felaktigheter i konfigurationsfilen. Du kan byta ut din konfigurationsfil mot den som följer med detta paket eller lösa problemet manuellt genom att ta bort de felaktiga inställningarna.
+ .
+ De följande inställningarna som hittades i din konfigurationsfil är inte längre giltiga: ${DEP_CONFIG}
+Description-zh_CN.UTF-8: 配置文件中存在不合法的配置信息
+ Snort配置文件（路径：/etc/snort/snort.conf）存在当前版本无法使用的配置信息。您需要更正Snort配置以启动Snort。您可以用本软件包提供的配置文件替换掉旧的配置文件，或者手工修改配置文件。
+ .
+ 下列配置文件错误：${DEP_CONFIG}
+
+Template: snort/config_error
+Type: error
+Description: Configuration error
+ The current Snort configuration is invalid and will prevent Snort
+ starting up normally. Please review and correct it.
+ .
+ To diagnose errors in your Snort configuration you can run (as root)
+ the following: "/usr/sbin/snort -T -c /etc/snort/snort.conf"
+Description-cs.UTF-8: Chyba konfigurace
+ Aktuální konfigurace Snortu je neplatná a Snort nebude možné normálně spustit. Zkontrolujte a opravte ji.
+ .
+ Pro diagnostikování chyb v nastavení Snort spusťte (jako root) tento příkaz: "/usr/sbin/snort -T -c /etc/snort/snort.conf"
+Description-da.UTF-8: Konfigurationsfejl
+ Den aktuelle Snortkonfiguration er ugyldig og vil forhindre Snort i at starte op normalt. Gennemse og ret den venligst.
+ .
+ For at diagnosticere fejl i din Snortkonfigurationsfil kan du køre (som root) følgende: »/usr/sbin/snort -T -c /etc/snort/snort.conf«.
+Description-de.UTF-8: Konfigurationsfehler
+ Die aktuelle Konfiguration von Snort ist ungültig und verhindert dessen normalen Start. Bitte kontrollieren und berichtigen Sie diese.
+ .
+ Führen Sie (als Root) den Befehl »/usr/sbin/snort -T -c /etc/snort/snort.conf« aus, um Fehler in Ihrer Konfiguration von Snort zu finden.
+Description-es.UTF-8: Error de configuración
+ La configuración actual de Snort es inválida e impedirá que Snort se ejecute. Por favor, revísela y corríjala.
+ .
+ Puede diagnosticar los errores en su configuración de Snort ejecutando, como superusuario, la siguiente orden: «/usr/sbin/snort -T -c /etc/snort/snort.conf».
+Description-fr.UTF-8: Erreur de configuration
+ La configuration actuelle de Snort n'est pas valable et l'empêchera de démarrer. Veuillez la contrôler et la corriger.
+ .
+ Le diagnostic des erreurs du fichier de configuration de Snort peut se faire (comme superutilisateur) avec la commande « /usr/sbin/snort -T -c /etc/snort/snort.conf ».
+Description-it.UTF-8: Errore di configurazione
+ La configurazione corrente di Snort non è valida ed impedirà a Snort di avviarsi normalmente. Rivederla e correggerla.
+ .
+ Per la diagnosi degli errori nella configurazione di Snort, si può eseguire (come root): «/usr/sbin/snort -T -c /etc/snort/snort.conf»
+Description-ja.UTF-8: 設定エラー
+ 現在の Snort の設定が正しくないので、Snort は正常に起動しません。確認の上で修正してください。
+ .
+ Snort の設定ファイル中のエラーを分析するには、root で「/usr/sbin/snort -T -c /etc/snort/snort.conf」を実行してください。
+Description-nl.UTF-8: Configuratiefout
+ De huidige Snort configuratie is ongeldig en zal verhinderen dat Snort normaal wordt opgestart. Gelieve de configuratie na te kijken en te corrigeren.
+ .
+ Om fouten in het configuratiebestand van Snort te analyseren, gebruikt u (als root) de volgende opdracht: "/usr/sbin/snort -T -c /etc/snort/snort.conf"
+Description-pt.UTF-8: Erro na configuração
+ A actual configuração do Snort é inválida e impede que o Snort inicie normalmente. Por favor reveja e corrija.
+ .
+ Para diagnosticar erros na sua configuração do Snort, pode correr (como root) o seguinte: "/usr/sbin/snort -T -c /etc/snort/snort.conf"
+Description-ru.UTF-8: Ошибка настройки
+ Имеющаяся настройка Snort неправильна, и из-за этого Snort не будет запускаться. Просмотрите и исправьте её.
+ .
+ Чтобы найти ошибку в файле настройки Snort, запустите (как root) следующую команду: «/usr/sbin/snort -T -c /etc/snort/snort.conf».
+Description-sv.UTF-8: Fel i inställningar
+ Nuvarande inställningar för Snort är felaktiga och kommer att förhindra Snort från att starta på ett korrekt sätt. Vänligen kontrollera inställningarna och rätta felen.
+ .
+ För att hitta fel i Snorts inställningar kan du (som root) använda kommandot "/usr/sbin/snort -T -c /etc/snort/snort.conf".
+Description-zh_CN.UTF-8: 配置错误
+ 当前Snort配置错误以致Snort无法正常启动。请重新查看。
+ .
+ 您可以在命令行中使用（需root权限）：/usr/sbin/snort -T -c /etc/snort/snort.conf来检查配置文件是否存在错误。
+
+Template: snort/deprecated_file
+Type: note
+Description: Deprecated configuration file
+ Your system has deprecated configuration files which should not be used any
+ longer and might contain deprecated options. If included through the standard
+ configuration file (/etc/snort/snort.conf), they might prevent Snort from
+ starting up properly.
+ . 
+ Please remove these files as well as any existing references to them in the
+ /etc/snort/snort.conf configuration file.
+ .
+ The following deprecated configuration files were found:
+ ${DEP_FILE}
+Description-cs.UTF-8: Zrušený konfigurační soubor
+ Váš systém má zastaralé konfigurační soubory, které by se dále neměly používat, protože mohou obsahovat zastaralé volby. Pokud jsou obsaženy ve standardním konfiguračním souboru (/etc/snort/snort.conf), mohou bránit tomu, aby se Snort správně spouštěl.
+ .
+ Odstraňte prosím tyto soubory a také všechny stávající odkazy na ně z konfiguračního souboru /etc/snort/snort.conf.
+ .
+ Byly nalezeny následující zastaralé konfigurační soubory: ${DEP_FILE}
+Description-da.UTF-8: Forældet (deprecated) konfigurationsfil
+ Dit system har forældede konfigurationsfiler, som ikke bør bruges længere og kan indeholder forældede indstillinger. Hvis inkluderet via standardkonfigurationsfilen (/etc/snort/snort.conf), kan de forhindre Snort i at starte korrekt op.
+ .
+ Fjern venligst disse filer samt alle eksisterende referencer til dem i konfigurationsfilen /etc/snort/snort.conf.
+ .
+ De følgende forældede konfigurationsfiler blev fundet ${DEP_FILE}
+Description-de.UTF-8: Missbilligte Konfigurationsdatei
+ Ihr System hat missbilligte Konfigurationsdateien, die nicht länger benutzt werden sollten. Diese könnten missbilligte Optionen enthalten. Falls sie über die Standardkonfigurationsdatei (/etc/snort/snort.conf) eingefügt wurden, können sie verhindern, dass Snort korrekt startet.
+ .
+ Bitte entfernen Sie diese Dateien ebenso wie bestehende Verweise darauf in der Konfigurationsdatei /etc/snort/snort.conf.
+ .
+ Die folgenden missbilligten Konfigurationsdateien wurden gefunden: ${DEP_FILE}
+Description-es.UTF-8: Fichero de configuración obsoleto
+ Su sistema tiene ficheros de configuración obsoletos que no deberían seguir utilizándose y que pueden contener opciones obsoletas. Si estos ficheros se incluyen a través del fichero de configuración estándar («/etc/snort/snort.conf») pueden hacer que Snort no arranque correctamente.
+ .
+ Debe eliminar estos ficheros así como cualquier referencia a ellos en el archivo de configuración «etc/snort/snort.conf».
+ .
+ Se encontraron los siguientes ficheros de configuración obsoletos: ${DEP_FILE}
+Description-fr.UTF-8: Fichier de configuration obsolète
+ Le système contient des fichiers de configuration obsolètes qui ne doivent plus être utilisés et pouvant contenir des options obsolètes. S’ils sont utilisés par le fichier de configuration standard (/etc/snort/snort.conf), ils peuvent empêcher Snort de démarrer correctement. 
+ .
+ Veuillez supprimer ces fichiers ainsi que toutes leurs références dans le fichier de configuration /etc/snort/snort.conf. 
+ .
+ Liste des fichiers de configuration obsolètes : ${DEP_FILE}
+Description-it.UTF-8: File di configurazione deprecato
+ Questo sistema ha dei file di configurazione deprecati che non dovrebbero più essere usati e che potrebbero contenere opzioni deprecate. Se vengono inclusi tramite il file di configurazione standard (/etc/snort/snort.conf), potrebbero impedire il regolare avvio di Snort.
+ .
+ Rimuovere tali file ed eventuali riferimenti ad essi dal file di configurazione /etc/snort/snort.conf.
+ .
+ I seguenti file di configurazione deprecati sono stati trovati: ${DEP_FILE}
+Description-ja.UTF-8: 無効にされた設定ファイル
+ このシステムにはもう使うべきではない古い設定ファイルがあり、無効なオプションが使われているかもしれません。標準の設定ファイル (/etc/snort/snort.conf) からこれを読み込ませた場合、Snort が正常に起動しなくなるかもしれません。
+ .
+ こういったファイルや /etc/snort/snort.conf 設定ファイルからそれを参照している個所を削除してください。
+ .
+ 以下の無効な設定ファイルが見つかりました: ${DEP_FILE}
+Description-nl.UTF-8: Verouderd configuratie bestand
+ Uw systeem heeft verouderde configuratiebestanden die niet langer gebruikt zouden moeten worden en die afgeschafte opties kunnen bevatten. Als ze via het standaardconfiguratiebestand (/etc/snort/snort.conf) geladen worden, kunnen ze beletten dat Snort correct opstart.
+ .
+ Gelieve deze bestanden te wissen evenals iedere verwijzing ernaar in het configuratiebestand /etc/snort/snort.conf.
+ .
+ De volgende verouderde configuratiebestanden werden aangetroffen: ${DEP_FILE}
+Description-pt.UTF-8: Ficheiro de configuração depreciado
+ O seu sistema tem ficheiros de configuração depreciados que já não devem ser utilizados e poderão conter opções depreciadas. Se forem incluidos através do ficheiro de configuração standard (/etc/snort/snort.conf), podem prevenir que o Snort funcione correctamente.
+ .
+ Por favor remova esses ficheiros assim como quaisquer referências a eles no ficheiros de configuração /etc/snort/snort.conf.
+ .
+ Foram encontrados os seguintes ficheiros de configuração depreciados: ${DEP_FILE}.
+Description-ru.UTF-8: Устаревший файл настройки
+ В вашей системе найдены устаревшие файлы настройки, которые больше не должны использоваться и в которых могут содержаться устаревшие параметры. Если их добавить через стандартный файл настройки (/etc/snort/snort.conf), то Snort может перестать запускаться.
+ .
+ Удалите эти файлы, а также все существующие ссылки на них из файла настройки /etc/snort/snort.conf.
+ .
+ Были найдены следующие устаревшие файлы настройки: ${DEP_FILE}
+Description-sv.UTF-8: Detta system använder en gammal konfigurationsfil
+ Ditt system har utdaterade inställningsfiler som inte ska användas mer och dessa kan innehålla utdaterade inställningar. Om dessa inkluderas via standardinställningarna (/etc/snort/snort.conf) kan det innebära att Snort inte kan starta korrekt.
+ .
+ Vänligen radera dessa inställningsfiler liksom eventuella referenser till de i inställningsfilen /etc/snort/snort.conf.
+ .
+ Följande inställningsfiler hittades och bedömdes utdaterade: ${DEP_FILE}
+Description-zh_CN.UTF-8: 错误的配置文件
+ 您的系统使用了不正确的配置文件。在/etc/snort/snort.conf配置文件中存在不正确的配置，会使Snort无法正常启动。
+ .
+ 请在Snort配置文件中删除这些不正确的配置信息。
+ .
+ 不正确的配置文件：${DEP_FILE}
+

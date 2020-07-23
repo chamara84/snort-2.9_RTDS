@@ -150,7 +150,7 @@
 /* #undef HAVE_LINUXTHREADS */
 
 /* Define to 1 if you have the <lzma.h> header file. */
-/* #undef HAVE_LZMA_H */
+#define HAVE_LZMA_H 1
 
 /* Define to 1 if you have the `mallinfo' function. */
 #define HAVE_MALLINFO 1
