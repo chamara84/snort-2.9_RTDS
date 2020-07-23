@@ -23,6 +23,7 @@ sudo apt install automake1.11
 sudo apt install libglib2.0-dev
 
 
+
 #cd glib-2.59.0/
 #meson -Druntime_libdir=/usr -Dselinux=disabled   _build
 #ninja -C _build
