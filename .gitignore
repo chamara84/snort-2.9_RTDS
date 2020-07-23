@@ -18,3 +18,17 @@ daq-2.0.6/debian/
 *.dsc
 
 *.changes
+
+*.a
+
+*.lo
+
+*.la
+
+*.0
+
+*.so
+
+*.lai
+
+*.new
