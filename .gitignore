@@ -22,13 +22,9 @@ daq-2.0.6/debian/
 *.a
 
 *.lo
-
 *.la
-
 *.0
-
 *.so
-
 *.lai
-
 *.new
+*.swp

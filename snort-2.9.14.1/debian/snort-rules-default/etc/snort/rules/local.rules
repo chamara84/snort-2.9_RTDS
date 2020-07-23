@@ -1,0 +1,3 @@
+#alert tcp any 20000 -> any any (msg:"PROTOCOL-SCADA DNP3";content:"|1E 05 01 00 00 13 01|";isdataat:5,relative;content:!"|00 00 00 00|";distance:1;within:4;rawbytes;replace:"|00 00 00 00|";sid:100001;rev:1;)
+#alert tcp any 20000 -> any any (msg:"PROTOCOL-SCADA DNP3";content:"|1E 05 01 00 00 13 01|";content:"|01 00 00 48 44|"; replace:"|01 00 00 00 00|";sid:100002;rev:1;)
+alert tcp any 80 -> any any (msg:"HTTP traffic";sid:100001;rev:1;) 

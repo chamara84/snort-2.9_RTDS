@@ -1,0 +1,25 @@
+Package: snort
+Version: 2.9.14.1-1
+Architecture: amd64
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Installed-Size: 2458
+Pre-Depends: adduser (>= 3.11)
+Depends: snort-common-libraries (>= 2.9.14.1-1), snort-rules-default (>= 2.9.14.1-1), snort-common (>= 2.9.14.1-1), debconf (>= 0.5) | debconf-2.0, rsyslog | system-log-daemon, logrotate, net-tools, libc6 (>= 2.16), libdaq2, libdumbnet1 (>= 1.8), libglib2.0-0 (>= 2.24.0), liblzma5 (>= 5.1.1alpha+20120614), libpcap0.8 (>= 1.0.0), libpcre3, libssl1.1 (>= 1.1.0), zlib1g (>= 1:1.1.4)
+Recommends: iproute2
+Suggests: snort-doc
+Conflicts: snort-mysql, snort-pgsql
+Replaces: snort-common (<< 2.0.2-3)
+Section: net
+Priority: optional
+Homepage: http://www.snort.org/
+Description: flexible Network Intrusion Detection System
+ Snort is a libpcap-based packet sniffer/logger which can be used as a
+ lightweight network intrusion detection system. It features rules-based
+ logging and can perform content searching/matching in addition to
+ detecting a variety of other attacks and probes, such as buffer
+ overflows, stealth port scans, CGI attacks, SMB probes, and much more.
+ Snort has a real-time alerting capability, with alerts being sent to
+ syslog, a separate "alert" file, or even to a Windows computer via Samba.
+ .
+ This package provides the plain-vanilla version of Snort.
+Original-Maintainer: Javier Fernández-Sanguino Peña <jfs@debian.org>

@@ -1,0 +1,631 @@
+
+Template: snort/startup
+Type: select
+Choices: boot, dialup, manual
+Choices-cs.UTF-8: při zavádění, při vytáčeném připojení, ručně
+Choices-da.UTF-8: opstart, ring op, manuelt
+Choices-de.UTF-8: Systemstart, Einwahl, manuell
+Choices-es.UTF-8: arranque, marcación telefónica, manual
+Choices-eu.UTF-8: abioan, markatzean, eskuz
+Choices-fi.UTF-8: käynnistettäessä järjestelmä, soitettaessa, manuaalinen
+Choices-fr.UTF-8: Au démarrage, À la connexion, Manuellement
+Choices-gl.UTF-8: inicio, conexión, manual
+Choices-it.UTF-8: avvio, dialup, manuale
+Choices-ja.UTF-8: 起動時, ダイヤルアップ時, 手動
+Choices-nl.UTF-8: opstarten, inbellen, handmatig
+Choices-pt.UTF-8: arranque, dialup, manual
+Choices-ro.UTF-8: la pornirea sistemului, la conectarea „dialup”, manuală
+Choices-ru.UTF-8: загрузка, дозвон, вручную
+Choices-sv.UTF-8: uppstart, uppringt, manuell
+Choices-vi.UTF-8: khởi động, quay số, bằng tay
+Choices-zh_CN.UTF-8: 引导, 拨号, 手册
+Default: boot
+Description: Snort start method:
+ Please choose how Snort should be started: automatically on boot,
+ automatically when connecting to the net with pppd, or manually with the
+ /usr/sbin/snort command.
+Description-cs.UTF-8: Způsob spuštění Snort:
+ Zvolte si prosím, jak se má Snort spouštět: automaticky při zavádění, automaticky při připojování k síti s pppd, nebo ručně příkazem /usr/sbin/snort.
+Description-da.UTF-8: Startmetode for snort:
+ Vælg venligst hvordan Snort skal startes: Automatisk ved opstart, automatisk når der forbindes til nettet med pppd, eller manuelt med kommandoen /usr/sbin/snort.
+Description-de.UTF-8: Startmethode für Snort:
+ Bitte wählen Sie, wie Snort gestartet werden soll: automatisch beim Systemstart, automatisch, wenn die Verbindung zum Netz mit PPPD hergestellt wird oder mit dem Befehl /usr/sbin/snort.
+Description-es.UTF-8: Método de arranque de Snort:
+ Por favor, escoja cómo debería arrancarse Snort: automáticamente en el arranque del sistema, automáticamente cuando el sistema se conecte a Internet con pppd o manualmente cuando lo arranque ejecutándolo con «/usr/sbin/snort».
+Description-fr.UTF-8: Méthode de lancement de Snort :
+ Snort peut être lancé au démarrage du système, lors de la connexion au réseau avec pppd ou à la demande avec la commande « /usr/sbin/snort ».
+Description-it.UTF-8: Metodo di avvio di Snort:
+ Scegliere come avviare Snort: automaticamente all'avvio, automaticamente quando pppd si connette alla rete, oppure manualmente con il comando /usr/sbin/snort.
+Description-ja.UTF-8: snort の起動方法:
+ Snort の起動方法を、システム起動時に自動で、pppd を利用してネットワークに接続した時に自動で、/usr/sbin/snort コマンドにより手作業で、から選択してください。
+Description-nl.UTF-8: Opstartmethode van Snort:
+ Gelieve te kiezen hoe Snort gestart moet worden: automatisch tijdens het opstarten van de computer, automatisch bij het openen van de netwerkverbinding met pppd of handmatig met het commando /usr/bin/snort.
+Description-pt.UTF-8: Método de arraque do Snort:
+ Por favor escolha como deve ser iniciado o Snort: automaticamente no arranque, automaticamente ao ligar à rede com pppd ou manualmente com o comando /usr/bin/snort.
+Description-ru.UTF-8: Способ запуска Snort:
+ Выберите как будет запускаться Snort: автоматически при загрузке машины, при подключении к сети через pppd, или вручную с помощью команды /usr/sbin/snort.
+Description-sv.UTF-8: Hur ska Snort starta:
+ Snort kan startas vid uppstart, när uppkoppling mot nätverk sker med pppd eller manuellt med kommandot /usr/sbin/snort.
+Description-zh_CN.UTF-8: 启动Snort
+ 请选择Snort运行方式：在系统引导时自动运行，当系统联网时自动运行，或者在/usr/sbin/snort路径下手动启动。
+
+Template: snort/interface
+Type: string
+Default: eth0
+Description: Interface(s) which Snort should listen on:
+ This value is usually "eth0", but this may be inappropriate in some
+ network environments; for a dialup connection "ppp0" might be more
+ appropriate (see the output of "/sbin/ifconfig").
+ .
+ Typically, this is the same interface as the "default route" is on. You can
+ determine which interface is used for this by running "/sbin/route -n"
+ (look for "0.0.0.0").
+ .
+ It is also not uncommon to use an interface with no IP address
+ configured in promiscuous mode. For such cases, select the
+ interface in this system that is physically connected to the network
+ that should be inspected, enable promiscuous mode later on and make sure
+ that the network traffic is sent to this interface (either connected
+ to a "port mirroring/spanning" port in a switch, to a hub, or to a tap).
+ .
+ You can configure multiple interfaces, just by adding more than
+ one interface name separated by spaces. Each interface can have its
+ own specific configuration.
+Description-cs.UTF-8: Rozhraní, na kterém (kterých) má Snort naslouchat:
+ Tato hodnota obyčejně bývá "eth0", ale to nemusí být v některých síťových prostředích vhodné; pro vytáčené připojení může být vhodnější "ppp0" (viz výstup "/sbin/ifconfig").
+ .
+ Typicky je to stejné rozhraní jako je "výchozí směrování (default route)". Které rozhraní se pro toto používá, můžete zjistit spuštěním "/sbin/route -n' (hledejte '0.0.0.0").
+ .
+ Také není neobvyklé použít rozhraní bez IP adresy nastavené do promiskuitního módu. V tomto případě vyberte rozhraní systému fyzicky připojené k síti a které chcete sledovat, následně povolte promiskuitní mód a ujistěte se, že je síťový provoz posílán na toto rozhraní (buď připojené k "port mirroring/spanning" portu přepínače, k hubu nebo k tap rozhraní).
+ .
+ Můžete také zadat více rozhraní, jednoduše zapsáním více než jednoho jména rozhraní, oddělených mezerami. Každé rozhraní může mít své specifické nastavení.
+Description-da.UTF-8: Grænseflader som Snort skal lytte på:
+ Værdien er normalt »eth0«, men dette kan være upassende i nogle netværksmiljøer; for en opkaldsforbindelse kan »ppp0« være mere passende (se uddata for »/sbin/ifconfig«).
+ .
+ Typisk er dette den samme grænseflade som »standardruten« er på. Du kan bestemme hvilken grænseflade, der bruges, ved at køre »/sbin/route -n« (se efter »0.0.0.0«).
+ .
+ Det er heller ikke unormalt at bruge en grænseflade uden IP-adresse konfigureret i fuldstændig åben tilstand. I sådanne tilfælde så vælg grænsefladen i dette system som er fysisk forbundet med netværket, som skal inspiceres, aktiver fuldstændig åben (promiscuous) tilstand senere og sikr dig at netværkstrafikken sendes til denne grænseflade (enten forbundet til en »port mirroring/spanning« port i en netværksveksler (switch), en hub eller en tap).
+ .
+ Du kan konfigurere flere grænseflader, bare ved at tilføje mere end et grænsefladenavn adskilt af mellemrum. Hver grænseflade kan have sin egen specifikke konfiguration.
+Description-de.UTF-8: Schnittstelle(n) an der/denen Snort auf Verbindungen warten soll:
+ Dieser Wert ist normalerweise »eth0«, aber das kann in einigen Netzwerkumgebungen anders sein; bei einer Einwahlverbindung könnte »ppp0« besser passen (sehen Sie sich die Ausgabe des Befehls »/sbin/ifconfig« an).
+ .
+ Normalerweise ist das dieselbe Schnittstelle, auf die die »Standard-Route« zeigt. Sie können die verwendete Schnittstelle mit dem Befehl »/sbin/route -n« herausfinden (suchen Sie nach »0.0.0.0«).
+ .
+ Es ist auch üblich, Snort an einer Schnittstelle ohne IP-Adresse im Modus »promiscuous« zu betreiben. In diesem Fall wählen Sie die Schnittstelle aus, die physisch mit dem Netzwerk verbunden ist, das Sie überwachen wollen und schalten später den Modus »promiscuous« ein. Stellen Sie sicher, dass der Netzwerkverkehr die Schnittstelle erreicht (entweder ist sie mit einem Anschluss für »Port-Mirroring/Spanning« eines Switches, mit einem Hub oder Tap verbunden).
+ .
+ Sie können mehrere Schnittstellennamen durch Leerzeichen getrennt eingeben. Jede Schnittstelle kann eigene Einstellungen haben.
+Description-es.UTF-8: Interfaz/ces donde debería escuchar Snort:
+ Este valor suele ser «eth0», pero puede no ser correcto para algunos entornos de red. Si está utilizando una conexión de marcación telefónica mediante PPP a Internet puede ser más apropiado utilizar «ppp0» (consulte la salida de «/sbin/ifconfig»).
+ .
+ Generalmente la interfaz que se añade aquí es generalmente la misma que tiene definida la ruta por omisión. Para determinar qué interfaz se está utilizando para esto, ejecute «/sbin/route -n» (busque aquellos valores asociados a «0.0.0.0»).
+ .
+ Tampoco es infrecuente ejecutar Snort en una interfaz sin dirección IP que esté configurada en modo promiscuo. Para estos casos, seleccione la interfaz en el sistema que está físicamente conectada a la red debería inspeccionarse, active el modo promiscuo más adelante y asegúrese que el tráfico de dicha red se está enviado a esa interfaz (bien conectándola a un puerto de un conmutador en modo «port mirroring/spanning», bien conectado a un concentrador o a un tap)
+ .
+ Puede configurar múltiples interfaces simplemente añadiendo más de un nombre de interfaz y separándolos por espacios. Cada interfaz puede tener su propia configuración.
+Description-fr.UTF-8: Interface(s) où Snort sera à l'écoute :
+ La valeur habituelle est « eth0 » mais elle peut varier selon l'environnement réseau : pour une connexion ponctuelle (« dialup »), « ppp0 » est probablement plus adapté (voir le résultat de la commande « /sbin/ifconfig »).
+ .
+ L'interface est celle qu'utilise la route par défaut. Vous pouvez obtenir cette information avec la commande « /sbin/route -n » (rechercher « 0.0.0.0 »).
+ .
+ Il est également fréquent d'utiliser Snort sur une interface sans adresse IP, en mode promiscuité (« promiscuous »). Dans ce cas, choisissez l'interface connectée physiquement au réseau que vous voulez analyser et activez ce mode plus tard. Assurez-vous que le trafic réseau est bien envoyé à cette interface (soit connectée à un port de miroir ou de répartition (« mirroring/spanning port ») sur un commutateur réseau, soit connectée à un répartiteur ou à un dérivateur).
+ .
+ Il est possible de configurer plusieurs interfaces en les mentionnant toutes, séparées par des espaces. Chacune d'elles pourra avoir une configuration différente.
+Description-it.UTF-8: Interfacce su cui Snort deve restare in ascolto:
+ Questo valore di solito è «eth0», ma potrebbe essere inappropriato in alcuni ambienti di rete; «ppp0» potrebbe essere più appropriato per una connessione dialup (vedere l'output di «/sbin/ifconfig»).
+ .
+ Solitamente, questa è la stessa interfaccia sulla quale si trova la «default route». Si può stabilire quale interfaccia è usata eseguendo «/sbin/route -n» (cercare «0.0.0.0»).
+ .
+ Non è anche insolito usare un'interfaccia senza indirizzo IP configurata in modo promiscuo. In tal caso, selezionare l'interfaccia del sistema che è fisicamente connessa alla rete da ispezionare, abilitare la modalità promiscua successivamente ed assicurarsi che il traffico di rete sia inviato verso questa interfaccia (connessa ad una porta «port mirroring/spanning» in uno switch, ad un hub o ad un tap).
+ .
+ Si possono configurare più interfacce aggiungendo più nomi di interfaccia separati da spazi. Ciascuna interfaccia può avere la propria configurazione specifica.
+Description-ja.UTF-8: Snort が listen するインターフェイス:
+ ここでの値は通常「eth0」ですが、ネットワーク環境によってはそれでは適切ではないかもしれません: ダイヤルアップ接続を利用している場合は、「ppp0」がより適切でしょう (「/sbin/ifconfig」の出力を確認してください)。
+ .
+ 大抵の場合、これは「default route」が存在するものと同じです。どのインターフェイスを使うかは「/sbin/route -n」を実行して (「0.0.0.0」を探して)、決定できます。
+ .
+ IP を付与していないインターフェイス上でプロミスキャスモードの Snort を動作させるのも珍しいことではありません。このような場合、受信を行いたいネットワークに対して物理的に接続されているこのシステム上のインターフェイスを選択し、後ほどプロミスキャスモードを有効にしてネットワークトラフィックがこのインターフェイス (スイッチの「port mirrorining/spanning」ポートかハブ、あるいはネットワークタップに接続されています) に届いているのを確認してください。
+ .
+ インターフェイスの名前を空白で区切って複数列挙することで複数のインターフェイスを設定できます。インターフェイスごとに固有の設定が可能です。
+Description-nl.UTF-8: Op welke interface(s) moet Snort luisteren?
+ Deze waarde is normaal "eth0", maar in sommige netwerkomgevingen kan dit ongeschikt zijn; voor een inbelverbinding is "ppp0" wellicht meer geschikt (raadpleeg de uitvoer van "/sbin/ifconfig").
+ .
+ Deze interface is normaal dezelfde als die waarover de "default route" loopt. Om te bepalen welke interface daarvoor gebruikt wordt, kunt u "/sbin/route -n" uitvoeren (zoek naar "0.0.0.0").
+ .
+ Het is ook niet ongewoon om een interface te gebruiken zonder IP adres en die geconfigureerd is in promiscue modus. In dat geval, selecteert u de interface die fysiek verbonden is met het netwerk dat u wilt onderzoeken, activeert u later de promiscue modus en verzekert u zich ervan dat het netwerkverkeer naar deze interface verzonden wordt (verbonden via een "port mirroring/spanning"-poort op een switch, via een hub, of via een tap)
+ .
+ U kunt hier verschillende interfaces definiëren, door meer dan één naam van een interface te vermelden, gescheiden door spaties. Elke interface kan zijn eigen specifieke configuratie hebben.
+Description-pt.UTF-8: Interface(s) que o Snort deve escutar:
+ Normalmente este valor é "eth0", mas poderá ser desadequado em alguns ambientes de rede; para uma ligação dialup "ppp0" poderá ser mais apropriado (veja a saída de "/sbin/ifconfig").
+ .
+ Normalmente este é o mesmo interface onde está "default route". Pode determinar qual o interface que é utilizado para isto correndo "/sbin/route -n" (procure por "0.0.0.0").
+ .
+ Também não é invulgar utilizar um interface sem endereço IP configurado em modo promíscuo. Para esses casos, escolha o interface neste sistema que está fisicamente ligado à rede que deseja inspeccionar, posteriormente active o modo promíscuo e assegure-se que o tráfego de rede é enviado para este interface (quer ligado a um porto de "mirroring/spanning" num switch, num hub ou a um tap).
+ .
+ Pode configurar aqui vários interfaces, apenas adicionando mais do que um nome de interface separado por espaços. Cada interface pode ter a sua configuração específica.
+Description-ru.UTF-8: Интерфейсы, которые должен слушать Snort:
+ Обычно, это значение равно «eth0», но это может не сработать для некоторых сетей; для коммутируемого подключения больше подходит «ppp0» (посмотрите результат работы «/sbin/ifconfig»).
+ .
+ Обычно, это тот же интерфейс, через который проходит «маршрут по умолчанию». Вы можете определить какой интерфейс использовать с помощью команды «/sbin/route -n» (ищите «0.0.0.0»).
+ .
+ Также нет ничего необычного в запуске Snort на интерфейсе без IP в режиме прослушивания. В этом случае, выберите на этой системе интерфейс, физически подключённый к инспектируемой сети, разрешите потом режим прослушивания и убедитесь, что сетевой трафик отправляется на этот интерфейс (подключённый к порту коммутатора «port mirroring/spanning», к концентратору или к сетевой ловушке).
+ .
+ Вы можете указать здесь несколько интерфейсов, просто добавив более одного имени интерфейса через пробел. У каждого интерфейса могут быть свои собственные настройки.
+Description-sv.UTF-8: På vilket/vilka gränssnitt ska Snort lyssna?
+ Detta värde är oftast "eth0" men det kan vara fel i en del nätverksmiljöer. För uppringd anslutning bör "ppp0" vara mer korrekt (se vidare utdatat från "/sbin/ifconfig").
+ .
+ Vanligen är detta samma gränssnitt som standardrutten är inställd på. Du kan ta fram vilket gränssnitt som används för detta med kommandot "/sbin/route -n" (leta efter "0.0.0.0").
+ .
+ Det är inte helt ovanligt att köra Snort på ett gränssnitt utan IP-adress i läget "promiscuous". Om det är det du vill, välj gränssnittet på detta system som är fysiskt kopplad till nätverket du vill inspektera. Aktivera promiscuousläget efter det och kontrollera att nätverkstrafiken skickas till detta gränssnitt (antingen kopplade till en "port mirror/spanning"-port i en switch, en hubb eller en nätverkstapp)
+ .
+ Du kan konfigurera flera gränssnitt här, bara att lägga till fler än ett gränssnittsnamn separerade med blanksteg. Varje gränssnitt kan ha sin egen specifika konfiguration.
+Description-zh_CN.UTF-8: Snort监听端口：
+ 通常情况下为"eth0"，但是在某些网络环境下不适用。例如，在拨号连接时，"ppp0"或许更为合适。网络连接状态请见"/sbin/ifconfig"。
+ .
+ 通常，当开启"defalt route"("默认路由")后为同一网段。您可以使用"/sbin/route -n"来选择运行在那个网段下。
+ .
+ 在混杂模式中，不使用IP地址来配置Snort也是可行的。例如，当系统通过物理连接到网络后选择一个网段，然后开启混杂模式，进而确定在此网段中（或交换机到集线器中的映射端口）的网络流量。
+ .
+ 您可以通过在各网段间用空格隔开的方式配置多个网段。每个网络都可以单独配置。
+
+Template: snort/address_range
+Type: string
+Default: 192.168.0.0/16
+Description: Address range for the local network:
+ Please use the CIDR form - for example, 192.168.1.0/24 for a block of
+ 256 addresses or 192.168.1.42/32 for just one. Multiple values should
+ be comma-separated (without spaces).
+ .
+ Please note that if Snort is configured to use multiple interfaces,
+ it will use this value as the HOME_NET definition for all of them.
+Description-cs.UTF-8: Adresní rozsah lokální sítě:
+ Použijte zápis CIDR - například 192.168.1.0/24 pro blok 256 adres nebo 192.168.1.42/32 pro jednu jedinou adresu. Více adres zadejte oddělených čárkou (bez mezer).
+ .
+ Pokud je Snort nakonfigurován pro použití více rozhraní, použije tuto hodnotu jako definici HOME_NET pro všechna z nich.
+Description-da.UTF-8: Adresseinterval for det lokale netværk:
+ Brug venligst CIDR-formen - for eksempel 192.168.1.0/24 - for en blok af 256 adresser eller 192.168.1.42/32 for bare en. Flere værdier skal være kommaadskilt (uden mellemrum).
+ .
+ Bemærk venligst at hvis Snort er konfigureret til at bruge flere grænseflader vil den bruge denne værdi som HOME_NET-definitionen for dem alle.
+Description-de.UTF-8: Adressbereich des lokalen Netzwerks:
+ Bitte benutzen Sie das CIDR-Format, z. B. 192.168.1.0/24 für einen Block von 256 IP-Adressen oder 192.168.1.42/32 für nur eine. Mehrere IP-Adressen sollten durch Kommas getrennt werden (ohne Leerzeichen).
+ .
+ Bitte beachten Sie: Wenn für Snort mehrere Schnittstellen eingerichtet sind, wird es diese Festlegung als HOME_NET-Definition für alle gemeinsam verwenden.
+Description-es.UTF-8: Intervalo de direcciones para la red local:
+ Tiene que utilizar el formato CIDR, esto es, 192.168.1.0/24 para un bloque de 256 IPs o  192.168.1.42/32 para sólo una dirección. Debe separar múltiples direcciones por «,» (comas) y sin espacios.
+ .
+ Tenga en cuenta que si Snort está configurado para utilizar múltiples interfaces se utilizará esta definición como valor de «HOME_NET» para todos ellos.
+Description-eu.UTF-8: Sare lokaleko helbide tartea:
+ Mesedez erabili CIDR formatua - adibidez, 192.168.1.0/24 256 helbideetako bloke batentzat edo 192.168.1.42/32 bakar batentzat. Balio ezberdinak gakoz bereizi behar dira (hutsunerik gabe).
+ .
+ Mesedez kontutan izan Snort interfaze anitz erabiltzeko konfiguraturik dagoela, balio hau HOME_NET definizio bezala erabiliko da guztietan.
+Description-fi.UTF-8: Paikallisen verkon osoitealue:
+ Käytä CIDR-muotoa, esimerkiksi 192.168.1.0/24 256 IP-osoitteen määrittämiseksi tai 192.168.1.42/32 yhden määrittämiseksi. Useampi alue voidaan syöttää pilkuin eroteltuina (ilman välilyöntejä).
+ .
+ Jos Snort on asetettu käyttämään useampia liitäntöjä, se käyttää tätä arvoa niiden kaikkien HOME_NET-määritteenä.
+Description-fr.UTF-8: Plage d'adresses du réseau local :
+ Veuillez utiliser le format CIDR, par exemple 192.168.1.0/24 pour un bloc de 256 adresses IP ou 192.168.1.42/32 pour une seule adresse. Il est possible d'indiquer plusieurs adresses sur une seule ligne en les séparant par des virgules (sans espaces).
+ .
+ Veuillez noter que si Snort est configuré pour utiliser plusieurs interfaces, la valeur définie ici sera la valeur HOME_NET pour chacune d'elles.
+Description-gl.UTF-8: Rango de enderezos da rede local:
+ Empregue a forma CIDR - por exemplo, 192.168.1.0/24 para un bloque de 256 enderezos ou 192.168.1.42/32 para só un. Para fornecer unha lista, dea varios valores separados por comas (sen espazos).
+ .
+ Teña en conta que se Snort está configurado para empregar varias interfaces, ha empregar este valor coma a definición HOME_NET de todas elas.
+Description-it.UTF-8: Intervallo di indirizzi per la rete locale:
+ Usare un formato CIDR, per esempio 192.168.1.0/24 per un blocco di 256 indirizzi o 192.168.1.42/32 per uno solo. Più valori devono essere separati da una virgola (senza spazi).
+ .
+ Notare che se Snort è configurato per usare più interfacce, questo valore sarà usato come definizione di HOME_NET per tutte.
+Description-ja.UTF-8: ローカルネットワークのアドレス範囲:
+ CIDR 形式で記述してください。例えば 192.168.1.0/24 は 256 個のアドレスブロックで、192.168.1.42/32 は 1 個のアドレスとなります。値を複数指定する場合、(空白は入れずに) コンマで区切って記述しましょう。
+ .
+ Snort が複数のインターフェイスを使うように設定されている場合、この値は全てのインターフェイスの HOME_NET 定義として利用されることに注意してください。
+Description-nl.UTF-8: Adresbereik van het lokale netwerk:
+ U dient de CIDR-vorm te gebruiken (dit is 192.168.1.0/24 voor een blok van 256 IP-adressen of 192.168.1.42/32 voor één enkel IP-adres). U kunt meerdere adressen opgeven op één regel door ze te scheiden met komma's; spaties zijn hierbij niet toegestaan!
+ .
+ Merk op dat als u Snort instelt om meerdere interfaces te gebruiken, deze waarde gebruikt zal worden als de HOME_NET definitie van al deze interfaces.
+Description-pt.UTF-8: Gama de endereços para a rede local:
+ Por favor utilize o formato CIDR - por exemplo, 192.168.1.0/24 para um bloco de 256 endereços ou 192.168.1.42/32 para apenas um. Vários endereços devem ser separados por vírgulas (sem espaços).
+ .
+ Por favor note que se o Snort está a utilizar vários interfaces, irá utilizar este valor como a definição HOME_NET para todos eles.
+Description-ro.UTF-8: Intervalul de adrese pentru rețeaua locală:
+ Folosiți forma CIDR, de exemplu, 192.168.1.0/24 pentru un bloc de 256 de adrese IP sau 192.168.1.42/32 doar pentru o adresă. Valorile multiple trebuie separate cu (fără spații).
+ .
+ A se reține că dacă Snort este configurat să folosească mai multe interfețe, va folosi această valoare ca definiția lui HOME_NET pentru toate.
+Description-ru.UTF-8: Диапазон адресов локальной сети:
+ Используйте формат CIDR, например 192.168.1.0/24 для блока из 256 IP адресов или 192.168.1.42/32 для одного. Несколько адресов указываются на одной строке через запятую (без пробелов).
+ .
+ Обратите внимание, если для Snort указано несколько интерфейсов, то это определение будет использовано как определение HOME_NET для всех интерфейсов.
+Description-sv.UTF-8: Ange adressintervallet som Snort ska lyssna på.
+ Du ska använda CIDR-formatet, till exempel 192.168.1.0/24 för ett block av 256 IP-adresser eller 192.168.1.42/32 för bara en av dem. Ange flera adresser på samma rad separerade med "," (kommatecken), blanksteg är inte tillåtna!
+ .
+ Observera att om du använder flera gränssnitt kommer denna definition att användas som HOME_NET-definition på alla.
+Description-vi.UTF-8: Phạm vi địa chỉ cho mạng cục bộ :
+ Bạn cần phải sử dụng dạng CIDR, tức là « 192.168.1.0/24 » cho một khối 256 địa chỉ IP, hay « 192.168.1.42/32 » cho chỉ một điều. Ghi rõ nhiều địa chỉ trong cùng một dòng riêng lẻ, định giới bằng dấu phẩy « , » (không có dấu cách).
+ .
+ Ghi chú rằng nếu Snort được cấu hình để dùng nhiều giao diện, nó sẽ dùng giá trị này làm lời định nghĩa « HOME_NET » cho tất cả.
+Description-zh_CN.UTF-8: 本机地址范围：
+ 请使用CIDR的格式。例如， 形如192.168.1.0/24或192.168.1.42/32。请用逗号","隔开。
+ .
+ 请注意，如果将Snort配置了多个网段，那么这个将作为定义HOME_NET的默认值。
+
+Template: snort/disable_promiscuous
+Type: boolean
+Default: false
+Description: Should Snort disable promiscuous mode on the interface?
+ Disabling promiscuous mode means that Snort will only see packets
+ addressed to the interface it is monitoring. Enabling it allows Snort to
+ check every packet that passes the Ethernet segment even if it's a
+ connection between two other computers.
+Description-cs.UTF-8: Má Snort zakázat promiskuitní mód na tomto rozhraní?
+ Zakázání promiskuitního módu znamená, že Snort uvidí jen pakety adresované rozhraní, které monitoruje. Povolení umožňuje Snortu kontrolovat každý paket, který prochází ethernetovým segmentem, i když je to spojení mezi jinými dvěma počítači.
+Description-da.UTF-8: Skal Snort deaktivere fuldstændig åben (promiscuous) tilstand på grænsefladen?
+ Deaktivering af fuldstændig åben tilstand betyder at Snort kun vil se pakker adresseret til grænsefladen den overvåger. Aktivering af den tillader Snort at kontrollere hver pakke som passerer Ethernetsegmentet selv hvis det er en forbindelse mellem to andre computere.
+Description-de.UTF-8: Soll Snort den Modus »promiscuous« an der Schnittstelle ausschalten?
+ Das Ausschalten des Modus »promiscuous« bedeutet, dass Snort nur die Pakete sehen wird, die an die Schnittstelle adressiert sind, die es überwacht. Das Einschalten ermöglicht es Snort, alle Pakete zu überprüfen, die das Netzwerksegment durchlaufen, selbst wenn dies eine Verbindung zwischen zwei anderen Rechnern ist.
+Description-es.UTF-8: ¿Debería Snort deshabilitar el modo promiscuo en la interfaz?
+ Si deshabilita el modo promiscuo Snort sólo analizará paquetes dirigidos a la propia interfaz que se está monitorizando. Si lo activa Snort comprobará todos los paquetes que pasen por el segmento Ethernet incluso aunque sean parte de una conexión entre otros dos sistemas.
+Description-eu.UTF-8: Snort-ek modu promiskuoa ezgaitu behar al du interfaze guztietan?
+ Modu promiskuoa ezgaitzeak Snort-ek monitorizatzen ari den interfazerako diren paketeak bakarrik ikustea eragingo du. Berau gaitzean Snort ethernet segmentutik pasatzen diren pakete guztiak arakatzeko aukera ematen dio nahiz beste bi ordenagailuen arteko konexio bat denean.
+Description-fi.UTF-8: Tulisiko Snortin asettaa liitäntä ottamaan vastaan vain sille tarkoitetut paketit?
+ ”Promiscuous mode”-tilan poistaminen käytöstä tarkoittaa, että Snort näkee vain paketit, jotka on lähetetty sen seuraamaan liitäntään. Tilan käyttäminen sallii Snortin tarkistaa kaikki verkkolohkon paketit, vaikka ne lähetettäisiinkin kahden muun koneen välillä.
+Description-fr.UTF-8: Faut-il désactiver le mode promiscuité sur l'interface ?
+ Si le mode promiscuité (« promiscuous ») est désactivé, Snort ne verra que les paquets adressés à sa propre interface. S'il est activé, il vérifiera chaque paquet transitant sur le segment Ethernet même s'il s'agit d'échanges entres deux autres ordinateurs.
+Description-gl.UTF-8: ¿Debería desactivar Snort o modo promíscuo na interface?
+ Desactivar o modo promiscui significa que Snort só ha ver os paquetes dirixidos á interface que está a monitorizar. Activalo permite a Snort comprobar cada paquete que pase polo segmento Ethernet, incluso se é unha conexión entre outros dous ordenadores.
+Description-it.UTF-8: Snort deve disabilitare la modalità promiscua sull'interfaccia?
+ Disabilitare la modalità promiscua significa che Snort vedrà solo i pacchetti indirizzati all'interfaccia che sta monitorando. Abilitandola, si permette a Snort di controllare ogni pacchetto che passa nel segmento Ethernet anche se si tratta di una connessione fra altri due computer.
+Description-ja.UTF-8: Snort で、このインターフェイスでのプロミスキャスモードを無効にしますか?
+ プロミスキャスモードを無効にすると、Snort は自身がモニタリングしているインターフェイスへ向けられたパケットのみを監視します。有効にすると、自身以外の他のコンピュータ間のやり取りを含めたイーサネットセグメント上の全てのパケットをチェックするようになります。
+Description-nl.UTF-8: Wilt u dat Snort de promiscue modus van de interface uitschakelt?
+ Uitschakelen van de promiscue modus betekent dat Snort enkel die pakketten ziet die bestemd zijn voor de interface waarop het toezicht houdt. Het inschakelen van de promiscue modus laat Snort toe om elk op dit ethernet-segment langskomend pakket te controleren, zelfs als het een pakket is van een verbinding tussen twee andere computers.
+Description-pt.UTF-8: Deve o Snort desabilitar o modo promíscuo no interface?
+ Desabilitar o modo promíscuo significa que o Snort irá apenas ver pacotes endereçados ao interface que está a monitorizar. Habilitá-lo permite ao Snort verificar cada pacote que passa o segmento Ethernet mesmo que seja a ligação entre outros dois computadores.
+Description-ro.UTF-8: Se activează modul promiscuu pe interfață?
+ Dezactivarea modului promiscuu înseamnă că Snort va „vedea” doar pachetele adresate interfeței monitorizate. Activarea acestuia îi va permite lui Snort să verifice fiecare pachet care trece prin segmentul Ethernet, chiar dacă este o conexiune între alte două calculatoare.
+Description-ru.UTF-8: Должен ли Snort запретить режим прослушивания на интерфейсе?
+ Запрет режима прослушивания означает, что Snort будет видеть только те пакеты, которые адресованы его интерфейсу. Разрешение позволяет Snort проверить каждый пакет, проходящий через сегмент Ethernet, даже если это соединение между двумя другими компьютерами.
+Description-sv.UTF-8: Ska Snort inaktivera promiscuousläget på gränssnittet?
+ Inaktivering av promiscuousläget betyder att Snort bara kommer att se paket adresserade till sitt eget gränssnitt. Aktivering av det tillåter Snort att undersöka varje paket som passerar Ethernet-segmentet även om det är anslutning mellan två andra datorer.
+Description-vi.UTF-8: Snort nên tắt chế độ không phân biệt trên giao diện này không?
+ Vô hiệu hóa chế độ không phân biệt có nghĩa là trình Snort sẽ chỉ thấy những gói tin được gửi cho giao diện nó đang theo dõi. Việc hiệu lực chế độ này thì cho phép trình Snort kiểm tra mọi gói tin đi qua đoạn Ethernet, thậm chí nếu nó là kết nối giữa hai máy tính khác.
+Description-zh_CN.UTF-8: 禁用混杂模式吗？
+ 禁用混杂模式，意味着Snort将只能看到被监控网段的数据包。开启混杂模式后，Snort将监控两台机器之间的任何数据包。
+
+Template: snort/invalid_interface
+Type: error
+Description: Invalid interface
+ Snort is trying to use an interface which does not exist or is down.
+ Either it is defaulting inappropriately to "eth0", or you specified
+ one which is invalid.
+Description-cs.UTF-8: Neplatné rozhraní
+ Snort se pokouší použít rozhraní, které neexistuje nebo je vypnuté. Buď se jedná o výchozí nastavení na "eth0", nebo bylo zadáno neplatné rozhraní.
+Description-da.UTF-8: Ugyldig grænseflade
+ Snort forsøger at bruge en grænseflade, som ikke findes eller er nede. Enten er standarden upassende for »eth0« eller du angav en som er ugyldig.
+Description-de.UTF-8: Ungültige Schnittstelle
+ Snort versucht, eine Schnittstelle zu nutzen, die es nicht gibt oder die nicht aktiv ist. Entweder ist die Vorgabe »eth0« hier unpassend, oder Sie haben eine ungültige Schnittstelle eingegeben.
+Description-es.UTF-8: Interfaz inválida
+ Snort está intentando utilizar una interfaz que no existe o está desactivada. Es posible que esté tomando el valor por omisión «eth0» y no exista en su sistema o que haya especificado una interfaz inválida.
+Description-fr.UTF-8: Interface non valable
+ Snort tente d'utiliser une interface inexistante ou inactive. Soit il utilise par erreur la valeur par défaut (eth0), soit l'adresse indiquée n'est pas valable.
+Description-it.UTF-8: Interfaccia non valida
+ Snort sta cercando di usare un'interfaccia che non esiste o che non è attiva. Snort sta usando l'impostazione predefinita «eth0» che è inappropriata, oppure è stata specificata un'interfaccia non valida.
+Description-ja.UTF-8: 不正なインターフェイス
+ Snort が存在していない、あるいはダウンしているインターフェイスを使おうとしています。適切ではなくデフォルトにされている「eth0」あるいはあなたが指定したインターフェイスは正しくありません。
+Description-nl.UTF-8: Ongeldige interface
+ Snort probeert een interface te gebruiken die niet bestaat of die niet actief is. Ofwel gebruikt Snort onterecht de standaard interface "eth0", of u heeft een interface opgegeven die niet correct is.
+Description-pt.UTF-8: Interface inválido
+ O Snort está a tentar utilizar um interface que não existe ou que está desactivado. Ou está a utilizar a predefinição errada para "eth0", ou especificou um que é inválido.
+Description-ru.UTF-8: Неправильный интерфейс
+ Snort пытается использовать интерфейс, который не существует или выключен. Возможно, интерфейс по умолчанию «eth0» в вашем случае не подходит, или указанный вами интерфейс неправилен.
+Description-sv.UTF-8: Ogiltigt gränssnitt
+ Snort försöker använda en nätverksanslutning som inte existerar eller som inte är uppkopplad. Antingen så har standardvärdet "eth0" smugit sig in eller så har du angivit ett felaktigt gränssnitt.
+Description-zh_CN.UTF-8: 非法网段
+ Snort监控的网络不存在或未被启用。或许它不是默认的"eth0"，也可能您指定的网络名称错误。
+
+Template: snort/send_stats
+Type: boolean
+Default: true
+Description: Should daily summaries be sent by e-mail?
+ A cron job can be set up to send daily summaries of Snort logs to a
+ selected e-mail address.
+ .
+ Please choose whether you want to activate this feature.
+Description-cs.UTF-8: Mají se denní souhrny zasílat e-mailem?
+ Pro zasílání denních souhrnů logů Snortu na zvolenou e-mailovou adresu může být nastavena úloha cronu.
+ .
+ Zvolte, zda chcete aktivovat tuto možnost.
+Description-da.UTF-8: Skal daglige referater sendes med e-post?
+ Et cronjob kan sættes op til at sende daglige refereater af Snortlogge til en valgt e-post-adresse.
+ .
+ Vælg venligst hvorvidt du ønsker at aktivere denne funktion.
+Description-de.UTF-8: Sollen tägliche Zusammenfassungen per E-Mail verschickt werden?
+ Es kann ein Cronjob eingerichtet werden, der täglich Zusammenfassungen der Protokolle von Snort an eine bestimmte E-Mail-Adresse schickt.
+ .
+ Bitte stimmen Sie zu, wenn Sie diese Funktionalität aktivieren möchten.
+Description-es.UTF-8: ¿Deberían enviarse resúmenes por correo electrónico?
+ Puede configurar una tarea en cron que envíe resúmenes diarios de los registros de Snort a una dirección específica.
+ .
+ Indique si quiere activar esta funcionalidad.
+Description-eu.UTF-8: Eguneko laburpena eposta bidez bidali behar al da?
+ Cron lan bat ezarri daiteke Snort erregistroen eguneko laburpena hautatutako eposta helbidera bidali dadin.
+ .
+ Mesedez hautatu ezaugarri hau gaitu nahi duzun.
+Description-fi.UTF-8: Tulisiko päivittäiset yhteenvedot lähettää sähköpostilla?
+ Päivittäiset Snortin lokien yhteenvedot voidaan lähettää annettuun sähköpostiosoitteeseen cron-työn avulla.
+ .
+ Valitse otetaanko tämä ominaisuus käyttöön.
+Description-fr.UTF-8: Faut-il envoyer des rapports quotidiens par courriel ?
+ Une tâche quotidienne de cron créera un résumé de l'information des journaux de Snort et l'enverra à une adresse électronique prédéfinie.
+ .
+ Veuillez choisir si vous souhaitez activer cette fonctionnalité.
+Description-gl.UTF-8: ¿Débense enviar os resumos diarios por email?
+ Pódese establecer unha tarefa de cron para enviar resumos diarios dos rexistros de Snort ao enderezo de email que se indique.
+ .
+ Indique se quere activar esta característica.
+Description-it.UTF-8: Trasmettere via e-mail i riepiloghi giornalieri?
+ Un lavoro cron può essere impostato per inviare giornalmente riepiloghi dei registri di Snort ad un indirizzo e-mail selezionato.
+ .
+ Scegliere se si desidera attivare questa funzione.
+Description-ja.UTF-8: メールで毎日サマリを送りますか?
+ cron ジョブで指定したメールアドレスに Snort ログの日次サマリを送るように設定できます。
+ .
+ この機能を有効にするかどうかを選択してください。
+Description-nl.UTF-8: Moeten de dagelijkse samenvattingen per e-mail worden verstuurd ?
+ Een crontaak kan aangemaakt worden om dagelijks samenvattingen van de logbestanden van Snort naar een bepaald e-mailadres te sturen.
+ .
+ Gelieve te kiezen of u deze optie wilt activeren.
+Description-pt.UTF-8: Devem ser enviados por e-mail sumários diários?
+ Pode ser criado um trabalho cron para enviar diariamente os sumários dos registos do Snort para um determinado endereço de e-mail.
+ .
+ Por favor escolha se quer activar esta funcionalidade.
+Description-ro.UTF-8: Doriți mesaje electronice zilnice cu sumarul?
+ Se poate configura un serviciu cron care să trimită zilnic la o anumită adresă de poștă electronică sumare ale jurnalelor lui Snort.
+ .
+ Alegeți dacă doriți să activați această facilitate.
+Description-ru.UTF-8: Отправлять ежедневные отчёты по e-mail?
+ Для отправки ежедневного отчёта по журналам Snort на указанный адрес электронной почты может быть настроено задание cron.
+ .
+ Укажите, хотите ли вы включить эту возможность.
+Description-sv.UTF-8: Ska dagliga sammandrag skickas via e-post?
+ Ett cron-jobb kan ställas in för att sända dagliga summeringar av Snorts logfiler till en förvald e-post-adress.
+ .
+ Vänligen ange om du vill aktivera denna funktionen.
+Description-vi.UTF-8: Có nên gửi hàng ngày thư đính kèm bản tóm tắt không?
+ Có thể thiết lập một công việc định thời để gửi hàng ngày bản tóm tắt của các bản ghi Snort cho một địa chỉ thư điện tử đã chọn.
+ .
+ Hãy chọn có nên kích hoạt tính năng này hay không.
+Description-zh_CN.UTF-8: 需要邮件发送每日概况吗？
+ 可以使用计划任务将每天的Snort日志概要发送至指定的邮箱。
+ .
+ 请选择是否开启此功能
+
+Template: snort/stats_rcpt
+Type: string
+Default: root
+Description: Recipient of daily statistics mails:
+ Please specify the e-mail address that should receive daily summaries
+ of Snort logs.
+Description-cs.UTF-8: Příjemce denních mailů se statistikami:
+ Zadejte e-mailovou adresu, na kterou mají být zasílány denní souhrny logů Snortu.
+Description-da.UTF-8: Modtager af daglig statistikpost:
+ Angiv venligst e-post-adressen som skal modtage daglige referater af Snortlogge.
+Description-de.UTF-8: Empfänger der täglichen Statistik-E-Mails:
+ Bitte geben Sie die E-Mail-Adresse ein, an die täglich Zusammenfassungen der Protokolle von Snort geschickt werden sollen.
+Description-es.UTF-8: Destinatario de los correos de estadísticas diarias:
+ Indique la dirección de correo que debería recibir los resúmenes diarios de los registros de Snort.
+Description-eu.UTF-8: Eguneroko estatistika eposta hartzailea:
+ Mesedez ezarri Snort erregistroen eguneroko laburpena jaso behar duen eposta helbidea.
+Description-fi.UTF-8: Päivittäisten tilastosähköpostien vastaanottaja:
+ Anna sähköpostiosoite, johon päivittäiset Snortin lokien yhteenvedot tulisi lähettää.
+Description-fr.UTF-8: Destinataire des courriers électroniques quotidiens de statistiques :
+ Veuillez indiquer l'adresse électronique qui recevra les résumés quotidiens des journaux de Snort.
+Description-gl.UTF-8: Destinatario dos emails diarios de estatísticas:
+ Indique o enderezo que debería recibir os resumos diarios dos rexistros de Snort.
+Description-it.UTF-8: Destinatario delle mail quotidiane con le statistiche:
+ Specificare l'indirizzo e-mail che deve ricevere i riepiloghi giornalieri dei registri di Snort.
+Description-ja.UTF-8: 日次統計のメールの宛先:
+ Snort ログの日次サマリを受け取れるメールアドレスを指定してください。
+Description-nl.UTF-8: Ontvanger van de e-mails met dagelijkse statistieken:
+ Gelieve het e-mailadres op te geven dat de dagelijkse samenvatting van de logbestanden van Snort moet ontvangen.
+Description-pt.UTF-8: Destinatário que deve receber mails diários das estatísticas:
+ Por favor especifique qual o endereço de e-mail que deve receber os resumos diários dos registos do Snort.
+Description-ro.UTF-8: Destinatarul mesajelor zilnice cu statistici:
+ Precizați adresa de poștă electronică unde se vor recepționa sumarele zilnice ale jurnalelor Snort.
+Description-ru.UTF-8: Получатель ежедневного отчёта по почте:
+ Укажите адрес электронной почты, на который нужно отправлять ежедневный отчёт по журналам Snort.
+Description-sv.UTF-8: Vem ska ta emot de dagliga e-postrapporterna?
+ Vänligen ange e-post-adressen som ska få dagliga summeringar av Snorts logfiler.
+Description-vi.UTF-8: Người nhận thư thống kê hàng ngày:
+ Hãy ghi rõ địa chỉ thư điện tử nên nhận bản tóm tắt của các bản ghi Snort.
+Description-zh_CN.UTF-8: 接收每日数据分析的邮箱地址：
+ 请指定接收每天Snort日志概要的邮箱。
+
+Template: snort/options
+Type: string
+Description: Additional custom options:
+ Please specify any additional options Snort should use.
+Description-cs.UTF-8: Další vlastní volby:
+ Zadejte jakékoliv další volby, které by měl Snort použít.
+Description-da.UTF-8: Yderligere tilpassede indstillinger:
+ Angiv venligst alle yderligere indstillinger som Snort skal bruge.
+Description-de.UTF-8: Zusätzliche benutzerspezifische Optionen:
+ Bitte geben Sie alle weiteren Optionen ein, die Snort benutzen soll.
+Description-es.UTF-8: Opciones adicionales a medida:
+ Indique las opciones adicionales que Snort debería utilizar.
+Description-eu.UTF-8: Aukera pertsonal gehigarriak:
+ Mesedez ezarri Snort-ek erabili behar duen edozein aukera gehigarri.
+Description-fi.UTF-8: Mukauttavat lisäasetukset:
+ Anna mahdolliset lisäasetukset, joita Snortin tulisi käyttää.
+Description-fr.UTF-8: Options personnelles supplémentaires :
+ Veuillez indiquer les options supplémentaires qu'utilisera Snort.
+Description-gl.UTF-8: Opcións personalizadas adicionais:
+ Indique as opcións adicionais que quere que empregue Snort.
+Description-it.UTF-8: Opzioni personalizzate aggiuntive:
+ Specificare ogni altra eventuale opzione che Snort deve usare.
+Description-ja.UTF-8: 追加のカスタムオプション:
+ Snort が使う追加のオプションを指定してください。
+Description-nl.UTF-8: Extra eigen opties:
+ Gelieve eventuele additionele opties te geven die Snort moet gebruiken.
+Description-pt.UTF-8: Opções adicionais de personalização:
+ Por favor especifique que opções adicionais deve o Snort utilizar.
+Description-ro.UTF-8: Opțiuni adiționale particularizate:
+ Precizați orice alte opțiuni pe care să le folosească Snort.
+Description-ru.UTF-8: Дополнительные специальные настройки:
+ Здесь можно указать любые дополнительные специальные настройки, которые должен использовать Snort.
+Description-sv.UTF-8: Ytterligare alternativ
+ Ange ytterligare inställningar som Snort ska använda.
+Description-vi.UTF-8: Tùy chọn riêng thêm:
+ Hãy ghi rõ bất cứ tùy chọn khác nào Snort nên dùng.
+Description-zh_CN.UTF-8: 自定义可选项：
+ 请指定Snort启用的可选项：
+
+Template: snort/stats_treshold
+Type: string
+Default: 1
+Description: Minimum occurrences before alerts are reported:
+ Please enter the minimum number of alert occurrences before a given alert is
+ included in the daily statistics.
+Description-cs.UTF-8: Minimální počet výskytů před hlášením upozornění:
+ Zadejte minimální počet výskytů upozornění před tím, než je toto upozornění obsaženo v denní statistice.
+Description-da.UTF-8: Minimale forekomster før påmindelser rapporteres:
+ Indtast venligst det minimale antal påmindelsesforekomster før en angivet påmindelse er inkluderet i den daglige statistik.
+Description-de.UTF-8: Minimale Ereignisanzahl, ab der Alarme gemeldet werden:
+ Bitte geben Sie die minimale Anzahl von Alarmen ein, ab der dieser Alarm in die tägliche Statistik aufgenommen wird.
+Description-es.UTF-8: Número mínimo de ocurrencias antes de incluir una alerta en los informes:
+ Introduzca el número mínimo de ocurrencias de una alerta que deben producirse antes de incluir una alerta en las estadísticas diarias.
+Description-eu.UTF-8: Alertak erreportatzeko errepikatze gutxienekoa:
+ Mesedez ezarri alerta bat eguneroko estatistiketan sartzeko gertatu behar diren gutxieneko errepikapenak.
+Description-fi.UTF-8: Varoituksen esiintymiskertojen vähimmäismäärä:
+ Anna vähimmäismäärä montako kertaa varoituksen tulee esiintyä ennen kuin se sisällytetään päivittäisiin tilastoihin.
+Description-fr.UTF-8: Nombre d'occurrences minimales avant l'envoi d'alertes :
+ Une alerte doit se produire un nombre de fois supérieur à celui indiqué pour être comptabilisée dans les statistiques quotidiennes.
+Description-gl.UTF-8: Número mínimo de aparicións antes de informar das alertas:
+ Introduza o número mínimo de aparicións das alertas antes de incluír unha delas nas estatísticas diarias.
+Description-it.UTF-8: Numero minimo di occorrenze prima che gli allarmi siano riportati:
+ Inserire il numero minimo di occorrenze di un allarme che sono necessarie prima che sia incluso nelle statistiche giornaliere.
+Description-ja.UTF-8: アラートを報告する最小発生件数:
+ アラートが日時統計に含められる場合の最小アラート発生数を入力してください。
+Description-nl.UTF-8: Minimum aantal alarmsignalen dat een waarschuwingsrapport uitlokt:
+ Vermeld het minimum aantal vereiste alarmsignalen om dat alarm op te nemen in de dagelijkse statistieken.
+Description-pt.UTF-8: Número minimo de ocorrências antes de serem reportados alertas:
+ Por favor introduza o número minimo de ocorrências de alertas antes de um dado alerta ser incluido nas estatísticas diárias.
+Description-ro.UTF-8: Numărul minim de apariții pentru raportarea unei alerte:
+ Introduceți numărul minim de apariții ale unei anumite alerte necesar pentru a fi inclusă în statisticile zilnice.
+Description-ru.UTF-8: Минимальное количество возникновения тревоги, чтобы она попала в отчёт:
+ Чтобы быть включённой в дневной отчёт, тревога должна возникнуть более, чем указанное число раз.
+Description-sv.UTF-8: Minsta antalet förekomster innan varningar skickas:
+ Ett larm behöver dyka upp fler gånger än denna siffra för att bli inkluderade i den dagliga rapporten.
+Description-vi.UTF-8: Số lần xảy ra tối thiểu trước khi báo động:
+ Hãy nhập số tối thiểu các lần xảy ra báo động trước khi một báo động đã cho được chèn vào thống kê hàng ngày.
+Description-zh_CN.UTF-8: 最小报警间隔时间：
+ 请输入分析日志中的最小报警时间。
+
+Template: snort/please_restart_manually
+Type: note
+Description: Snort restart required
+ As Snort is manually launched, you need to run "service snort restart" for
+ the changes to take place.
+Description-cs.UTF-8: Vyžadován restart Snortu
+ Jelikož je Snort spouštěn ručně, pro uplatnění změn musíte spustit "service snort restart"
+Description-da.UTF-8: Genstart af Snort er krævet
+ Da Snort startes manuelt, skal du køre »/etc/init.d/snort« for at ændringerne træder i kraft.
+Description-de.UTF-8: Neustart von Snort erforderlich
+ Da Snort manuell gestartet wurde, müssen Sie den Befehl »service snort restart« aufrufen, damit die Änderungen wirksam werden.
+Description-es.UTF-8: Es necesario reiniciar Snort
+ Dado que Snort se ejecuta de forma manual tiene que ejecutar «service snort restart» para que se apliquen los cambios.
+Description-fr.UTF-8: Redémarrage de Snort indispensable
+ Comme Snort est lancé manuellement, il est nécessaire d'exécuter la commande « service snort restart » pour que les modifications soient prises en compte.
+Description-it.UTF-8: Riavvio di Snort necessario
+ Siccome Snort è lanciato manualmente, è necessario eseguire «service snort restart» perché i cambiamenti abbiano effetto.
+Description-ja.UTF-8: Snort の再起動が必要です
+ Snort が手動で起動されているため、変更を反映するには「/etc/init.d/snort」を実行する必要があります。
+Description-nl.UTF-8: Een herstart van Snort is vereist
+ Aangezien Snort handmatig wordt gestart, moet u de opdracht "service snort restart" geven om de aanpassingen door te voeren.
+Description-pt.UTF-8: É necessário que o Snort seja reiniciado
+ Como o Snort é arrancado manualmente, você tem de executar "service snort restart" para as alterações terem efeito.
+Description-ru.UTF-8: Snort требуется перезапустить
+ Так как Snort запускается вручную, для того, чтобы изменения начали действовать, вам нужно выполнить «service snort restart».
+Description-sv.UTF-8: Snort måste startas om
+ I och med att Snort körs manuellt så måste du köra "service snort restart" för att ändringarna ska aktiveras.
+Description-zh_CN.UTF-8: 请重启Snort
+ 手动启动Snort，请运行"service snort restart"使变更生效。
+
+Template: snort/config_parameters
+Type: error
+Description: Obsolete configuration file
+ This system uses an obsolete configuration file
+ (/etc/snort/snort.common.parameters)
+ which has been automatically converted into the new configuration
+ file format (at /etc/default/snort).
+ .
+ Please review the new configuration and remove the obsolete
+ one. Until you do this, the initialization script will not use the new
+ configuration and you will not take advantage of the benefits
+ introduced in newer releases.
+Description-cs.UTF-8: Zastaralý konfigurační soubor
+ Tento systém používá zastaralý konfigurační soubor (/etc/snort/snort.common.parameters), který byl automaticky převeden do nového formátu konfiguračního souboru (v /etc/default/snort).
+ .
+ Zkontrolujte novou konfiguraci a odstraňte tu zastaralou. Dokud to neuděláte, inicializační skript nebude používat novou konfiguraci a nevyužijete tak výhod představených v novějších verzích.
+Description-da.UTF-8: Forældet konfigurationsfil
+ Dette system bruger en forældet konfigurationsfil (/etc/snort/snort.common.parameters), som automatisk er blevet konverteret til det nye konfigurationsfilformat (ved /etc/default/snort).
+ .
+ Gennemse venligst den nye konfiguration og fjern den forældede. Indtil du udfører dette, vil initialiseringskriptet ikke bruge den nye konfiguration og du vil ikke få fordel af de fordele, som er blevet introduceret i nyere udgivelser.
+Description-de.UTF-8: Veraltete Konfigurationsdatei
+ Dieses System nutzt eine veraltete Konfigurationsdatei (/etc/snort/snort.common.parameters), die automatisch in das neue Format (/etc/default/snort) umgewandelt wurde.
+ .
+ Bitte überprüfen Sie die neue Konfigurationsdatei und löschen Sie die veraltete. Bis dahin wird das Startskript die neuen Einstellungen nicht verwenden und Sie können die Vorteile der neuen Versionen nicht nutzen.
+Description-es.UTF-8: Fichero de configuración obsoleto
+ Este sistema utiliza un fichero de configuración obsoleto («/etc/snort/snort.common.parameters») que ha sido convertido de forma automática al nuevo formato de fichero de configuración (en «/etc/default/snort»).
+ .
+ Por favor, revise el nuevo fichero de configuración y borre el antiguo. El guión del init.d no utilizará la nueva configuración hasta que lo borre y no podrá por tanto aprovecharse de las ventajas introducidas en nuevas versiones.
+Description-eu.UTF-8: Zaharkitutako konfigurazio fitxategia
+ Sistema honek automatikoki konfigurazio formatu berrira (/etc/default/snort-en) bihurtu den zaharkituriko konfigurazio fitxategi bat erabiltzen du (/etc/snort/snort.common.parameters).
+ .
+ Mesedez gainbegiratu konfigurazio berria eta kendu zaharra. Zuk hau egin arte abiarazte skriptak ez du konfigurazio berria erabiliko eta ez duzu bertsio berrietan sartutako hobetzeen erabilerarik egingo.
+Description-fi.UTF-8: Vanhentunut asetustiedosto
+ Järjestelmä käyttää vanhentunutta asetustiedostoa (/etc/snort/snort.common.parameters), joka on automaattisesti muunnettu asetustiedoston uuteen muotoon (sijaintiin /etc/default/snort).
+ .
+ Tarkista uudet asetukset ja poista vanha tiedosto. Ennen kuin tämä tehdään, alustuskomentosarja ei käytä uusia asetuksia, eikä tällöin saada käyttöön uudempien julkaisuiden parannuksia.
+Description-fr.UTF-8: Fichier de configuration obsolète
+ Le système utilise un fichier de configuration obsolète (/etc/snort/snort.common.parameters) qui a été automatiquement converti vers le nouveau format (dans /etc/default/snort).
+ .
+ Veuillez vérifier le nouveau fichier de configuration et supprimer l'ancien. Tant que cela n'aura pas été fait, le script de démarrage n'utilisera pas la nouvelle configuration et vous ne bénéficierez pas des améliorations des versions plus récentes.
+Description-gl.UTF-8: Ficheiro de configuración obsoleto
+ Este sistema emprega un ficheiro de configuración obsoleto (/etc/snort/snort.common.parameters) que se convertiu automáticamente ao novo formato de ficheiros de configuración (en /etc/default/snort).
+ .
+ Revise a nova configuración e elimine a obsoleta. Ata que o faga, o script de inicialización non ha empregar a nova configuración e non ha poder aproveitar as avantaxes introducidas nas novas versións.
+Description-it.UTF-8: File di configurazione obsoleto
+ Questo sistema usa un file di configurazione obsoleto (/etc/snort/snort.common.parameters) che è stato automaticamente convertito nel nuovo formato del file di configurazione (/etc/default/snort).
+ .
+ Rivedere la nuova configurazione e rimuovere quella obsoleta. Nel frattempo, lo script di inizializzazione non utilizzerà la nuova configurazione e non si trarrà vantaggio dai benefici introdotti nelle nuove versioni.
+Description-ja.UTF-8: 古く無効な設定ファイル
+ このシステムが使っている、既に利用できない設定ファイル (/etc/snort/snort.common.parameters) は自動的に新しい設定ファイル形式 (/etc/default/snort) に変換されます。
+ .
+ 新しい設定を確認して古い設定を削除してください。古い設定が削除されるまで初期化スクリプトは新しい設定を使おうとはしないので、新しいリリースでの恩恵を享受することはできません。
+Description-nl.UTF-8: Verouderd configuratiebestand
+ Uw systeem heeft een verouderd configuratiebestand (/etc/snort/snort.common.parameters) dat nu automatisch is omgezet in een nieuw configuratiebestandsindeling (in /etc/default/snort).
+ .
+ Gelieve het nieuwe configuratiebestand na te kijken en het verouderde bestand te verwijderen. Tot u dit doet, zal het initialisatie-script de nieuwe configuratie niet gebruiken en zal u niet kunnen genieten van de voordelen die de nieuwere versies bieden.
+Description-pt.UTF-8: Ficheiro de configuração obsoleto
+ Este sistema utiliza um ficheiro de configuração obsoleto (/etc/snort/snort.common.parameters) que foi automaticamente convertido para o novo formato de ficheiro de configuração (em /etc/default/snort).
+ .
+ Por favor reveja a nova configuração e remova a obsoleta. Até fazer isto, o script de arranque não irá utilizar a nova configuração e você não irá tirar vantagem dos benefícios introduzidos nos lançamentos mais recentes.
+Description-ro.UTF-8: Fișier de configurare depășit
+ Acest sistem folosește un fișier de configurare învechit (/etc/snort/snort.common.parameters) care a fost convertit automat la noul format de fișier (/etc/default/snort).
+ .
+ Verificați noul fișier de configurare și ștergeți-l pe cel vechi. Până atunci, scriptul init.d nu va folosi configurația nouă și nu veți profita de beneficiile introduse în versiunile mai noi.
+Description-ru.UTF-8: Устаревший файл настройки
+ В системе используется устаревший файл настройки (/etc/snort/snort.common.parameters), он был автоматически преобразован в файл нового формата (в /etc/default/snort).
+ .
+ Просмотрите новые настройки и удалите устаревшие. Пока вы этого не сделаете, сценарий запуска не будет использовать новые настройки и вы не получите преимуществ, появившихся в новых выпусках.
+Description-sv.UTF-8: Detta system använder en gammal konfigurationsfil
+ Ditt system har en gammal konfigurationsfil (/etc/snort/snort.common.parameters) vilken har blivit automatiskt konverterad till en ny konfigurationsfil med nytt format (i /etc/default/snort).
+ .
+ Kontrollera den nya konfiguration och ta bort den gamla. Fram till att du gör detta kommer init.d-skriptet inte använda den nya konfigurationen och du kan inte använda de nya fördelarna i den nya versionen.
+Description-vi.UTF-8: Tập tin cấu hình quá cũ
+ Hệ thống này dùng một tập tin cấu hình quá cũ (/etc/snort/snort.common.parameters) mà ta đã được chuyển đổi sang định dạng tập tin cấu hình mới (ở « /etc/default/snort »). Hãy xem lại cấu hình mới, rồi gỡ bỏ tập tin cũ. Trước khi bạn làm như thế, văn lệnh « init.d » sẽ không dùng cấu hình mới và bạn sẽ không lợi dựng các phiên bản mới.
+ .
+ Hãy xem lại cấu hình mới, rồi gỡ bỏ tập tin cũ. Trước khi bạn làm như thế, văn lệnh « init.d » sẽ không dùng cấu hình mới và bạn sẽ không lợi dựng các phiên bản mới.
+Description-zh_CN.UTF-8: 旧配置文件
+ 系统使用旧配置文件（路径：/etc/snort/snort.common.parameters），该文件被自动加载到新的配置文件中（路径：/etc/default/snort）。
+ .
+ 请检查新版本配置，并去掉老的配置。完成后，初始化脚本将使用新的配置，并且系统将拥有新版本中的特性。

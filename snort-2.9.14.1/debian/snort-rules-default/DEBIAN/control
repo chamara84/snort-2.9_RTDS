@@ -1,0 +1,29 @@
+Package: snort-rules-default
+Source: snort
+Version: 2.9.14.1-1
+Architecture: all
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Installed-Size: 289
+Depends: debconf (>= 0.2.80) | debconf-2.0, adduser (>= 3.11)
+Recommends: oinkmaster
+Suggests: snort (>= 2.2.0) | snort-pgsql (>= 2.2.0) | snort-mysql (>= 2.2.0)
+Provides: snort-rules
+Section: net
+Priority: optional
+Homepage: http://www.snort.org/snort-rules/
+Description: flexible Network Intrusion Detection System - ruleset
+ Snort is a libpcap-based packet sniffer/logger which can be used as a
+ lightweight network intrusion detection system. It features rules-based
+ logging and can perform content searching/matching in addition to
+ detecting a variety of other attacks and probes, such as buffer
+ overflows, stealth port scans, CGI attacks, SMB probes, and much more.
+ Snort has a real-time alerting capability, with alerts being sent to
+ syslog, a separate "alert" file, or even to a Windows computer via Samba.
+ .
+ This is the Snort default ruleset, which provides a basic set of network
+ intrusion detection rules developed by the Snort community. They can be
+ used as a basis for development of additional rules. Users using Snort to
+ defend networks in production environments are encouraged to update their
+ local rulesets as described in the included documentation or using the
+ oinkmaster package.
+Original-Maintainer: Javier Fernández-Sanguino Peña <jfs@debian.org>
