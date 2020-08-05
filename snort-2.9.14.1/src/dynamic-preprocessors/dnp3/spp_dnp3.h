@@ -92,23 +92,27 @@ typedef enum _dnp3_reassembly_state_t
 
 typedef struct _dnp3_reassembly_data_t
 {
-    char buffer[DNP3_BUFFER_SIZE];
-    uint16_t buflen;
-    dnp3_reassembly_state_t state;
-    uint8_t last_seq;
-    uint8_t obj_group;
-    uint8_t obj_var;
-    uint32_t start;
-    uint32_t stop;
-    uint32_t numberOfValues;
-    uint8_t qualifier;
-    uint8_t sizeOfData;
-    uint8_t sizeOfQuality;
-    uint8_t sizeOfIndex;
-    uint8_t sizeOfCtrlStatus;
-    uint16_t indexOfCurrentResponceObjHeader;
-    uint16_t indexOfNextResponceObjHeader;
+	char buffer[DNP3_BUFFER_SIZE];
+	    uint16_t buflen;
+	    dnp3_reassembly_state_t state;
+	    uint8_t last_seq;
+	    uint8_t obj_group;
+	    uint8_t obj_var;
+	    uint8_t func_code;
+	    uint32_t start;
+	    uint32_t stop;
+	    uint32_t numberOfValues;
+	    uint8_t qualifier;
+	    uint8_t sizeOfData;
+	    uint8_t sizeOfQuality;
+	    uint8_t sizeOfIndex;
+	    uint8_t sizeOfCtrlStatus;
+	    uint8_t sizeOfRange;
+	    uint8_t quantity;
+	    uint8_t absAddress;
 
+	    uint16_t indexOfCurrentResponceObjHeader;
+	    uint16_t indexOfNextResponceObjHeader;
 } dnp3_reassembly_data_t;
 
 typedef struct _dnp3_alter_values //structure introduced to keep the obj, variance, identifier , newvalue data

@@ -116,6 +116,11 @@ static void DNP3ReassemblyReset(dnp3_reassembly_data_t *rdata)
 	rdata->obj_var=0;
 	rdata->start = 0;
 	rdata->stop = 0;
+	rdata->numberOfValues = 0;
+	rdata->sizeOfRange = 0;
+	rdata->sizeOfQuality = 0;
+	rdata->func_code = 0;
+	rdata->sizeOfData = 0;
 
 }
 
@@ -434,25 +439,25 @@ static int modifyData(dnp3_config_t *config, dnp3_reassembly_data_t *rdata,uint1
 	int startingIndexAlteredVal = 0;
 	dnp3_app_request_header_t *request = NULL;
 	dnp3_app_response_header_t *response = NULL;
-	uint8_t func_code = 0;
+
 
 	if(rdata->buflen<=6)
 			return 0;
 
-	if(rdata->indexOfCurrentResponceObjHeader==0 || rdata->indexOfCurrentResponceObjHeader==4)
+	if(rdata->indexOfCurrentResponceObjHeader==0 || rdata->indexOfCurrentResponceObjHeader==4 || rdata->indexOfCurrentResponceObjHeader==2)
 	{
 
 		if(direction==0){
 		rdata->indexOfCurrentResponceObjHeader = 2;
 
 		request = (dnp3_app_request_header_t *)(rdata->buffer);
-		func_code = request->function;
+		rdata->func_code = request->function;
 		}
 		else
 		{
 			rdata->indexOfCurrentResponceObjHeader = 4;
 			response = (dnp3_app_response_header_t *)(rdata->buffer);
-			func_code = response->function;
+			rdata->func_code = response->function;
 
 		}
 		rdata->obj_group = rdata->buffer[rdata->indexOfCurrentResponceObjHeader];
@@ -1452,40 +1457,128 @@ default:
 
 	else if(quantity==1 && absAddress ==0){
 
+
+
 		switch(rdata->obj_group){
-		case 41:
-												switch(rdata->obj_var)
-												{
-												case 3:
-													sizeOfOneDataPoint = 4;
-													sizeOfIndex= 2;
-													sizeOfCtrlStatus = 1;
 
-													memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
-													//start = ntohs(start);
+	case 2:
+					switch(rdata->obj_var){
+					case 1:
+						sizeOfOneDataPoint = 1;
+						sizeOfQuality += 0;
+						sizeOfCtrlStatus = 0;
+						memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
+						//start = ntohs(start);
+						rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality +sizeOfCtrlStatus)*(rdata->numberOfValues);
+						break;
 
-													rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfIndex+sizeOfCtrlStatus)*(rdata->numberOfValues);
+					case 2:
+						sizeOfOneDataPoint = 7;
+						sizeOfQuality += 0;
+						sizeOfCtrlStatus = 0;
+						memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
+						//start = ntohs(start);
+						rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality +sizeOfCtrlStatus)*(rdata->numberOfValues);
+						break;
+					case 3:
+						sizeOfOneDataPoint = 3;
+						sizeOfQuality += 0;
+						sizeOfCtrlStatus = 0;
+						memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
+						//start = ntohs(start);
+						rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality+sizeOfCtrlStatus)*(rdata->numberOfValues);
+						break;
+
+					default:
+						sizeOfOneDataPoint = 0;
+						sizeOfQuality = 0;
+						printf("Group or Variance not found \n");
+						return -1;
+					}
+
+						break;
+			case 41:
+													switch(rdata->obj_var)
+													{
+													case 3:
+														sizeOfOneDataPoint = 4;
+														sizeOfIndex= 2;
+														sizeOfCtrlStatus = 1;
+
+														memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
+														//start = ntohs(start);
+
+														rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality +sizeOfCtrlStatus)*(rdata->numberOfValues);
+														break;
+
+
+													default:
+														sizeOfOneDataPoint = 0;
+														sizeOfQuality = 0;
+														printf("Group or Variance not found \n");
+														return -1;
+													}
 													break;
 
 
-												default:
-													break;
-												}
-												break;
 
 
 
 
-		default:
+
+	      case 51:
+			switch(rdata->obj_var)
+						{
+						case 1:
+							sizeOfOneDataPoint = 6;
+							sizeOfQuality += 0;
+							sizeOfCtrlStatus = 0;
+
+							memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
+
+
+																				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality +sizeOfCtrlStatus)*(rdata->numberOfValues);
+																				break;
+						case 2:
+							sizeOfOneDataPoint = 6;
+							sizeOfQuality += 0;
+							sizeOfCtrlStatus = 0;
+
+							memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
+																				//start = ntohs(start);
+
+																				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality +sizeOfCtrlStatus)*(rdata->numberOfValues);
+																				break;
+
+						default:
+							sizeOfOneDataPoint = 0;
+							sizeOfQuality = 0;
+							printf("Group or Variance not found \n");
+							return -1;
+						}
 			break;
-			}
-			rdata->sizeOfData = sizeOfOneDataPoint;
-			rdata->sizeOfQuality = 0;
-			rdata->sizeOfIndex=sizeOfIndex;
-			rdata->sizeOfCtrlStatus =sizeOfCtrlStatus;
 
-		}
+			default:
+				sizeOfOneDataPoint = 0;
+				sizeOfQuality = 0;
+				sizeOfCtrlStatus=0;
+				printf("Group or Variance not found \n");
+				return -1;
+				}
+				rdata->sizeOfData = sizeOfOneDataPoint;
+				rdata->sizeOfQuality = sizeOfQuality ;
+				rdata->sizeOfIndex=sizeOfIndex;
+				rdata->sizeOfCtrlStatus =sizeOfCtrlStatus;
+
+
+
+
 	}
+	}
+
+
+
+
 
 	else
 		printf("Current ResponceHeader not set \n");
@@ -1583,7 +1676,7 @@ while(!done) //it will be done when we reach the end of buffer in rdata->server_
 //				continue;
 //			}
 
-			if((config->values_to_alter[i]).func_code == func_code && (config->values_to_alter[i]).obj_group == rdata->obj_group && (config->values_to_alter[i]).obj_var == rdata->obj_var && (config->values_to_alter[i]).identifier <=rdata->stop && (config->values_to_alter[i]).identifier >=rdata->start)
+			if((config->values_to_alter[i]).func_code == rdata->func_code && (config->values_to_alter[i]).obj_group == rdata->obj_group && (config->values_to_alter[i]).obj_var == rdata->obj_var && (config->values_to_alter[i]).identifier <=rdata->stop && (config->values_to_alter[i]).identifier >=rdata->start)
 			{
 
 				if(rdata->obj_group==1)
@@ -1672,7 +1765,7 @@ while(!done) //it will be done when we reach the end of buffer in rdata->server_
 									else
 									{
 										if((config->values_to_alter[i]).operation==1 )
-											if((config->values_to_alter[i]).obj_group!=10 ){
+											if((config->values_to_alter[i]).obj_group>10 ){
 												memcpy((pdu_start+dataIndexAdvance+byteNumberNewPktBuffer+sizeOfQuality+startingIndexAlteredVal+count),tempValueToCopy+startingIndexAlteredVal+j,1);
 											}
 											else
@@ -2679,7 +2772,7 @@ else if(quantity==1 && absAddress ==0){
 //					continue;
 //				}
 
-				if((config->values_to_alter[i]).func_code == func_code && (config->values_to_alter[i]).obj_group == rdata->obj_group && (config->values_to_alter[i]).obj_var == rdata->obj_var )
+				if((config->values_to_alter[i]).func_code == rdata->func_code && (config->values_to_alter[i]).obj_group == rdata->obj_group && (config->values_to_alter[i]).obj_var == rdata->obj_var )
 				{
 
 					if(rdata->obj_group==1)
@@ -2768,7 +2861,7 @@ else if(quantity==1 && absAddress ==0){
 										else
 										{
 											if((config->values_to_alter[i]).operation==1 )
-												if((config->values_to_alter[i]).obj_group!=10 ){
+												if((config->values_to_alter[i]).obj_group>10 ){
 													memcpy((pdu_start+dataIndexAdvance+byteNumberNewPktBuffer+sizeOfIndex+startingIndexAlteredVal+count),tempValueToCopy+startingIndexAlteredVal+j,1);
 												}
 												else
@@ -2904,35 +2997,112 @@ else if(quantity==1 && absAddress ==0){
 					if(rdata->buflen<minBufferLength)
 						return 0;
 
-		switch(rdata->obj_group){
-		case 41:
-												switch(rdata->obj_var)
-												{
-												case 3:
-													sizeOfOneDataPoint = 4;
-													sizeOfIndex= 2;
-													sizeOfCtrlStatus = 1;
+					switch(rdata->obj_group){
 
-													memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
-													//start = ntohs(start);
+							case 2:
+									switch(rdata->obj_var){
+									case 1:
+										sizeOfOneDataPoint = 1;
+										sizeOfQuality += 0;
+										sizeOfCtrlStatus = 0;
+										memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
+										//start = ntohs(start);
+										rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality +sizeOfCtrlStatus)*(rdata->numberOfValues);
+										break;
 
-													rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfIndex+sizeOfCtrlStatus)*(rdata->numberOfValues);
-													printf("Modify 41 3 modify = %d \n",modified);
+									case 2:
+										sizeOfOneDataPoint = 7;
+										sizeOfQuality += 0;
+										sizeOfCtrlStatus = 0;
+										memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
+										//start = ntohs(start);
+										rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality +sizeOfCtrlStatus)*(rdata->numberOfValues);
+										break;
+									case 3:
+										sizeOfOneDataPoint = 3;
+										sizeOfQuality += 0;
+										sizeOfCtrlStatus = 0;
+										memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
+										//start = ntohs(start);
+										rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality+sizeOfCtrlStatus)*(rdata->numberOfValues);
+										break;
 
-													break;
+									default:
+										sizeOfOneDataPoint = 0;
+										sizeOfQuality = 0;
+										printf("Group or Variance not found \n");
+										return -1;
+									}
+
+										break;
+							case 41:
+																	switch(rdata->obj_var)
+																	{
+																	case 3:
+																		sizeOfOneDataPoint = 4;
+																		sizeOfIndex= 2;
+																		sizeOfCtrlStatus = 1;
+
+																		memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
+																		//start = ntohs(start);
+
+																		rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality +sizeOfCtrlStatus)*(rdata->numberOfValues);
+																		break;
 
 
-												default:
-													break;
-												}
-												break;
+																	default:
+																		sizeOfOneDataPoint = 0;
+																		sizeOfQuality = 0;
+																		printf("Group or Variance not found \n");
+																		return -1;
+																	}
+																	break;
 
 
+					      case 51:
+							switch(rdata->obj_var)
+										{
+										case 1:
+											sizeOfOneDataPoint = 6;
+											sizeOfQuality += 0;
+											sizeOfCtrlStatus = 0;
+
+											memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
 
 
-		default:
-			break;
-			}
+																								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality +sizeOfCtrlStatus)*(rdata->numberOfValues);
+																								break;
+										case 2:
+											sizeOfOneDataPoint = 6;
+											sizeOfQuality += 0;
+											sizeOfCtrlStatus = 0;
+
+											memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
+																								//start = ntohs(start);
+
+																								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality +sizeOfCtrlStatus)*(rdata->numberOfValues);
+																								break;
+
+										default:
+											sizeOfOneDataPoint = 0;
+											sizeOfQuality = 0;
+											printf("Group or Variance not found \n");
+											return -1;
+										}
+							break;
+
+							default:
+								sizeOfOneDataPoint = 0;
+								sizeOfQuality = 0;
+								sizeOfCtrlStatus=0;
+								printf("Group or Variance not found \n");
+								return -1;
+								}
+								rdata->sizeOfData = sizeOfOneDataPoint;
+								rdata->sizeOfQuality = sizeOfQuality ;
+								rdata->sizeOfIndex=sizeOfIndex;
+								rdata->sizeOfCtrlStatus =sizeOfCtrlStatus;
+
 
 
 		}

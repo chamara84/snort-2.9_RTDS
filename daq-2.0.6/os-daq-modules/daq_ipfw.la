@@ -38,5 +38,5 @@ dlopen=''
 dlpreopen=''
 
 # Directory that this library needs to be installed in:
-libdir='/usr/local/lib/daq'
-relink_command="(cd /home/rtds-cybersec/repos/snort/snort-2.9_RTDS/daq-2.0.6/os-daq-modules; /bin/sh /home/rtds-cybersec/repos/snort/snort-2.9_RTDS/daq-2.0.6/libtool  --tag CC --mode=relink gcc -DBUILDING_SO -g -O2 -fvisibility=hidden -Wall -Wwrite-strings -Wsign-compare -Wcast-align -Wextra -Wformat -Wformat-security -Wno-unused-parameter -fno-strict-aliasing -fdiagnostics-show-option -pedantic -std=c99 -D_GNU_SOURCE -module -export-dynamic -avoid-version -shared -o daq_ipfw.la -rpath /usr/local/lib/daq daq_ipfw_la-daq_ipfw.lo ../sfbpf/libsfbpf.la @inst_prefix_dir@)"
+libdir='/usr/lib/daq'
+relink_command="(cd /home/rtds-cybersec/repos/snort/snort-2.9_RTDS/daq-2.0.6/os-daq-modules; /bin/sh /home/rtds-cybersec/repos/snort/snort-2.9_RTDS/daq-2.0.6/libtool  --tag CC --mode=relink gcc -DBUILDING_SO -g -O2 -fvisibility=hidden -Wall -Wwrite-strings -Wsign-compare -Wcast-align -Wextra -Wformat -Wformat-security -Wno-unused-parameter -fno-strict-aliasing -fdiagnostics-show-option -pedantic -std=c99 -D_GNU_SOURCE -module -export-dynamic -avoid-version -shared -o daq_ipfw.la -rpath /usr/lib/daq daq_ipfw_la-daq_ipfw.lo ../sfbpf/libsfbpf.la @inst_prefix_dir@)"
