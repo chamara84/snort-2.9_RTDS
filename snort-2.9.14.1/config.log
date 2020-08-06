@@ -939,7 +939,7 @@ configure:14197: $? = 0
 configure:14197: result: yes
 configure:14197: checking for strlcpy
 configure:14197: gcc -o conftest -g -O2   -L/usr/local/lib -lglib-2.0   conftest.c -lnsl -luuid -lm -lm  >&5
-/tmp/ccoGiSHa.o: In function `main':
+/tmp/ccYA6KOt.o: In function `main':
 /home/rtds-cybersec/repos/snort/snort-2.9_RTDS/snort-2.9.14.1/conftest.c:74: undefined reference to `strlcpy'
 collect2: error: ld returned 1 exit status
 configure:14197: $? = 1
@@ -1024,7 +1024,7 @@ configure: failed program was:
 configure:14197: result: no
 configure:14197: checking for strlcat
 configure:14197: gcc -o conftest -g -O2   -L/usr/local/lib -lglib-2.0   conftest.c -lnsl -luuid -lm -lm  >&5
-/tmp/ccK24A6g.o: In function `main':
+/tmp/cc1FBmcA.o: In function `main':
 /home/rtds-cybersec/repos/snort/snort-2.9_RTDS/snort-2.9.14.1/conftest.c:74: undefined reference to `strlcat'
 collect2: error: ld returned 1 exit status
 configure:14197: $? = 1
