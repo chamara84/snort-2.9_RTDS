@@ -1,6 +1,6 @@
-prefix=/usr/local
+prefix=/usr
 exec_prefix=${prefix}
-bindir=${exec_prefix}/bin
+bindir=${exec_prefix}/sbin
 libdir=${exec_prefix}/lib
 package=snort
 includedir=${prefix}/include
@@ -14,5 +14,5 @@ Description: Snort dynamic output modules
 URL: www.snort.org
 Version: 2.9.14.1
 Libs: -L${libdir}/${package}/dynamic_output -lsf_dynamic_output
-Cflags: -I${includedir}/${package}/dynamic_output  -DSF_WCHAR -DTARGET_BASED -DPERF_PROFILING -DSNORT_RELOAD -DRELOAD_ERROR_FATAL -DNO_NON_ETHER_DECODER -DNORMALIZER -DACTIVE_RESPONSE -DFEAT_OPEN_APPID -DHAVE_LIBLUAJIT  
+Cflags: -I${includedir}/${package}/dynamic_output  -DSF_WCHAR -DTARGET_BASED -DPERF_PROFILING -DSNORT_RELOAD -DNO_NON_ETHER_DECODER -DNORMALIZER -DACTIVE_RESPONSE -DFEAT_OPEN_APPID -DHAVE_LIBLUAJIT  
 

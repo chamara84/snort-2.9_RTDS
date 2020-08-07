@@ -3,7 +3,7 @@ Source: snort
 Version: 2.9.14.1-1
 Architecture: amd64
 Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
-Installed-Size: 5629
+Installed-Size: 4680
 Depends: libc6 (>= 2.27), libglib2.0-0 (>= 2.24.0), libluajit-5.1-2 (>= 2.0.4+dfsg), libpcre3, libssl1.1 (>= 1.1.0)
 Suggests: snort (>= 2.7.0) | snort-pgsql (>= 2.7.0) | snort-mysql (>= 2.7.0)
 Conflicts: snort-common (<< 2.7.0-6)

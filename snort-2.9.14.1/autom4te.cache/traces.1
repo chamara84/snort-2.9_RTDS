@@ -1,3 +1,6 @@
+m4trace:aclocal.m4:10002: -1- AC_SUBST([am__quote])
+m4trace:aclocal.m4:10002: -1- AC_SUBST_TRACE([am__quote])
+m4trace:aclocal.m4:10002: -1- m4_pattern_allow([^am__quote$])
 m4trace:configure.in:2: -1- AC_INIT([snort], [m4_esyscmd_s([cat ./VERSION])])
 m4trace:configure.in:2: -1- m4_pattern_forbid([^_?A[CHUM]_])
 m4trace:configure.in:2: -1- m4_pattern_forbid([_AC_])
@@ -63,6 +66,9 @@ m4trace:configure.in:2: -1- m4_pattern_allow([^sharedstatedir$])
 m4trace:configure.in:2: -1- AC_SUBST([localstatedir], ['${prefix}/var'])
 m4trace:configure.in:2: -1- AC_SUBST_TRACE([localstatedir])
 m4trace:configure.in:2: -1- m4_pattern_allow([^localstatedir$])
+m4trace:configure.in:2: -1- AC_SUBST([runstatedir], ['${localstatedir}/run'])
+m4trace:configure.in:2: -1- AC_SUBST_TRACE([runstatedir])
+m4trace:configure.in:2: -1- m4_pattern_allow([^runstatedir$])
 m4trace:configure.in:2: -1- AC_SUBST([includedir], ['${prefix}/include'])
 m4trace:configure.in:2: -1- AC_SUBST_TRACE([includedir])
 m4trace:configure.in:2: -1- m4_pattern_allow([^includedir$])
@@ -147,12 +153,12 @@ m4trace:configure.in:2: -1- AC_SUBST([target_alias])
 m4trace:configure.in:2: -1- AC_SUBST_TRACE([target_alias])
 m4trace:configure.in:2: -1- m4_pattern_allow([^target_alias$])
 m4trace:configure.in:5: -1- _m4_warn([obsolete], ['AM_CONFIG_HEADER': this macro is obsolete.
-You should use the 'AC_CONFIG_HEADERS' macro instead.], [aclocal.m4:9489: AM_CONFIG_HEADER is expanded from...
+You should use the 'AC_CONFIG_HEADERS' macro instead.], [aclocal.m4:10053: AM_CONFIG_HEADER is expanded from...
 configure.in:5: the top level])
 m4trace:configure.in:5: -1- AC_CONFIG_HEADERS([config.h])
 m4trace:configure.in:8: -1- AM_INIT_AUTOMAKE
 m4trace:configure.in:8: -1- m4_pattern_allow([^AM_[A-Z]+FLAGS$])
-m4trace:configure.in:8: -1- AM_AUTOMAKE_VERSION([1.13.4])
+m4trace:configure.in:8: -1- AM_AUTOMAKE_VERSION([1.16.1])
 m4trace:configure.in:8: -1- AC_REQUIRE_AUX_FILE([install-sh])
 m4trace:configure.in:8: -1- AC_SUBST([INSTALL_PROGRAM])
 m4trace:configure.in:8: -1- AC_SUBST_TRACE([INSTALL_PROGRAM])
@@ -286,15 +292,13 @@ m4trace:configure.in:12: -1- m4_pattern_allow([^EXEEXT$])
 m4trace:configure.in:12: -1- AC_SUBST([OBJEXT], [$ac_cv_objext])
 m4trace:configure.in:12: -1- AC_SUBST_TRACE([OBJEXT])
 m4trace:configure.in:12: -1- m4_pattern_allow([^OBJEXT$])
+m4trace:configure.in:12: -1- AC_REQUIRE_AUX_FILE([compile])
 m4trace:configure.in:12: -1- AC_SUBST([DEPDIR], ["${am__leading_dot}deps"])
 m4trace:configure.in:12: -1- AC_SUBST_TRACE([DEPDIR])
 m4trace:configure.in:12: -1- m4_pattern_allow([^DEPDIR$])
 m4trace:configure.in:12: -1- AC_SUBST([am__include])
 m4trace:configure.in:12: -1- AC_SUBST_TRACE([am__include])
 m4trace:configure.in:12: -1- m4_pattern_allow([^am__include$])
-m4trace:configure.in:12: -1- AC_SUBST([am__quote])
-m4trace:configure.in:12: -1- AC_SUBST_TRACE([am__quote])
-m4trace:configure.in:12: -1- m4_pattern_allow([^am__quote$])
 m4trace:configure.in:12: -1- AM_CONDITIONAL([AMDEP], [test "x$enable_dependency_tracking" != xno])
 m4trace:configure.in:12: -1- AC_SUBST([AMDEP_TRUE])
 m4trace:configure.in:12: -1- AC_SUBST_TRACE([AMDEP_TRUE])
@@ -356,6 +360,7 @@ m4trace:configure.in:13: -1- m4_pattern_allow([^CC$])
 m4trace:configure.in:13: -1- AC_SUBST([ac_ct_CC])
 m4trace:configure.in:13: -1- AC_SUBST_TRACE([ac_ct_CC])
 m4trace:configure.in:13: -1- m4_pattern_allow([^ac_ct_CC$])
+m4trace:configure.in:13: -1- AC_REQUIRE_AUX_FILE([compile])
 m4trace:configure.in:13: -1- AC_SUBST([CCDEPMODE], [depmode=$am_cv_CC_dependencies_compiler_type])
 m4trace:configure.in:13: -1- AC_SUBST_TRACE([CCDEPMODE])
 m4trace:configure.in:13: -1- m4_pattern_allow([^CCDEPMODE$])
@@ -372,7 +377,7 @@ m4trace:configure.in:13: -1- _AM_SUBST_NOTMAKE([am__fastdepCC_TRUE])
 m4trace:configure.in:13: -1- _AM_SUBST_NOTMAKE([am__fastdepCC_FALSE])
 m4trace:configure.in:14: -1- AC_PROG_LIBTOOL
 m4trace:configure.in:14: -1- _m4_warn([obsolete], [The macro `AC_PROG_LIBTOOL' is obsolete.
-You should run autoupdate.], [aclocal.m4:129: AC_PROG_LIBTOOL is expanded from...
+You should run autoupdate.], [aclocal.m4:121: AC_PROG_LIBTOOL is expanded from...
 configure.in:14: the top level])
 m4trace:configure.in:14: -1- LT_INIT
 m4trace:configure.in:14: -1- m4_pattern_forbid([^_?LT_[A-Z_]+$])
@@ -469,8 +474,7 @@ m4trace:configure.in:14: -1- m4_pattern_allow([^RANLIB$])
 m4trace:configure.in:14: -1- m4_pattern_allow([LT_OBJDIR])
 m4trace:configure.in:14: -1- AC_DEFINE_TRACE_LITERAL([LT_OBJDIR])
 m4trace:configure.in:14: -1- m4_pattern_allow([^LT_OBJDIR$])
-m4trace:configure.in:14: -1- AH_OUTPUT([LT_OBJDIR], [/* Define to the sub-directory in which libtool stores uninstalled libraries.
-   */
+m4trace:configure.in:14: -1- AH_OUTPUT([LT_OBJDIR], [/* Define to the sub-directory where libtool stores uninstalled libraries. */
 @%:@undef LT_OBJDIR])
 m4trace:configure.in:14: -1- LT_SUPPORTED_TAG([CC])
 m4trace:configure.in:14: -1- AC_SUBST([MANIFEST_TOOL])
@@ -491,6 +495,9 @@ m4trace:configure.in:14: -1- m4_pattern_allow([^OTOOL$])
 m4trace:configure.in:14: -1- AC_SUBST([OTOOL64])
 m4trace:configure.in:14: -1- AC_SUBST_TRACE([OTOOL64])
 m4trace:configure.in:14: -1- m4_pattern_allow([^OTOOL64$])
+m4trace:configure.in:14: -1- AC_SUBST([LT_SYS_LIBRARY_PATH])
+m4trace:configure.in:14: -1- AC_SUBST_TRACE([LT_SYS_LIBRARY_PATH])
+m4trace:configure.in:14: -1- m4_pattern_allow([^LT_SYS_LIBRARY_PATH$])
 m4trace:configure.in:14: -1- AH_OUTPUT([HAVE_DLFCN_H], [/* Define to 1 if you have the <dlfcn.h> header file. */
 @%:@undef HAVE_DLFCN_H])
 m4trace:configure.in:14: -1- AC_SUBST([CPP])
@@ -844,7 +851,7 @@ m4trace:configure.in:302: -1- AC_DEFINE_TRACE_LITERAL([HAVE_BOOLEAN])
 m4trace:configure.in:302: -1- m4_pattern_allow([^HAVE_BOOLEAN$])
 m4trace:configure.in:302: -1- AH_OUTPUT([HAVE_BOOLEAN], [/* Define to 1 if the system has the type `boolean\'. */
 @%:@undef HAVE_BOOLEAN])
-m4trace:configure.in:307: -1- _m4_warn([cross], [AC_RUN_IFELSE called without default to allow cross compiling], [../../lib/autoconf/general.m4:2748: AC_RUN_IFELSE is expanded from...
+m4trace:configure.in:307: -1- _m4_warn([cross], [AC_RUN_IFELSE called without default to allow cross compiling], [../../lib/autoconf/general.m4:2759: AC_RUN_IFELSE is expanded from...
 configure.in:307: the top level])
 m4trace:configure.in:322: -1- AC_DEFINE_TRACE_LITERAL([INADDR_NONE])
 m4trace:configure.in:322: -1- m4_pattern_allow([^INADDR_NONE$])
@@ -884,7 +891,7 @@ m4trace:configure.in:435: -1- AH_OUTPUT([HAVE_LIBPCAP], [/* Define to 1 if you h
 @%:@undef HAVE_LIBPCAP])
 m4trace:configure.in:435: -1- AC_DEFINE_TRACE_LITERAL([HAVE_LIBPCAP])
 m4trace:configure.in:435: -1- m4_pattern_allow([^HAVE_LIBPCAP$])
-m4trace:configure.in:452: -1- _m4_warn([cross], [AC_RUN_IFELSE called without default to allow cross compiling], [../../lib/autoconf/general.m4:2748: AC_RUN_IFELSE is expanded from...
+m4trace:configure.in:452: -1- _m4_warn([cross], [AC_RUN_IFELSE called without default to allow cross compiling], [../../lib/autoconf/general.m4:2759: AC_RUN_IFELSE is expanded from...
 configure.in:452: the top level])
 m4trace:configure.in:464: -1- AC_DEFINE_TRACE_LITERAL([HAVE_PCAP_LEX_DESTROY])
 m4trace:configure.in:464: -1- m4_pattern_allow([^HAVE_PCAP_LEX_DESTROY$])
@@ -1005,7 +1012,7 @@ m4trace:configure.in:741: -1- AH_OUTPUT([HAVE_DAQ_ACQUIRE_WITH_META], [/* Define
 @%:@undef HAVE_DAQ_ACQUIRE_WITH_META])
 m4trace:configure.in:741: -1- AH_OUTPUT([HAVE_DAQ_DP_ADD_DC], [/* Define to 1 if you have the `daq_dp_add_dc\' function. */
 @%:@undef HAVE_DAQ_DP_ADD_DC])
-m4trace:configure.in:744: -1- _m4_warn([cross], [AC_RUN_IFELSE called without default to allow cross compiling], [../../lib/autoconf/general.m4:2748: AC_RUN_IFELSE is expanded from...
+m4trace:configure.in:744: -1- _m4_warn([cross], [AC_RUN_IFELSE called without default to allow cross compiling], [../../lib/autoconf/general.m4:2759: AC_RUN_IFELSE is expanded from...
 configure.in:744: the top level])
 m4trace:configure.in:757: -1- AC_DEFINE_TRACE_LITERAL([HAVE_DAQ_REAL_ADDRESSES])
 m4trace:configure.in:757: -1- m4_pattern_allow([^HAVE_DAQ_REAL_ADDRESSES$])
@@ -1023,55 +1030,55 @@ m4trace:configure.in:780: -1- AC_DEFINE_TRACE_LITERAL([HAVE_DAQ_LOCALLY_DESTINED
 m4trace:configure.in:780: -1- m4_pattern_allow([^HAVE_DAQ_LOCALLY_DESTINED$])
 m4trace:configure.in:780: -1- AH_OUTPUT([HAVE_DAQ_LOCALLY_DESTINED], [/* DAQ version defines flags for locally destined traffic */
 @%:@undef HAVE_DAQ_LOCALLY_DESTINED])
-m4trace:configure.in:798: -1- _m4_warn([cross], [AC_RUN_IFELSE called without default to allow cross compiling], [../../lib/autoconf/general.m4:2748: AC_RUN_IFELSE is expanded from...
+m4trace:configure.in:798: -1- _m4_warn([cross], [AC_RUN_IFELSE called without default to allow cross compiling], [../../lib/autoconf/general.m4:2759: AC_RUN_IFELSE is expanded from...
 configure.in:798: the top level])
 m4trace:configure.in:811: -1- AC_DEFINE_TRACE_LITERAL([HAVE_DAQ_ADDRESS_SPACE_ID])
 m4trace:configure.in:811: -1- m4_pattern_allow([^HAVE_DAQ_ADDRESS_SPACE_ID$])
 m4trace:configure.in:811: -1- AH_OUTPUT([HAVE_DAQ_ADDRESS_SPACE_ID], [/* DAQ version supports address space ID in header. */
 @%:@undef HAVE_DAQ_ADDRESS_SPACE_ID])
-m4trace:configure.in:816: -1- _m4_warn([cross], [AC_RUN_IFELSE called without default to allow cross compiling], [../../lib/autoconf/general.m4:2748: AC_RUN_IFELSE is expanded from...
+m4trace:configure.in:816: -1- _m4_warn([cross], [AC_RUN_IFELSE called without default to allow cross compiling], [../../lib/autoconf/general.m4:2759: AC_RUN_IFELSE is expanded from...
 configure.in:816: the top level])
 m4trace:configure.in:829: -1- AC_DEFINE_TRACE_LITERAL([HAVE_DAQ_FLOW_ID])
 m4trace:configure.in:829: -1- m4_pattern_allow([^HAVE_DAQ_FLOW_ID$])
 m4trace:configure.in:829: -1- AH_OUTPUT([HAVE_DAQ_FLOW_ID], [/* DAQ version supports flow ID in header. */
 @%:@undef HAVE_DAQ_FLOW_ID])
-m4trace:configure.in:834: -1- _m4_warn([cross], [AC_RUN_IFELSE called without default to allow cross compiling], [../../lib/autoconf/general.m4:2748: AC_RUN_IFELSE is expanded from...
+m4trace:configure.in:834: -1- _m4_warn([cross], [AC_RUN_IFELSE called without default to allow cross compiling], [../../lib/autoconf/general.m4:2759: AC_RUN_IFELSE is expanded from...
 configure.in:834: the top level])
 m4trace:configure.in:850: -1- AC_DEFINE_TRACE_LITERAL([HAVE_DAQ_EXT_MODFLOW])
 m4trace:configure.in:850: -1- m4_pattern_allow([^HAVE_DAQ_EXT_MODFLOW$])
 m4trace:configure.in:850: -1- AH_OUTPUT([HAVE_DAQ_EXT_MODFLOW], [/* DAQ version supports extended flow modifiers. */
 @%:@undef HAVE_DAQ_EXT_MODFLOW])
-m4trace:configure.in:855: -1- _m4_warn([cross], [AC_RUN_IFELSE called without default to allow cross compiling], [../../lib/autoconf/general.m4:2748: AC_RUN_IFELSE is expanded from...
+m4trace:configure.in:855: -1- _m4_warn([cross], [AC_RUN_IFELSE called without default to allow cross compiling], [../../lib/autoconf/general.m4:2759: AC_RUN_IFELSE is expanded from...
 configure.in:855: the top level])
 m4trace:configure.in:871: -1- AC_DEFINE_TRACE_LITERAL([HAVE_DAQ_QUERYFLOW])
 m4trace:configure.in:871: -1- m4_pattern_allow([^HAVE_DAQ_QUERYFLOW$])
 m4trace:configure.in:871: -1- AH_OUTPUT([HAVE_DAQ_QUERYFLOW], [/* DAQ version supports query flow. */
 @%:@undef HAVE_DAQ_QUERYFLOW])
-m4trace:configure.in:876: -1- _m4_warn([cross], [AC_RUN_IFELSE called without default to allow cross compiling], [../../lib/autoconf/general.m4:2748: AC_RUN_IFELSE is expanded from...
+m4trace:configure.in:876: -1- _m4_warn([cross], [AC_RUN_IFELSE called without default to allow cross compiling], [../../lib/autoconf/general.m4:2759: AC_RUN_IFELSE is expanded from...
 configure.in:876: the top level])
 m4trace:configure.in:889: -1- AC_DEFINE_TRACE_LITERAL([HAVE_DAQ_DATA_CHANNEL_PARAMS])
 m4trace:configure.in:889: -1- m4_pattern_allow([^HAVE_DAQ_DATA_CHANNEL_PARAMS$])
 m4trace:configure.in:889: -1- AH_OUTPUT([HAVE_DAQ_DATA_CHANNEL_PARAMS], [/* DAQ version supports data channel. */
 @%:@undef HAVE_DAQ_DATA_CHANNEL_PARAMS])
-m4trace:configure.in:894: -1- _m4_warn([cross], [AC_RUN_IFELSE called without default to allow cross compiling], [../../lib/autoconf/general.m4:2748: AC_RUN_IFELSE is expanded from...
+m4trace:configure.in:894: -1- _m4_warn([cross], [AC_RUN_IFELSE called without default to allow cross compiling], [../../lib/autoconf/general.m4:2759: AC_RUN_IFELSE is expanded from...
 configure.in:894: the top level])
 m4trace:configure.in:908: -1- AC_DEFINE_TRACE_LITERAL([HAVE_DAQ_DATA_CHANNEL_SEPARATE_IP_VERSIONS])
 m4trace:configure.in:908: -1- m4_pattern_allow([^HAVE_DAQ_DATA_CHANNEL_SEPARATE_IP_VERSIONS$])
 m4trace:configure.in:908: -1- AH_OUTPUT([HAVE_DAQ_DATA_CHANNEL_SEPARATE_IP_VERSIONS], [/* DAQ version supports separate IP versions on pinhole endpoints. */
 @%:@undef HAVE_DAQ_DATA_CHANNEL_SEPARATE_IP_VERSIONS])
-m4trace:configure.in:913: -1- _m4_warn([cross], [AC_RUN_IFELSE called without default to allow cross compiling], [../../lib/autoconf/general.m4:2748: AC_RUN_IFELSE is expanded from...
+m4trace:configure.in:913: -1- _m4_warn([cross], [AC_RUN_IFELSE called without default to allow cross compiling], [../../lib/autoconf/general.m4:2759: AC_RUN_IFELSE is expanded from...
 configure.in:913: the top level])
 m4trace:configure.in:926: -1- AC_DEFINE_TRACE_LITERAL([HAVE_DAQ_VERDICT_RETRY])
 m4trace:configure.in:926: -1- m4_pattern_allow([^HAVE_DAQ_VERDICT_RETRY$])
 m4trace:configure.in:926: -1- AH_OUTPUT([HAVE_DAQ_VERDICT_RETRY], [/* DAQ version supports DAQ_VERDICT_RETRY in DAQ_Verdict. */
 @%:@undef HAVE_DAQ_VERDICT_RETRY])
-m4trace:configure.in:931: -1- _m4_warn([cross], [AC_RUN_IFELSE called without default to allow cross compiling], [../../lib/autoconf/general.m4:2748: AC_RUN_IFELSE is expanded from...
+m4trace:configure.in:931: -1- _m4_warn([cross], [AC_RUN_IFELSE called without default to allow cross compiling], [../../lib/autoconf/general.m4:2759: AC_RUN_IFELSE is expanded from...
 configure.in:931: the top level])
 m4trace:configure.in:944: -1- AC_DEFINE_TRACE_LITERAL([HAVE_DAQ_PKT_TRACE])
 m4trace:configure.in:944: -1- m4_pattern_allow([^HAVE_DAQ_PKT_TRACE$])
 m4trace:configure.in:944: -1- AH_OUTPUT([HAVE_DAQ_PKT_TRACE], [/* DAQ version supports packet trace. */
 @%:@undef HAVE_DAQ_PKT_TRACE])
-m4trace:configure.in:951: -1- _m4_warn([cross], [AC_RUN_IFELSE called without default to allow cross compiling], [../../lib/autoconf/general.m4:2748: AC_RUN_IFELSE is expanded from...
+m4trace:configure.in:951: -1- _m4_warn([cross], [AC_RUN_IFELSE called without default to allow cross compiling], [../../lib/autoconf/general.m4:2759: AC_RUN_IFELSE is expanded from...
 configure.in:951: the top level])
 m4trace:configure.in:964: -1- AC_DEFINE_TRACE_LITERAL([HAVE_DAQ_VERDICT_REASON])
 m4trace:configure.in:964: -1- m4_pattern_allow([^HAVE_DAQ_VERDICT_REASON$])
@@ -1081,7 +1088,7 @@ m4trace:configure.in:973: -1- AC_DEFINE_TRACE_LITERAL([WORDS_MUSTALIGN])
 m4trace:configure.in:973: -1- m4_pattern_allow([^WORDS_MUSTALIGN$])
 m4trace:configure.in:973: -1- AH_OUTPUT([WORDS_MUSTALIGN], [/* Define if words must align */
 @%:@undef WORDS_MUSTALIGN])
-m4trace:configure.in:989: -1- _m4_warn([cross], [AC_RUN_IFELSE called without default to allow cross compiling], [../../lib/autoconf/general.m4:2748: AC_RUN_IFELSE is expanded from...
+m4trace:configure.in:989: -1- _m4_warn([cross], [AC_RUN_IFELSE called without default to allow cross compiling], [../../lib/autoconf/general.m4:2759: AC_RUN_IFELSE is expanded from...
 configure.in:989: the top level])
 m4trace:configure.in:1000: -1- AC_DEFINE_TRACE_LITERAL([SPARCV9])
 m4trace:configure.in:1000: -1- m4_pattern_allow([^SPARCV9$])
