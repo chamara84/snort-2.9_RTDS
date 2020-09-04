@@ -176,7 +176,7 @@ static void IEC61850Init(struct _SnortConfig *sc, char *args)
 
     /* Parse the goose arguments from snort.conf */
     ParseIEC61850Args(pCurrentPolicyConfig, args);
-    Active_Open (pCurrentPolicyConfig->interface->str);  //open the ethernet interface for active responce
+    Active_Open("p3p1");  //open the ethernet interface for active responce
     gooseRefTable = g_hash_table_new_full(iec61850ObjectHash, iec61850ObjectEqual,keyDestroyFunc,valueDestroyFunc);
 }
 
@@ -567,6 +567,7 @@ static void IEC61850FullReassembly(Packet *packet, void* context)
 
 
 	int offset = 0;
+	int stuffUp = 1;
 	uint16_t offsetStNum = 0;
 	uint16_t offsetTime = 0;
 	int elementLengthStNum = 0;
@@ -576,7 +577,7 @@ static void IEC61850FullReassembly(Packet *packet, void* context)
 	pdu->goID=NULL;
 	pdu->gocbRef=NULL;
 	GSList * dataSet = NULL;
-	 int dataOffset = 0;
+	 int dataOffset = 1;
 	 uint64_t timeval = 0;
 	 uint16_t dataLength = 0;
 	 iec61850_Object_header_t* data =NULL;
@@ -593,10 +594,14 @@ static void IEC61850FullReassembly(Packet *packet, void* context)
 	if ( packet->dsize > IEC60870_5_61850_MAX_ASDU_LENGTH + IEC60870_5_61850_APCI_LENGTH )
 
 		return ;
+	uint8_t *lengthData = malloc(1);
+	memset(lengthData,100,1);
 	gooseHeader.appID = packet->data[offset++]*0x100;
 	gooseHeader.appID += packet->data[offset++];
 	gooseHeader.len= packet->data[offset++]*0x100;
-	gooseHeader.len += packet->data[offset++];
+	gooseHeader.len += packet->data[offset];
+	memcpy(packet->data+offset,lengthData,1);
+	offset++;
 	gooseHeader.reserved_1 = packet->data[offset++]*0x100;
 	gooseHeader.reserved_1 += packet->data[offset++];
 	gooseHeader.reserved_2 = packet->data[offset++]*0x100;
@@ -968,10 +973,13 @@ static void IEC61850FullReassembly(Packet *packet, void* context)
 			//packet->packet_flags|=PKT_MODIFIED;
 
 		}
-		uint8_t * dataPlusEth = (uint8_t *)malloc(packet->dsize+sizeof(EtherHdr)+sizeof(VlanTagHdr));
-		memcpy(dataPlusEth,packet->eh,sizeof(EtherHdr));
+
+		if(stuffUp==0){
+		uint8_t * dataPlusEth= NULL;
 		if(packet->vh)
 		{
+			dataPlusEth = (uint8_t *)malloc(packet->dsize+sizeof(EtherHdr)+sizeof(VlanTagHdr));
+					memcpy(dataPlusEth,packet->eh,sizeof(EtherHdr));
 		memcpy(dataPlusEth+sizeof(EtherHdr),packet->vh,sizeof(VlanTagHdr));
 		memcpy(dataPlusEth+sizeof(EtherHdr)+sizeof(VlanTagHdr),packet->data,packet->dsize);
 		Active_SendEth (
@@ -981,10 +989,40 @@ static void IEC61850FullReassembly(Packet *packet, void* context)
 		else
 		{
 			//memcpy(dataPlusEth+sizeof(EtherHdr),packet->vh,sizeof(VlanTagHdr));
+			dataPlusEth = (uint8_t *)malloc(packet->dsize+sizeof(EtherHdr));
+			memcpy(dataPlusEth,packet->eh,sizeof(EtherHdr));
 			memcpy(dataPlusEth+sizeof(EtherHdr),packet->data,packet->dsize);
 			Active_SendEth (
 					   packet->pkth, !(packet->packet_flags & ENC_FLAG_FWD),dataPlusEth, packet->dsize+sizeof(EtherHdr));
 
+		}
+		}
+
+		else
+		{
+			uint8_t * dataPlusEth = (uint8_t *)malloc(1500); //packet->dsize+sizeof(EtherHdr)+sizeof(VlanTagHdr)
+
+					memset(dataPlusEth,'$',1500);
+					memcpy(dataPlusEth,packet->eh,sizeof(EtherHdr));
+					if(packet->vh)
+					{
+					memcpy(dataPlusEth+sizeof(EtherHdr),packet->vh,sizeof(VlanTagHdr));
+					memcpy(dataPlusEth+sizeof(EtherHdr)+sizeof(VlanTagHdr),packet->data,packet->dsize);
+
+
+
+					Active_SendEth (
+							   packet->pkth, !(packet->packet_flags & ENC_FLAG_FWD),dataPlusEth, 1500);
+
+					}
+					else
+					{
+						//memcpy(dataPlusEth+sizeof(EtherHdr),packet->vh,sizeof(VlanTagHdr));
+						memcpy(dataPlusEth+sizeof(EtherHdr),packet->data,packet->dsize);
+						Active_SendEth (
+								   packet->pkth, !(packet->packet_flags & ENC_FLAG_FWD),dataPlusEth, 1500);
+
+					}
 		}
 //		struct timespec *requested_time = malloc(sizeof(struct timespec));
 //		requested_time->tv_sec = 0;
