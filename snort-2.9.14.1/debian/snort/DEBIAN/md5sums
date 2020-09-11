@@ -1,6 +1,6 @@
-56b2445b90613cbfc16941dbc9061725  usr/bin/u2boat
-73d271954aac8a06e01824ab057ff6cc  usr/bin/u2spewfoo
-c927c1e9c94661559e5667dccab7711a  usr/sbin/snort
+accda347759f862785ca3a5f28b06f97  usr/bin/u2boat
+cabc0c1828167df3213a3a46db619fc8  usr/bin/u2spewfoo
+12593fc41e14937d8be97c2d74c11082  usr/sbin/snort
 5581f19bb4031c23ba73c9bb693da721  usr/share/doc/snort/AUTHORS
 bf2770e15dc7c7471dc4f3a55a56be82  usr/share/doc/snort/BUGS
 8da2cdd30485976dbf95dbc1c195f2cd  usr/share/doc/snort/CREDITS.gz
