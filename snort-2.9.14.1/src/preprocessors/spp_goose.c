@@ -176,7 +176,7 @@ static void IEC61850Init(struct _SnortConfig *sc, char *args)
 
     /* Parse the goose arguments from snort.conf */
     ParseIEC61850Args(pCurrentPolicyConfig, args);
-    Active_Open("p3p1");  //open the ethernet interface for active responce
+    Active_Open(pCurrentPolicyConfig->interface->str);  //open the ethernet interface for active responce
     gooseRefTable = g_hash_table_new_full(iec61850ObjectHash, iec61850ObjectEqual,keyDestroyFunc,valueDestroyFunc);
 }
 
@@ -307,6 +307,12 @@ for(int index = 0 ; index<aconfig->numAlteredVal;index++)
 		if(g_string_equal(pdu->gocbRef,aconfig->values_to_alter[index].gocbRef) && g_string_equal(pdu->datSet,aconfig->values_to_alter[index].datSet))
 				            		 {
 									dataEnty=(iec61850_Object_header_t*)g_slist_nth_data(dataSet,aconfig->values_to_alter[index].dataItemNo);
+
+									if(dataEnty==NULL)
+									{
+										return modified;
+									}
+
 									switch(dataEnty->type)
 									{
 									case(0x83):
@@ -567,7 +573,7 @@ static void IEC61850FullReassembly(Packet *packet, void* context)
 
 
 	int offset = 0;
-	int stuffUp = 1;
+	int stuffUp = 0;
 	uint16_t offsetStNum = 0;
 	uint16_t offsetTime = 0;
 	int elementLengthStNum = 0;
@@ -595,12 +601,12 @@ static void IEC61850FullReassembly(Packet *packet, void* context)
 
 		return ;
 	uint8_t *lengthData = malloc(1);
-	memset(lengthData,100,1);
+	//memset(lengthData,100,1);
 	gooseHeader.appID = packet->data[offset++]*0x100;
 	gooseHeader.appID += packet->data[offset++];
 	gooseHeader.len= packet->data[offset++]*0x100;
 	gooseHeader.len += packet->data[offset];
-	memcpy(packet->data+offset,lengthData,1);
+	//memcpy(packet->data+offset,lengthData,1);
 	offset++;
 	gooseHeader.reserved_1 = packet->data[offset++]*0x100;
 	gooseHeader.reserved_1 += packet->data[offset++];
