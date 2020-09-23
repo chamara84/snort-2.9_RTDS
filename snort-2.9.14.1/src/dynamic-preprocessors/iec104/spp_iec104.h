@@ -236,6 +236,14 @@ typedef enum {
 #define SPE_LEN 1
 #define OCI_LEN 1
 #define QDP_LEN 1
+#define QOS_LEN 1
+#define SCO_LEN 1
+#define DCO_LEN 1
+#define RCO_LEN 1
+#define QOS_LEN 1
+#define IEEE_STD_754_LEN 4
+#define BSI_LEN 4
+
 
 
 //length of different ASDU type objects
@@ -260,25 +268,25 @@ typedef enum {
 #define LEN_M_EP_TC_1  OCI_LEN+QDP_LEN+CP16Time_LEN+CP24Time_LEN
 #define LEN_M_PS_NA_1  SCD_LEN+QDS_LEN
 #define LEN_M_ME_ND_1 NVA_LEN
-//#define LEN_M_SP_TB_1
-//#define LEN_M_DP_TB_1
-//#define LEN_M_ST_TB_1
-//#define LEN_M_BO_TB_1
-//#define LEN_M_ME_TD_1
-//#define LEN_M_ME_TE_1
-//#define LEN_M_ME_TF_1
-//#define LEN_M_IT_TB_1
-//#define LEN_M_EP_TD_1
-//#define LEN_M_EP_TE_1
-//#define LEN_M_EP_TF_1
+#define LEN_M_SP_TB_1 8
+#define LEN_M_DP_TB_1 8
+#define LEN_M_ST_TB_1 9
+#define LEN_M_BO_TB_1 12
+#define LEN_M_ME_TD_1 10
+#define LEN_M_ME_TE_1 10
+#define LEN_M_ME_TF_1 12
+#define LEN_M_IT_TB_1 12
+#define LEN_M_EP_TD_1 10
+#define LEN_M_EP_TE_1 11
+#define LEN_M_EP_TF_1 11
 //#define LEN_S_IT_TC_1
-//#define LEN_C_SC_NA_1
-//#define LEN_C_DC_NA_1
-//#define LEN_C_RC_NA_1
-//#define LEN_C_SE_NA_1
-//#define LEN_C_SE_NB_1
-//#define LEN_C_SE_NC_1
-//#define LEN_C_BO_NA_1
+#define LEN_C_SC_NA_1  SCO_LEN
+#define LEN_C_DC_NA_1  DCO_LEN
+#define LEN_C_RC_NA_1  RCO_LEN
+#define LEN_C_SE_NA_1  NVA_LEN + QOS_LEN
+#define LEN_C_SE_NB_1  SVA_LEN + QOS_LEN
+#define LEN_C_SE_NC_1  IEEE_STD_754_LEN + QOS_LEN
+#define LEN_C_BO_NA_1  BSI_LEN
 //#define LEN_C_SC_TA_1
 //#define LEN_C_DC_TA_1
 //#define LEN_C_RC_TA_1

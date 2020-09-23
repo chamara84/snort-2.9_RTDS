@@ -142,6 +142,31 @@ for(int index = 0 ; index<config->numAlteredVal;index++)
 					 							 memcpy((pdu_start+objOfConcern->dataOffsetFromStart),&((config->values_to_alter[index]).floating_point_val),LEN_M_ME_NC_1-QDP_LEN);
 					 					 	 	 break;
 
+					 case(C_SC_NA_1):
+												 memcpy((pdu_start+objOfConcern->dataOffsetFromStart),&((config->values_to_alter[index]).integer_value),SCO_LEN);
+												 break;
+
+					 case(C_DC_NA_1):
+												 memcpy((pdu_start+objOfConcern->dataOffsetFromStart),&((config->values_to_alter[index]).integer_value),DCO_LEN);
+												 break;
+					 case(C_RC_NA_1):
+												 memcpy((pdu_start+objOfConcern->dataOffsetFromStart),&((config->values_to_alter[index]).integer_value),RCO_LEN);
+												 break;
+					 case(C_SE_NA_1):
+					 							 memcpy((pdu_start+objOfConcern->dataOffsetFromStart),&((config->values_to_alter[index]).integer_value),NVA_LEN);
+					 							 break;
+					 case(C_SE_NB_1):
+												 memcpy((pdu_start+objOfConcern->dataOffsetFromStart),&((config->values_to_alter[index]).integer_value),SVA_LEN);
+												 break;
+					 case(C_SE_NC_1):
+												 memcpy((pdu_start+objOfConcern->dataOffsetFromStart),&((config->values_to_alter[index]).floating_point_val),IEEE_STD_754_LEN);
+												 break;
+					 case(C_BO_NA_1):
+												 memcpy((pdu_start+objOfConcern->dataOffsetFromStart),&((config->values_to_alter[index]).integer_value),BSI_LEN);
+												 break;
+
+
+
 					 default:
 						 break;
 
@@ -166,7 +191,7 @@ int IEC104FullReassembly(iec104_config_t *config, iec104_session_data_t *session
 	iec104_header_t *link;
 	iec104_reassembly_data_t *rdata;
 	uint16_t offset = 0;
-	static uint8_t typeLengths[21];
+	static uint8_t typeLengths[128];
 	typeLengths[0]= LEN_M_SP_NA_1;
 	typeLengths[1]= LEN_M_SP_TA_1;
 	typeLengths[2]= LEN_M_DP_NA_1  ;
@@ -188,8 +213,37 @@ int IEC104FullReassembly(iec104_config_t *config, iec104_session_data_t *session
 	typeLengths[18]= LEN_M_EP_TC_1  ;
 	typeLengths[19]= LEN_M_PS_NA_1  ;
 	typeLengths[20]= LEN_M_ME_ND_1 ;
+	typeLengths[21]= LEN_M_ME_ND_1 ;
 
 
+	typeLengths[30]= LEN_M_SP_TB_1 ;
+	typeLengths[31]= LEN_M_DP_TB_1 ;
+	typeLengths[32]= LEN_M_ST_TB_1 ;
+	typeLengths[33]= LEN_M_BO_TB_1  ;
+	typeLengths[34]= LEN_M_ME_TD_1 ;
+	typeLengths[35]= LEN_M_ME_TE_1  ;
+	typeLengths[36]= LEN_M_ME_TF_1  ;
+	typeLengths[37]= LEN_M_IT_TB_1  ;
+	typeLengths[38]= LEN_M_EP_TD_1  ;
+	typeLengths[39]= LEN_M_EP_TE_1 ;
+
+	typeLengths[40]= LEN_M_EP_TF_1;
+	//typeLengths[41]= LEN_S_IT_TC_1 ;
+	typeLengths[45]= LEN_C_SC_NA_1 ;
+	typeLengths[46]= LEN_C_DC_NA_1 ;
+	typeLengths[47]= LEN_C_RC_NA_1  ;
+	typeLengths[48]= LEN_C_SE_NA_1 ;
+	typeLengths[49]= LEN_C_SE_NB_1 ;
+
+	typeLengths[50]= LEN_C_SE_NC_1;
+	typeLengths[51]= LEN_C_BO_NA_1 ;
+	typeLengths[58]= LEN_C_SC_NA_1+7 ;
+	typeLengths[59]= LEN_C_DC_NA_1+7 ;
+	typeLengths[60]= LEN_C_RC_NA_1+7  ;
+	typeLengths[61]= LEN_C_SE_NA_1+7 ;
+	typeLengths[62]= LEN_C_SE_NB_1+7 ;
+	typeLengths[63]= LEN_C_SE_NC_1+7  ;
+	typeLengths[64]= LEN_C_BO_NA_1+7 ;
 
 	if (pdu_length < (sizeof(iec104_header_t) ))
 		return IEC104_FAIL;

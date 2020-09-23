@@ -419,10 +419,22 @@ static int DNP3CheckReservedAddrs(dnp3_link_header_t *link)
 	return DNP3_OK;
 }
 
+
 int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOfOneDataPoint, unsigned int sizeOfQuality,unsigned int sizeOfRange,unsigned int sizeOfIndex,unsigned int sizeOfCtrlStatus)
 
 {
+	int done = 0;
 
+	int modified = 0;
+
+
+	int byteNumber = 0;
+	int segment = 0;
+	int offSet = 0;
+	int byteNumberNewPktBuffer =0;
+	int lengthOfCurrentPktAppData = 0;
+	int startingIndex = 0;
+	int startingIndexAlteredVal = 0;
 
 	switch(rdata->obj_group){
 
@@ -1317,6 +1329,139 @@ default:
 }
 
 
+int navigateQuantitySpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOfOneDataPoint, unsigned int sizeOfQuality,unsigned int sizeOfRange,unsigned int sizeOfIndex,unsigned int sizeOfCtrlStatus)
+
+{
+	int done = 0;
+
+	int modified = 0;
+
+
+
+	int byteNumber = 0;
+	int segment = 0;
+	int offSet = 0;
+	int byteNumberNewPktBuffer =0;
+	int lengthOfCurrentPktAppData = 0;
+	int startingIndex = 0;
+	int startingIndexAlteredVal = 0;
+
+
+
+
+		switch(rdata->obj_group){
+
+		case 2:
+				switch(rdata->obj_var){
+				case 1:
+					sizeOfOneDataPoint = 1;
+					sizeOfQuality += 0;
+					sizeOfCtrlStatus = 0;
+					memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
+					//start = ntohs(start);
+					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality +sizeOfCtrlStatus)*(rdata->numberOfValues);
+					break;
+
+				case 2:
+					sizeOfOneDataPoint = 7;
+					sizeOfQuality += 0;
+					sizeOfCtrlStatus = 0;
+					memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
+					//start = ntohs(start);
+					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality +sizeOfCtrlStatus)*(rdata->numberOfValues);
+					break;
+				case 3:
+					sizeOfOneDataPoint = 3;
+					sizeOfQuality += 0;
+					sizeOfCtrlStatus = 0;
+					memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
+					//start = ntohs(start);
+					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality+sizeOfCtrlStatus)*(rdata->numberOfValues);
+					break;
+
+				default:
+					sizeOfOneDataPoint = 0;
+					sizeOfQuality = 0;
+					printf("Group or Variance not found \n");
+					return -1;
+				}
+
+					break;
+		case 41:
+												switch(rdata->obj_var)
+												{
+												case 3:
+													sizeOfOneDataPoint = 4;
+													sizeOfQuality += 0;
+													sizeOfCtrlStatus = 1;
+
+													memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
+													//start = ntohs(start);
+
+													rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality +sizeOfCtrlStatus)*(rdata->numberOfValues);
+													break;
+
+
+												default:
+													sizeOfOneDataPoint = 0;
+													sizeOfQuality = 0;
+													printf("Group or Variance not found \n");
+													return -1;
+												}
+												break;
+
+
+      case 51:
+		switch(rdata->obj_var)
+					{
+					case 1:
+						sizeOfOneDataPoint = 6;
+						sizeOfQuality += 0;
+						sizeOfCtrlStatus = 0;
+
+						memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
+
+
+																			rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality +sizeOfCtrlStatus)*(rdata->numberOfValues);
+																			break;
+					case 2:
+						sizeOfOneDataPoint = 6;
+						sizeOfQuality += 0;
+						sizeOfCtrlStatus = 0;
+
+						memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
+																			//start = ntohs(start);
+
+																			rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality +sizeOfCtrlStatus)*(rdata->numberOfValues);
+																			break;
+
+					default:
+						sizeOfOneDataPoint = 0;
+						sizeOfQuality = 0;
+						printf("Group or Variance not found \n");
+						return -1;
+					}
+		break;
+
+		default:
+			sizeOfOneDataPoint = 0;
+			sizeOfQuality = 0;
+			sizeOfCtrlStatus=0;
+			printf("Group or Variance not found \n");
+			return -1;
+			}
+			rdata->sizeOfData = sizeOfOneDataPoint;
+			rdata->sizeOfQuality = sizeOfQuality ;
+			rdata->sizeOfIndex=sizeOfIndex;
+			rdata->sizeOfCtrlStatus =sizeOfCtrlStatus;
+
+		return rdata->indexOfNextResponceObjHeader;
+}
+
+
+
+
+
 
 static int modifyData(dnp3_config_t *config, dnp3_reassembly_data_t *rdata,uint16_t buflen,uint8_t * pdu_start, uint16_t pdu_length,uint8_t direction)
 {
@@ -1330,6 +1475,15 @@ static int modifyData(dnp3_config_t *config, dnp3_reassembly_data_t *rdata,uint1
 	unsigned int sizeOfRange=0;
 	unsigned int sizeOfIndex = 0;
 	unsigned int sizeOfCtrlStatus = 0;
+	uint8_t indexSize = 0;
+			uint8_t absAddress = 3;
+			uint8_t quantity = 3;
+			uint8_t minBufferLength = 0;
+	sizeOfOneDataPoint = rdata->sizeOfData;
+		 sizeOfQuality = rdata->sizeOfQuality;
+		 sizeOfIndex = rdata->sizeOfIndex;
+		 sizeOfCtrlStatus = rdata->sizeOfCtrlStatus;
+		 sizeOfRange = rdata-> sizeOfRange;
 	int byteNumber = 0;
 	int segment = 0;
 	int offSet = 0;
@@ -1339,16 +1493,20 @@ static int modifyData(dnp3_config_t *config, dnp3_reassembly_data_t *rdata,uint1
 	int startingIndexAlteredVal = 0;
 	dnp3_app_request_header_t *request = NULL;
 	dnp3_app_response_header_t *response = NULL;
-	uint8_t absAddress = 3;
-	uint8_t quantity = 3;
-	uint8_t minBufferLength = 0;
-	int testCount=0;
+	dnp3_transport_header_t * trans_header = (dnp3_transport_header_t *)((char *)pdu_start + sizeof(dnp3_link_header_t) + 2);
+//	if ( DNP3_TRANSPORT_FIR(trans_header->control) == 0 )
+//				return 0;
+
 
 	if(rdata->buflen<=6)
 			return 0;
 
 	if(rdata->indexOfCurrentResponceObjHeader==0 || rdata->indexOfCurrentResponceObjHeader==4 || rdata->indexOfCurrentResponceObjHeader==2)
 	{
+		for(int i=0;i<config->numAlteredVal;i++)
+		{
+			(config->values_to_alter[i]).done =0;
+		}
 
 		if(direction==0){
 		rdata->indexOfCurrentResponceObjHeader = 2;
@@ -1371,7 +1529,11 @@ static int modifyData(dnp3_config_t *config, dnp3_reassembly_data_t *rdata,uint1
 			rdata->stop = 0;
 			rdata->numberOfValues=0;
 
-	}
+			sizeOfOneDataPoint=0;
+				sizeOfQuality=0;
+				sizeOfRange=0;
+				sizeOfIndex = 0;
+				sizeOfCtrlStatus = 0;
 
 //	if(rdata->indexOfCurrentResponceObjHeader < rdata->buflen){
 //	rdata->obj_group = rdata->buffer[rdata->indexOfCurrentResponceObjHeader];
@@ -1383,76 +1545,76 @@ static int modifyData(dnp3_config_t *config, dnp3_reassembly_data_t *rdata,uint1
 //	}
 
 
-	uint8_t indexSize = rdata->qualifier>>4;
+	indexSize = rdata->qualifier>>4;
 
 	//Setting the Range based on the Qualifier
 
-		switch(rdata->qualifier & 0x0F)
-			{
-			case 0:
-				sizeOfRange = 2;
-				quantity=0;
+	switch(rdata->qualifier & 0x0F)
+	{
+	case 0:
+		sizeOfRange = 2;
+		quantity=0;
+		absAddress = 0;
+		minBufferLength = 7 + sizeOfRange;
+		break;
+	case 1:
+		sizeOfRange = 4;
+		quantity=0;
 				absAddress = 0;
-				minBufferLength = 7 + sizeOfRange;
-				break;
-			case 1:
-				sizeOfRange = 4;
-				quantity=0;
-						absAddress = 0;
-				minBufferLength = 7 + sizeOfRange;
-				break;
-			case 2:
-				sizeOfRange = 8;
-				quantity=0;
-						absAddress = 0;
-				minBufferLength = 7 + sizeOfRange;
-				break;
-			case 3:
-				sizeOfRange = 1;
-				absAddress= 1;
-				quantity=0;
-				minBufferLength = 7 + sizeOfRange;
-				break;
-			case 4:
-				sizeOfRange = 2;
-				absAddress= 1;
-				quantity=0;
-				minBufferLength = 7 + sizeOfRange;
-				break;
-			case 5:
-				sizeOfRange = 4;
-				absAddress= 1;
-				quantity=0;
-				minBufferLength = 7 + sizeOfRange;
-				break;
-			case 6:
-				sizeOfRange = 0;
-				absAddress= 3;
-				quantity=3;
-				minBufferLength = 7 + sizeOfRange;
-				break;
-			case 7:
-				sizeOfRange = 1;
-				quantity= 1;
-				absAddress= 0;
-				minBufferLength = 7 + sizeOfRange;
-				break;
-			case 8:
-				sizeOfRange = 2;
-				quantity= 1;
-				absAddress= 0;
-				minBufferLength = 7 + sizeOfRange;
-				break;
-			case 9:
-				sizeOfRange = 4;
-				quantity= 1;
-				absAddress= 0;
-				minBufferLength = 7 + sizeOfRange;
-				break;
+		minBufferLength = 7 + sizeOfRange;
+		break;
+	case 2:
+		sizeOfRange = 8;
+		quantity=0;
+				absAddress = 0;
+		minBufferLength = 7 + sizeOfRange;
+		break;
+	case 3:
+		sizeOfRange = 1;
+		absAddress= 1;
+		quantity=0;
+		minBufferLength = 7 + sizeOfRange;
+		break;
+	case 4:
+		sizeOfRange = 2;
+		absAddress= 1;
+		quantity=0;
+		minBufferLength = 7 + sizeOfRange;
+		break;
+	case 5:
+		sizeOfRange = 4;
+		absAddress= 1;
+		quantity=0;
+		minBufferLength = 7 + sizeOfRange;
+		break;
+	case 6:
+		sizeOfRange = 0;
+		absAddress= 3;
+		quantity=3;
+		minBufferLength = 7 + sizeOfRange;
+		break;
+	case 7:
+		sizeOfRange = 1;
+		quantity= 1;
+		absAddress= 0;
+		minBufferLength = 7 + sizeOfRange;
+		break;
+	case 8:
+		sizeOfRange = 2;
+		quantity= 1;
+		absAddress= 0;
+		minBufferLength = 7 + sizeOfRange;
+		break;
+	case 9:
+		sizeOfRange = 4;
+		quantity= 1;
+		absAddress= 0;
+		minBufferLength = 7 + sizeOfRange;
+		break;
 
-			default:
-				break;
-			}
+	default:
+		break;
+	}
 
 	if(rdata->buflen<minBufferLength)
 		return 0;
@@ -1484,1192 +1646,455 @@ static int modifyData(dnp3_config_t *config, dnp3_reassembly_data_t *rdata,uint1
 default:
 	break;
 		}
+
+	rdata->sizeOfRange = sizeOfRange;
+	rdata->sizeOfQuality = sizeOfQuality;
 	//put cases for each group and sub-cases for variations
 
 
-quantityNo :	if(quantity==0 && absAddress ==0){
+	if(quantity==0 && absAddress ==0){
 
-	switch(rdata->obj_group){
+		navigateStrtStopSpecData( rdata, sizeOfOneDataPoint, sizeOfQuality,sizeOfRange,sizeOfIndex,sizeOfCtrlStatus);
+	}
 
-	case 1:
+	else if(quantity==1 && absAddress ==0){
+		navigateQuantitySpecData( rdata, sizeOfOneDataPoint, sizeOfQuality,sizeOfRange,sizeOfIndex,sizeOfCtrlStatus);
 
-		switch(rdata->obj_var)
+	}
+	else
+		quantity=3;
+
+
+	}
+
+	else
+	{
+		printf("Current ResponceHeader not set \n");
+
+	}
+
+
+
+
+
+
+	int testCount = 0;
+
+
+
+while(!done) //it will be done when we reach the end of buffer in rdata->server_rdata.buflen
+	{
+		testCount++;
+		if(testCount>5)
 		{
-		case 1:
-			sizeOfOneDataPoint = 1;
-			sizeOfQuality += 0;
+			printf( "in test count\n");
 
-			memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-			//start = ntohs(start);
-			memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-			//stop = ntohs(stop);
-
-			rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+sizeOfOneDataPoint*(rdata->stop-rdata->start+1)/8;
-			break;
-		case 2:
-
-			sizeOfOneDataPoint = 1;
-			sizeOfQuality += 0;
-
-			memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-			//start = ntohs(start);
-			memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-			//stop = ntohs(stop);
-
-			rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+sizeOfOneDataPoint*(rdata->stop-rdata->start+1);
-			break;
-		default:
-												sizeOfOneDataPoint = 0;
-												sizeOfQuality = 0;
-												sizeOfCtrlStatus = 0;
-												printf("Group or Variance not found \n");
-												done=1;
-												return -1;
+			done = 1;
 		}
-		break;
-	case 2:
-		switch(rdata->obj_var){
-		case 1:
-			sizeOfOneDataPoint = 1;
-			sizeOfQuality += 0;
-			memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-			memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-			rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+sizeOfOneDataPoint*(rdata->stop-rdata->start+1);
-			break;
-
-		case 2:
-			sizeOfOneDataPoint = 7;
-			sizeOfQuality += 0;
-			memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-			memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-			rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+sizeOfOneDataPoint*(rdata->stop-rdata->start+1);
-			break;
-		case 3:
-			sizeOfOneDataPoint = 3;
-			sizeOfQuality += 0;
-			memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-			memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-			rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+sizeOfOneDataPoint*(rdata->stop-rdata->start+1);
-			break;
-
-		default:
-												sizeOfOneDataPoint = 0;
-												sizeOfQuality = 0;
-												sizeOfCtrlStatus = 0;
-												printf("Group or Variance not found \n");
-												done=1;
-												return -1;
-		}
-
-			break;
-
-	case 10:
-		switch(rdata->obj_var)
+		sizeOfOneDataPoint = rdata->sizeOfData;
+			 sizeOfQuality = rdata->sizeOfQuality;
+			 sizeOfRange = rdata->sizeOfRange;
+		//check for the occurance of the object in the server_data and modify it
+		for(int i=0;i<config->numAlteredVal;i++)
 		{
-		case 1:
-			sizeOfOneDataPoint = 1;
-			sizeOfQuality += 0;
-
-			memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-			memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-			rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+sizeOfOneDataPoint*(rdata->stop-rdata->start+1)/8;
-			break;
-		case 2:
-			sizeOfOneDataPoint = 1;
-			sizeOfQuality += 0;
-
-			memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-			memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-			rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+sizeOfOneDataPoint*(rdata->stop-rdata->start+1);
-			break;
-		default:
-												sizeOfOneDataPoint = 0;
-												sizeOfQuality = 0;
-												sizeOfCtrlStatus = 0;
-												printf("Group or Variance not found \n");
-												done=1;
-												return -1;
-		}
-
-		break;
-
-	case 12:
-		switch(rdata->obj_var)
-		{
-		case 1:
-			sizeOfOneDataPoint = 11;
-			sizeOfQuality += 0;
-
-			memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-			memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-			rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+sizeOfOneDataPoint*(rdata->stop-rdata->start+1);
-			break;
-
-		case 3:
-			sizeOfOneDataPoint = 1;
-			sizeOfQuality += 0;
-
-			memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-			memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-			rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+sizeOfOneDataPoint*(rdata->stop-rdata->start+1)/8;
-			break;
-
-		default:
-												sizeOfOneDataPoint = 0;
-												sizeOfQuality = 0;
-												sizeOfCtrlStatus = 0;
-												printf("Group or Variance not found \n");
-												done=1;
-												return -1;
-		}
-		break;
-
-		case 20:
-			switch(rdata->obj_var)
+//			if((config->values_to_alter[i]).done)
+//			{
+//				continue;
+//			}
+			if(quantity==0 && absAddress==0){
+			if((config->values_to_alter[i]).done != 1 && (config->values_to_alter[i]).func_code == rdata->func_code && (config->values_to_alter[i]).obj_group == rdata->obj_group && (config->values_to_alter[i]).obj_var == rdata->obj_var && (config->values_to_alter[i]).identifier <=rdata->stop && (config->values_to_alter[i]).identifier >=rdata->start)
 			{
-			case 1:
-				sizeOfOneDataPoint = 4;
-				sizeOfQuality += 1;
 
-				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-				break;
-
-			case 2:
-				sizeOfOneDataPoint = 2;
-				sizeOfQuality += 1;
-
-				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-				break;
-			case 3:
-				sizeOfOneDataPoint = 4;
-				sizeOfQuality += 1;
-
-				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-				break;
-
-			case 4:
-				sizeOfOneDataPoint = 2;
-				sizeOfQuality += 1;
-
-				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-				break;
-
-			case 5:
-				sizeOfOneDataPoint = 4;
-				sizeOfQuality += 0;
-
-				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-				break;
-
-			case 6:
-				sizeOfOneDataPoint = 2;
-				sizeOfQuality += 0;
-
-				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-				break;
-
-			case 7:
-				sizeOfOneDataPoint = 4;
-				sizeOfQuality += 0;
-
-				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-				break;
-
-			case 8:
-				sizeOfOneDataPoint = 2;
-				sizeOfQuality += 0;
-
-				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-				break;
-
-			default:
-													sizeOfOneDataPoint = 0;
-													sizeOfQuality = 0;
-													sizeOfCtrlStatus = 0;
-													printf("Group or Variance not found \n");
-													done=1;
-													return -1;
-			}
-			break;
-
-
-		case 21:
-			switch(rdata->obj_var)
-			{
-			case 1:
-				sizeOfOneDataPoint = 4;
-				sizeOfQuality += 1;
-
-				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-				break;
-
-			case 2:
-				sizeOfOneDataPoint = 2;
-				sizeOfQuality += 1;
-
-				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-				break;
-			case 3:
-				sizeOfOneDataPoint = 4;
-				sizeOfQuality += 1;
-
-				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-				break;
-
-			case 4:
-				sizeOfOneDataPoint = 2;
-				sizeOfQuality += 1;
-
-				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-				break;
-
-			case 5:
-				sizeOfOneDataPoint = 10;
-				sizeOfQuality += 1;
-
-				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-				break;
-
-			case 6:
-				sizeOfOneDataPoint = 8;
-				sizeOfQuality += 1;
-
-				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-				break;
-
-			case 7:
-				sizeOfOneDataPoint = 8;
-				sizeOfQuality += 1;
-
-				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-				break;
-
-			case 8:
-				sizeOfOneDataPoint = 8;
-				sizeOfQuality += 1;
-
-				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-				break;
-
-			case 9:
-				sizeOfOneDataPoint = 4;
-				sizeOfQuality += 0;
-
-				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-				break;
-			case 10:
-				sizeOfOneDataPoint = 2;
-				sizeOfQuality += 0;
-
-				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-				break;
-			case 11:
-				sizeOfOneDataPoint = 4;
-				sizeOfQuality += 0;
-
-				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-				break;
-			case 12:
-				sizeOfOneDataPoint = 2;
-				sizeOfQuality += 0;
-
-				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-				break;
-
-			default:
-													sizeOfOneDataPoint = 0;
-													sizeOfQuality = 0;
-													sizeOfCtrlStatus = 0;
-													printf("Group or Variance not found \n");
-													done=1;
-													return -1;
-			}
-			break;
-
-			case 22:
-				switch(rdata->obj_var)
+				if(rdata->obj_group==1)
+					byteNumber = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*((config->values_to_alter[i]).identifier -rdata->start)/8;
+				else
+				byteNumber = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*((config->values_to_alter[i]).identifier -rdata->start);
+				//calculate the starting index of the data of concern in the app data of the new packet
+				//if starting index is a negative with modulus less than the length of data that means the first bytes are already in the session buffer
+				//should change partial data existing at the end of the pdu
+				startingIndex = byteNumber-(rdata->buflen-buflen+1);    // buflen is the length of data in the current packet
+				if(startingIndex<0 && abs(startingIndex)>=(sizeOfOneDataPoint+sizeOfQuality))
 				{
-				case 1:
-					sizeOfOneDataPoint = 4;
-					sizeOfQuality += 1;
-
-					memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-					memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-					break;
-
-				case 2:
-					sizeOfOneDataPoint = 2;
-					sizeOfQuality = 1;
-
-					memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-					memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-					break;
-				case 3:
-					sizeOfOneDataPoint = 4;
-					sizeOfQuality = 1;
-
-					memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-					memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-					break;
-
-				case 4:
-					sizeOfOneDataPoint = 2;
-					sizeOfQuality = 1;
-
-					memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-					memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-					break;
-
-				case 5:
-					sizeOfOneDataPoint = 10;
-					sizeOfQuality = 1;
-
-					memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-					memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-					break;
-
-				case 6:
-					sizeOfOneDataPoint = 8;
-					sizeOfQuality = 1;
-
-					memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-					memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-					break;
-
-				case 7:
-					sizeOfOneDataPoint = 10;
-					sizeOfQuality = 1;
-
-					memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-					memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-					break;
-
-				case 8:
-					sizeOfOneDataPoint = 8;
-					sizeOfQuality = 1;
-
-					memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-					memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-					break;
-
-				default:
-														sizeOfOneDataPoint = 0;
-														sizeOfQuality = 0;
-														sizeOfCtrlStatus = 0;
-														printf("Group or Variance not found \n");
-														done=1;
-														return -1;
-				}
-				break;
-
-				case 23:
-					switch(rdata->obj_var)
-							{
-							case 1:
-								sizeOfOneDataPoint = 4;
-								sizeOfQuality = 1;
-
-								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-								break;
-
-							case 2:
-								sizeOfOneDataPoint = 2;
-								sizeOfQuality = 1;
-
-								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-												break;
-							case 3:
-								sizeOfOneDataPoint = 4;
-								sizeOfQuality = 1;
-
-								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-								break;
-
-							case 4:
-								sizeOfOneDataPoint = 2;
-								sizeOfQuality = 1;
-
-								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-								break;
-
-							case 5:
-								sizeOfOneDataPoint = 10;
-								sizeOfQuality = 1;
-
-								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-								break;
-
-							case 6:
-								sizeOfOneDataPoint = 8;
-								sizeOfQuality = 1;
-
-								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-								break;
-
-							case 7:
-								sizeOfOneDataPoint = 10;
-								sizeOfQuality = 1;
-
-								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-								break;
-
-							case 8:
-								sizeOfOneDataPoint = 8;
-								sizeOfQuality = 1;
-
-								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-								break;
-
-							default:
-																	sizeOfOneDataPoint = 0;
-																	sizeOfQuality = 0;
-																	sizeOfCtrlStatus = 0;
-																	printf("Group or Variance not found \n");
-																	done=1;
-																	return -1;
-							}
-							break;
-			case 30:
-				switch(rdata->obj_var)
-				{
-				case 1:
-					sizeOfOneDataPoint = 4;
-					sizeOfQuality = 1;
-
-					memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-					//start = ntohs(start);
-					memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-					break;
-				case 2:
-					sizeOfOneDataPoint = 2;
-					sizeOfQuality = 1;
-
-					memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-					//start = ntohs(start);
-					memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-					break;
-				case 3:
-					sizeOfOneDataPoint = 4;
-					sizeOfQuality = 0;
-
-					memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-					//start = ntohs(start);
-					memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-					break;
-				case 4:
-					sizeOfOneDataPoint = 2;
-					sizeOfQuality = 0;
-
-					memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-					//start = ntohs(start);
-					memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-					break;
-				case 5:
-					sizeOfOneDataPoint = 4;
-					sizeOfQuality = 1;
-
-					memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-					//start = ntohs(start);
-					memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-					break;
-				default:
-														sizeOfOneDataPoint = 0;
-														sizeOfQuality = 0;
-														sizeOfCtrlStatus = 0;
-														printf("Group or Variance not found \n");
-														done=1;
-														return -1;
+					//you have missed the point
+					continue;
 				}
 
+				else if(startingIndex<0 && abs(startingIndex)<(sizeOfOneDataPoint+sizeOfQuality))
+				{
+
+					//the data is split between two packets
+					segment = 0;
+					offSet =  startingIndex;
+					byteNumberNewPktBuffer =  offSet +10 ;
+				}
+
+				else if(startingIndex > buflen-1)
+				{
+					done = 1;
+					continue;
+
+				}
+				else{
+					segment = (byteNumber-(rdata->buflen-buflen+1))/16;
+					offSet =  (byteNumber-(rdata->buflen-buflen+1))%16;
+					byteNumberNewPktBuffer = segment*18 + offSet +10;
+				}
+
+				//if the data is in segment 15 and offset over 9 then part of data will be in the next pkt
+
+								uint8_t  tempValueToCopy[sizeOfOneDataPoint];
+
+								float tempfloat = (config->values_to_alter[i]).floating_point_val;
+								int tempInt = (config->values_to_alter[i]).integer_value;
+								memcpy(tempValueToCopy,&tempfloat,4);
 
 
-				break;
-
-				case 31:
-								switch(rdata->obj_var)
+								if(segment==0 && offSet <0)
 								{
-								case 1:
-									sizeOfOneDataPoint = 4;
-									sizeOfQuality = 1;
-
-									memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-									//start = ntohs(start);
-									memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-									rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-									break;
-								case 2:
-									sizeOfOneDataPoint = 2;
-									sizeOfQuality = 1;
-
-									memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-									//start = ntohs(start);
-									memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-									rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-									break;
-								case 3:
-									sizeOfOneDataPoint = 10;
-									sizeOfQuality = 1;
-
-									memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-									//start = ntohs(start);
-									memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-									rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-									break;
-								case 4:
-									sizeOfOneDataPoint = 8;
-									sizeOfQuality = 1;
-
-									memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-									//start = ntohs(start);
-									memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-									rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-									break;
-								case 5:
-									sizeOfOneDataPoint = 4;
-									sizeOfQuality = 0;
-
-									memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-									//start = ntohs(start);
-									memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-									rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-									break;
-								case 6:
-									sizeOfOneDataPoint = 2;
-									sizeOfQuality = 0;
-
-									memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-									//start = ntohs(start);
-									memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-									rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-									break;
-								default:
-																		sizeOfOneDataPoint = 0;
-																		sizeOfQuality = 0;
-																		sizeOfCtrlStatus = 0;
-																		printf("Group or Variance not found \n");
-																		done=1;
-																		return -1;
+									startingIndexAlteredVal = abs(offSet);
 								}
 
+								else
+									startingIndexAlteredVal = 0;
+								//10 byte DNP3 link layer frame header, 1 byte DNP3 transport layer header, 3 byte response header and 3 bytes+sizeOfRange object header
+								//copy byte by byte since the value can be between two application segments then calculate the CRC for both segments
+								int twoSegments =0;
+								int count = 0;
+								for(int j=startingIndexAlteredVal;j<sizeOfOneDataPoint;j++){
+									int temp = 1+byteNumberNewPktBuffer+sizeOfQuality+j-26;
+
+									if((temp)==0 || ((temp)>0 && (temp)%18==0))
+									{
+										if(sizeOfOneDataPoint>1)
+										{
+										count+=2;
+										twoSegments++;
+										}
+									}
+									int dataIndexAdvance = 1;
+									if(offSet ==15)
+										dataIndexAdvance = 3;
+									if((config->values_to_alter[i]).obj_group==1 )
+									{
+										int p = ((config->values_to_alter[i]).identifier%8);
+										int mask = 1<<p;
+										int n;
+										memcpy(&n,(pdu_start+dataIndexAdvance+byteNumberNewPktBuffer+sizeOfQuality+startingIndexAlteredVal+count),1);
 
 
-								break;
+										n = (n & ~mask)|((tempInt<<p)& mask);
+										memcpy(tempValueToCopy,&n,4);
+										memcpy((pdu_start+dataIndexAdvance+byteNumberNewPktBuffer+sizeOfQuality+startingIndexAlteredVal+count),tempValueToCopy+j,1);
+
+										modified =1;
+									}
+									else
+									{
+										if((config->values_to_alter[i]).operation==1 ){
+											if((config->values_to_alter[i]).obj_group>10 ){
+												memcpy((pdu_start+dataIndexAdvance+byteNumberNewPktBuffer+sizeOfQuality+startingIndexAlteredVal+count),tempValueToCopy+j,1);
+
+											}
+											else
+											{
+												memcpy(tempValueToCopy,&tempInt,4);
+												memcpy((pdu_start+dataIndexAdvance+byteNumberNewPktBuffer+sizeOfQuality+startingIndexAlteredVal+count),tempValueToCopy+j,1);
+											}
+										}
+//										else if ((config->values_to_alter[i]).operation==2 )
+//										{
+//											float currentVal;
+//											memcpy(&currentVal,(pdu_start+1+byteNumberNewPktBuffer+sizeOfQuality+startingIndexAlteredVal+count),4);
+//											currentVal = ntohs(currentVal)*(100+temp)/100;
+//											currentVal = htons(currentVal);
+//											memcpy(tempValueToCopy,&currentVal ,4);
+//											memcpy((pdu_start+dataIndexAdvance+byteNumberNewPktBuffer+sizeOfQuality+startingIndexAlteredVal+count),tempValueToCopy+j,1);
+//										}
+									}
+									modified = 1;
+									printf("Group %d Variance %d \n",rdata->obj_group,rdata->obj_var);
+									count++;
+								}
+
+								(config->values_to_alter[i]).done = 1;
+
+								{
+								for(int j=0;j<=twoSegments;j++)
+								{
+									uint16_t idx;
+									uint16_t crc = 0;
+									uint8_t  temp_crc[2];
+									int dataLeft = pdu_length - (segment*18 +10) -2;
+									/* Compute check code for data in received block. This is for a full chunk */
+									if(dataLeft>DNP3_CHUNK_SIZE){
+									for (idx = 0; idx < DNP3_CHUNK_SIZE; idx++)
+										computeCRC(*(pdu_start+idx+segment*18 +10), &crc);
+									}
+									else
+									{
+										for (idx = 0; idx < dataLeft; idx++)
+																computeCRC(*(pdu_start+idx+segment*18 +10), &crc);
+									}
+
+									crc = ~crc; /* Invert */
+
+									/* Check CRC at end of block */
+									temp_crc[0] = (unsigned char)crc ;
+									temp_crc[1] = (unsigned char)(crc >> 8);
+
+									memcpy((pdu_start+idx+segment*18 +10),temp_crc,2);
+									segment++;
+								}
+
+								}
+
+							}
+			}
+
+			else if(quantity==1 && absAddress ==0){
+
+				if((config->values_to_alter[i]).done != 1 && (config->values_to_alter[i]).func_code == rdata->func_code && (config->values_to_alter[i]).obj_group == rdata->obj_group && (config->values_to_alter[i]).obj_var == rdata->obj_var && (config->values_to_alter[i]).identifier <= rdata->numberOfValues  )
+								{
+
+									if(rdata->obj_group==1)
+										byteNumber = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality+sizeOfCtrlStatus)*((config->values_to_alter[i]).identifier)/8;
+									else
+									byteNumber = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality+sizeOfCtrlStatus)*((config->values_to_alter[i]).identifier);
+									//calculate the starting index of the data of concern in the app data of the new packet
+									//if starting index is a negative with modulus less than the length of data that means the first bytes are already in the session buffer
+									//should change partial data existing at the end of the pdu
+									startingIndex = byteNumber-(rdata->buflen-buflen+1);    // buflen is the length of data in the current packet
+									if(startingIndex<0 && abs(startingIndex)>=(sizeOfOneDataPoint+sizeOfQuality))
+									{
+										//you have missed the point
+										continue;
+									}
+
+									else if(startingIndex<0 && abs(startingIndex)<(sizeOfOneDataPoint+sizeOfQuality+sizeOfCtrlStatus))
+									{
+
+										//the data is split between two packets
+										segment = 0;
+										offSet =  startingIndex;
+										byteNumberNewPktBuffer =  offSet +10 ;
+									}
+
+									else if(startingIndex > buflen-1)
+									{
+										done = 1;
+										continue;
+
+									}
+									else{
+										segment = (byteNumber-(rdata->buflen-buflen+1))/16;
+										offSet =  (byteNumber-(rdata->buflen-buflen+1))%16;
+										byteNumberNewPktBuffer = segment*18 + offSet +10;
+									}
+
+									//if the data is in segment 15 and offset over 9 then part of data will be in the next pkt
+
+													uint8_t  tempValueToCopy[sizeOfOneDataPoint];
+
+													float tempFloat = (config->values_to_alter[i]).floating_point_val;
+													int tempInt = (config->values_to_alter[i]).integer_value;
+													memcpy(tempValueToCopy,&tempFloat,4);
 
 
-								case 32:
-									switch(rdata->obj_var)
+													if(segment==0 && offSet <0)
 													{
-													case 1:
-														sizeOfOneDataPoint = 4;
-														sizeOfQuality = 1;
-
-														memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-														//start = ntohs(start);
-														memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-														rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-														break;
-													case 2:
-														sizeOfOneDataPoint = 2;
-														sizeOfQuality = 1;
-
-														memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-														//start = ntohs(start);
-														memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-														rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-														break;
-													case 3:
-														sizeOfOneDataPoint =10;
-														sizeOfQuality = 1;
-
-														memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-														//start = ntohs(start);
-														memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-														rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-														break;
-													case 4:
-														sizeOfOneDataPoint = 8;
-														sizeOfQuality = 1;
-
-														memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-														//start = ntohs(start);
-														memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-														rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-														break;
-													default:
-																							sizeOfOneDataPoint = 0;
-																							sizeOfQuality = 0;
-																							sizeOfCtrlStatus = 0;
-																							printf("Group or Variance not found \n");
-																							done=1;
-																							return -1;
+														startingIndexAlteredVal = abs(offSet);
 													}
-									break;
 
-				case 33:
-					switch(rdata->obj_var)
+													else
+														startingIndexAlteredVal = 0;
+													//10 byte DNP3 link layer frame header, 1 byte DNP3 transport layer header, 3 byte response header and 3 bytes+sizeOfRange object header
+													//copy byte by byte since the value can be between two application segments then calculate the CRC for both segments
+													int twoSegments =0;
+													int count = 0;
+													for(int j=startingIndexAlteredVal;j<sizeOfOneDataPoint;j++){
+														int temp = 1+byteNumberNewPktBuffer+sizeOfQuality+j-26;
+
+														if((temp)==0 || ((temp)>0 && (temp)%18==0))
+														{
+															if(sizeOfOneDataPoint>1)
+															{
+															count+=2;
+															twoSegments++;
+															}
+														}
+														int dataIndexAdvance = 1;
+														if(offSet ==15)
+															dataIndexAdvance = 3;
+														if((config->values_to_alter[i]).obj_group==1 )
+														{
+															int p = ((config->values_to_alter[i]).identifier%8);
+															int mask = 1<<p;
+															int n;
+															memcpy(&n,(pdu_start+dataIndexAdvance+byteNumberNewPktBuffer+sizeOfQuality+startingIndexAlteredVal+count),1);
+
+
+															n = (n & ~mask)|((tempInt<<p)& mask);
+															memcpy(tempValueToCopy,&n,4);
+															memcpy((pdu_start+dataIndexAdvance+byteNumberNewPktBuffer+sizeOfQuality+startingIndexAlteredVal+count),tempValueToCopy+j,1);
+
+
+														}
+														else
+														{
+															if((config->values_to_alter[i]).operation==1 ){
+																if((config->values_to_alter[i]).obj_group>10 ){
+																	memcpy((pdu_start+dataIndexAdvance+byteNumberNewPktBuffer+sizeOfQuality+startingIndexAlteredVal+count),tempValueToCopy+j,1);
+																}
+																else
+																{
+																	memcpy(tempValueToCopy,&tempInt,4);
+																	memcpy((pdu_start+dataIndexAdvance+byteNumberNewPktBuffer+sizeOfQuality+startingIndexAlteredVal+count),tempValueToCopy+j,1);
+																}
+															}
+
+//															else if ((config->values_to_alter[i]).operation==2 )
+//															{
+//																float currentVal;
+//																memcpy(&currentVal,(pdu_start+1+byteNumberNewPktBuffer+sizeOfQuality+startingIndexAlteredVal+count),4);
+//																currentVal = ntohs(currentVal)*(100+temp)/100;
+//																currentVal = htons(currentVal);
+//																memcpy(tempValueToCopy,&currentVal ,4);
+//																memcpy((pdu_start+dataIndexAdvance+byteNumberNewPktBuffer+sizeOfQuality+startingIndexAlteredVal+count),tempValueToCopy+startingIndexAlteredVal+j,1);
+//															}
+														}
+														modified = 1;
+														printf("Group %d Variance %d \n",rdata->obj_group,rdata->obj_var);
+														count++;
+													}
+													(config->values_to_alter[i]).done = 1;
+
+													for(int j=0;j<=twoSegments;j++)
+													{
+														uint16_t idx;
+														uint16_t crc = 0;
+														uint8_t  temp_crc[2];
+														int dataLeft = pdu_length - (segment*18 +10) -2;
+														/* Compute check code for data in received block. This is for a full chunk */
+														if(dataLeft>DNP3_CHUNK_SIZE){
+														for (idx = 0; idx < DNP3_CHUNK_SIZE; idx++)
+															computeCRC(*(pdu_start+idx+segment*18 +10), &crc);
+														}
+														else
+														{
+															for (idx = 0; idx < dataLeft; idx++)
+																					computeCRC(*(pdu_start+idx+segment*18 +10), &crc);
+														}
+
+														crc = ~crc; /* Invert */
+
+														/* Check CRC at end of block */
+														temp_crc[0] = (unsigned char)crc ;
+														temp_crc[1] = (unsigned char)(crc >> 8);
+
+														memcpy((pdu_start+idx+segment*18 +10),temp_crc,2);
+														segment++;
+													}
+
+												}
+											}
+
+			}
+
+
+
+
+
+		if((rdata->indexOfCurrentResponceObjHeader<rdata->indexOfNextResponceObjHeader && rdata->indexOfNextResponceObjHeader<rdata->buflen) && done!=1){
+			rdata->indexOfCurrentResponceObjHeader = rdata->indexOfNextResponceObjHeader;
+
+//			if(rdata->indexOfCurrentResponceObjHeader>=rdata->buflen)
+//			{
+//				done = 1;
+//				break;
+//			}
+
+
+			rdata->obj_group = rdata->buffer[rdata->indexOfCurrentResponceObjHeader];
+				rdata->obj_var = rdata->buffer[rdata->indexOfCurrentResponceObjHeader+1];
+				 rdata->qualifier= rdata->buffer[rdata->indexOfCurrentResponceObjHeader+2];
+				rdata->start = 0;
+				rdata->stop = 0;
+				rdata->numberOfValues = 0;
+
+				uint8_t minBufferLength = 0;
+
+
+				//Setting the Range based on the Qualifier
+
+				switch(rdata->qualifier & 0x0F)
 					{
+					case 0:
+						sizeOfRange = 2;
+						minBufferLength = 7 + sizeOfRange;
+						absAddress= 0;
+																								quantity= 0;
+						break;
 					case 1:
-						sizeOfOneDataPoint = 4;
-						sizeOfQuality = 1;
-
-						memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-						//start = ntohs(start);
-						memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-						rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+						sizeOfRange = 4;
+						minBufferLength = 7 + sizeOfRange;
+						absAddress= 0;
+																		quantity= 0;
 						break;
 					case 2:
-						sizeOfOneDataPoint = 2;
-						sizeOfQuality = 1;
-
-						memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-						//start = ntohs(start);
-						memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-						rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+						sizeOfRange = 8;
+						minBufferLength = 7 + sizeOfRange;
+						absAddress= 0;
+												quantity= 0;
 						break;
 					case 3:
-						sizeOfOneDataPoint =10;
-						sizeOfQuality = 1;
-
-						memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-						//start = ntohs(start);
-						memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-						rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+						sizeOfRange = 1;
+						absAddress= 1;
+						quantity= 0;
+						minBufferLength = 7 + sizeOfRange;
 						break;
 					case 4:
-						sizeOfOneDataPoint = 8;
-						sizeOfQuality = 1;
-
-						memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-						//start = ntohs(start);
-						memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-						rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+						sizeOfRange = 2;
+						absAddress= 1;
+						quantity= 0;
+						minBufferLength = 7 + sizeOfRange;
 						break;
+					case 5:
+						sizeOfRange = 4;
+						absAddress= 1;
+						quantity= 0;
+						minBufferLength = 7 + sizeOfRange;
+						break;
+					case 6:
+						sizeOfRange = 0;
+						minBufferLength = 7 + sizeOfRange;
+						quantity= 3;
+												absAddress= 3;
+						break;
+					case 7:
+						sizeOfRange = 1;
+						quantity= 1;
+												absAddress= 0;
+						minBufferLength = 7 + sizeOfRange;
+
+						break;
+					case 8:
+						sizeOfRange = 2;
+						quantity= 1;
+												absAddress= 0;
+						minBufferLength = 7 + sizeOfRange;
+
+						break;
+					case 9:
+						sizeOfRange = 4;
+						quantity= 1;
+						absAddress= 0;
+						minBufferLength = 7 + sizeOfRange;
+
+						break;
+
 					default:
-															sizeOfOneDataPoint = 0;
-															sizeOfQuality = 0;
-															sizeOfCtrlStatus = 0;
-															printf("Group or Variance not found \n");
-															done=1;
-															return -1;
-					}
-					break;
-
-					case 40:
-						switch(rdata->obj_var)
-						{
-						case 1:
-							sizeOfOneDataPoint = 4;
-							sizeOfQuality = 1;
-
-							memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-							//start = ntohs(start);
-							memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-							rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-							break;
-						case 2:
-							sizeOfOneDataPoint = 2;
-							sizeOfQuality = 1;
-
-							memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-							//start = ntohs(start);
-							memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-							rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-							break;
-						case 3:
-							sizeOfOneDataPoint = 4;
-							sizeOfQuality = 1;
-
-							memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-							//start = ntohs(start);
-							memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-							rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-							break;
-
-						default:
-																sizeOfOneDataPoint = 0;
-																sizeOfQuality = 0;
-																sizeOfCtrlStatus = 0;
-																printf("Group or Variance not found \n");
-																done=1;
-																return -1;
-						}
 						break;
-
-						case 41:
-							switch(rdata->obj_var)
-							{
-							case 1:
-								sizeOfOneDataPoint = 1;
-								sizeOfQuality = 4;
-
-								memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-								//start = ntohs(start);
-								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-								break;
-							case 2:
-								sizeOfOneDataPoint = 1;
-								sizeOfQuality = 4;
-
-								memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-								//start = ntohs(start);
-								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-								break;
-
-							default:
-																	sizeOfOneDataPoint = 0;
-																	sizeOfQuality = 0;
-																	sizeOfCtrlStatus = 0;
-																	printf("Group or Variance not found \n");
-																	done=1;
-																	return -1;
-							}
-							break;
-
-
-							case 50:
-								switch(rdata->obj_var)
-								{
-								case 1:
-									sizeOfOneDataPoint = 6;
-									sizeOfQuality = 0;
-
-									memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-									//start = ntohs(start);
-									memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-									rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-									break;
-								case 2:
-									sizeOfOneDataPoint = 10;
-									sizeOfQuality = 0;
-
-									memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-									//start = ntohs(start);
-									memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-									rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-									break;
-
-								default:
-																		sizeOfOneDataPoint = 0;
-																		sizeOfQuality = 0;
-																		sizeOfCtrlStatus = 0;
-																		printf("Group or Variance not found \n");
-																		done=1;
-																		return -1;
-								}
-								break;
-
-
-
-								case 51:
-									switch(rdata->obj_var)
-									{
-									case 1:
-										sizeOfOneDataPoint = 6;
-										sizeOfQuality += 0;
-
-										rdata->start=0;
-										//start = ntohs(start);
-										memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange),sizeOfRange);
-										rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-										break;
-									case 2:
-										sizeOfOneDataPoint = 6;
-										sizeOfQuality += 0;
-
-										memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
-										//start = ntohs(start);
-										memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
-										rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-										break;
-
-									default:
-																			sizeOfOneDataPoint = 0;
-																			sizeOfQuality = 0;
-																			sizeOfCtrlStatus = 0;
-																			printf("Group or Variance not found \n");
-																			done=1;
-																			return -1;
-									}
-									break;
-
-									case 52:
-										switch(rdata->obj_var)
-										{
-										case 1:
-											sizeOfOneDataPoint = 2;
-											sizeOfQuality = 0;
-
-											memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-											//start = ntohs(start);
-											memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-											rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-											break;
-										case 2:
-											sizeOfOneDataPoint =2;
-											sizeOfQuality = 0;
-
-											memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-											//start = ntohs(start);
-											memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-											rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-											break;
-
-										default:
-																				sizeOfOneDataPoint = 0;
-																				sizeOfQuality = 0;
-																				sizeOfCtrlStatus = 0;
-																				printf("Group or Variance not found \n");
-																				done=1;
-																				return -1;
-										}
-										break;
-
-
-
-
-										default:
-																				sizeOfOneDataPoint = 0;
-																				sizeOfQuality = 0;
-																				sizeOfCtrlStatus = 0;
-																				printf("Group or Variance not found \n");
-																				done=1;
-																				return -1;
-	}
-	rdata->sizeOfData = sizeOfOneDataPoint;
-	rdata->sizeOfQuality = sizeOfQuality;
-	rdata->sizeOfRange = sizeOfRange;
-
-	testCount = 0;
-
-
-	while(!done) //it will be done when we reach the end of buffer in rdata->server_rdata.buflen
-		{
-			testCount++;
-			if(testCount>5)
-			{
-				printf( "in test count\n");
-
-				done = 1;
-			}
-			sizeOfOneDataPoint = rdata->sizeOfData;
-				 sizeOfQuality = rdata->sizeOfQuality;
-				 sizeOfRange = rdata->sizeOfRange;
-			//check for the occurance of the object in the server_data and modify it
-			for(int i=0;i<config->numAlteredVal;i++)
-			{
-	//			if((config->values_to_alter[i]).done)
-	//			{
-	//				continue;
-	//			}
-
-				if((config->values_to_alter[i]).func_code == rdata->func_code && (config->values_to_alter[i]).obj_group == rdata->obj_group && (config->values_to_alter[i]).obj_var == rdata->obj_var && (config->values_to_alter[i]).identifier <=rdata->stop && (config->values_to_alter[i]).identifier >=rdata->start)
-				{
-
-					if(rdata->obj_group==1)
-						byteNumber = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*((config->values_to_alter[i]).identifier -rdata->start)/8;
-					else
-					byteNumber = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*((config->values_to_alter[i]).identifier -rdata->start);
-					//calculate the starting index of the data of concern in the app data of the new packet
-					//if starting index is a negative with modulus less than the length of data that means the first bytes are already in the session buffer
-					//should change partial data existing at the end of the pdu
-					startingIndex = byteNumber-(rdata->buflen-buflen+1);    // buflen is the length of data in the current packet
-					if(startingIndex<0 && abs(startingIndex)>=(sizeOfOneDataPoint+sizeOfQuality))
-					{
-						//you have missed the point
-						continue;
 					}
-
-					else if(startingIndex<0 && abs(startingIndex)<(sizeOfOneDataPoint+sizeOfQuality))
-					{
-
-						//the data is split between two packets
-						segment = 0;
-						offSet =  startingIndex;
-						byteNumberNewPktBuffer =  offSet +10 ;
-					}
-
-					else if(startingIndex > buflen-1)
-					{
-						done = 1;
-						continue;
-
-					}
-					else{
-						segment = (byteNumber-(rdata->buflen-buflen+1))/16;
-						offSet =  (byteNumber-(rdata->buflen-buflen+1))%16;
-						byteNumberNewPktBuffer = segment*18 + offSet +10;
-					}
-
-					//if the data is in segment 15 and offset over 9 then part of data will be in the next pkt
-
-									uint8_t  tempValueToCopy[sizeOfOneDataPoint];
-
-									float temp = (config->values_to_alter[i]).floating_point_val;
-									int tempInt = (config->values_to_alter[i]).integer_value;
-									memcpy(tempValueToCopy,&temp,4);
-
-
-									if(segment==0 && offSet <0)
-									{
-										startingIndexAlteredVal = abs(offSet);
-									}
-
-									else
-										startingIndexAlteredVal = 0;
-									//10 byte DNP3 link layer frame header, 1 byte DNP3 transport layer header, 3 byte response header and 3 bytes+sizeOfRange object header
-									//copy byte by byte since the value can be between two application segments then calculate the CRC for both segments
-									int twoSegments =0;
-									int count = 0;
-									for(int j=0;j<sizeOfOneDataPoint-startingIndexAlteredVal;j++){
-										int temp = 1+byteNumberNewPktBuffer+sizeOfQuality+startingIndexAlteredVal+j-26;
-
-										if((temp)==0 || ((temp)>0 && (temp)%18==0))
-										{
-											if(sizeOfOneDataPoint>1)
-											{
-											count+=2;
-											twoSegments++;
-											}
-										}
-										int dataIndexAdvance = 1;
-										if(offSet ==15)
-											dataIndexAdvance = 3;
-										if((config->values_to_alter[i]).obj_group==1 )
-										{
-											int p = ((config->values_to_alter[i]).identifier%8);
-											int mask = 1<<p;
-											int n;
-											memcpy(&n,(pdu_start+dataIndexAdvance+byteNumberNewPktBuffer+sizeOfQuality+startingIndexAlteredVal+count),1);
-
-
-											n = (n & ~mask)|((tempInt<<p)& mask);
-											memcpy(tempValueToCopy,&n,4);
-											memcpy((pdu_start+dataIndexAdvance+byteNumberNewPktBuffer+sizeOfQuality+startingIndexAlteredVal+count),tempValueToCopy+startingIndexAlteredVal+j,1);
-
-
-										}
-										else
-										{
-											if((config->values_to_alter[i]).operation==1 )
-												if((config->values_to_alter[i]).obj_group>10 ){
-													memcpy((pdu_start+dataIndexAdvance+byteNumberNewPktBuffer+sizeOfQuality+startingIndexAlteredVal+count),tempValueToCopy+startingIndexAlteredVal+j,1);
-												}
-												else
-												{
-													memcpy(tempValueToCopy,&tempInt,4);
-													memcpy((pdu_start+dataIndexAdvance+byteNumberNewPktBuffer+sizeOfQuality+startingIndexAlteredVal+count),tempValueToCopy+startingIndexAlteredVal+j,1);
-												}
-
-											else if ((config->values_to_alter[i]).operation==2 )
-											{
-												float currentVal;
-												memcpy(&currentVal,(pdu_start+1+byteNumberNewPktBuffer+sizeOfQuality+startingIndexAlteredVal+count),4);
-												currentVal = ntohs(currentVal)*(100+temp)/100;
-												currentVal = htons(currentVal);
-												memcpy(tempValueToCopy,&currentVal ,4);
-												memcpy((pdu_start+dataIndexAdvance+byteNumberNewPktBuffer+sizeOfQuality+startingIndexAlteredVal+count),tempValueToCopy+startingIndexAlteredVal+j,1);
-											}
-										}
-										modified = 1;
-
-										count++;
-									}
-									if(offSet==15)
-									{
-										segment++;
-									}
-									for(int j=0;j<=twoSegments;j++)
-									{
-										uint16_t idx;
-										uint16_t crc = 0;
-										uint8_t  temp_crc[2];
-										int dataLeft = pdu_length - (segment*18 +10) -2;
-										/* Compute check code for data in received block. This is for a full chunk */
-										if(dataLeft>DNP3_CHUNK_SIZE){
-										for (idx = 0; idx < DNP3_CHUNK_SIZE; idx++)
-											computeCRC(*(pdu_start+idx+segment*18 +10), &crc);
-										}
-										else
-										{
-											for (idx = 0; idx < dataLeft; idx++)
-																	computeCRC(*(pdu_start+idx+segment*18 +10), &crc);
-										}
-
-										crc = ~crc; /* Invert */
-
-										/* Check CRC at end of block */
-										temp_crc[0] = (unsigned char)crc ;
-										temp_crc[1] = (unsigned char)(crc >> 8);
-
-										memcpy((pdu_start+idx+segment*18 +10),temp_crc,2);
-										segment++;
-									}
-
-								}
-							}
-
-
-
-
-			if((rdata->indexOfCurrentResponceObjHeader<rdata->indexOfNextResponceObjHeader && rdata->indexOfNextResponceObjHeader<rdata->buflen)){
-				rdata->indexOfCurrentResponceObjHeader = rdata->indexOfNextResponceObjHeader;
-
-	//			if(rdata->indexOfCurrentResponceObjHeader>=rdata->buflen)
-	//			{
-	//				done = 1;
-	//				break;
-	//			}
-
-
-				rdata->obj_group = rdata->buffer[rdata->indexOfCurrentResponceObjHeader];
-					rdata->obj_var = rdata->buffer[rdata->indexOfCurrentResponceObjHeader+1];
-					 rdata->qualifier= rdata->buffer[rdata->indexOfCurrentResponceObjHeader+2];
-					rdata->start = 0;
-					rdata->stop = 0;
-					absAddress = 3;
-					quantity = 3;
-					minBufferLength = 0;
-
-
-					//Setting the Range based on the Qualifier
-
-					switch(rdata->qualifier & 0x0F)
-						{
-						case 0:
-							sizeOfRange = 2;
-							quantity=0;
-							absAddress = 0;
-							minBufferLength = 7 + sizeOfRange;
-							break;
-						case 1:
-							sizeOfRange = 4;
-							quantity=0;
-									absAddress = 0;
-							minBufferLength = 7 + sizeOfRange;
-							break;
-						case 2:
-							sizeOfRange = 8;
-							quantity=0;
-									absAddress = 0;
-							minBufferLength = 7 + sizeOfRange;
-							break;
-						case 3:
-							sizeOfRange = 1;
-							absAddress= 1;
-							quantity=0;
-							minBufferLength = 7 + sizeOfRange;
-							break;
-						case 4:
-							sizeOfRange = 2;
-							absAddress= 1;
-							quantity=0;
-							minBufferLength = 7 + sizeOfRange;
-							break;
-						case 5:
-							sizeOfRange = 4;
-							absAddress= 1;
-							quantity=0;
-							minBufferLength = 7 + sizeOfRange;
-							break;
-						case 6:
-							sizeOfRange = 0;
-							absAddress= 3;
-							quantity=3;
-							minBufferLength = 7 + sizeOfRange;
-							break;
-						case 7:
-							sizeOfRange = 1;
-							quantity= 1;
-							absAddress= 0;
-							minBufferLength = 7 + sizeOfRange;
-							break;
-						case 8:
-							sizeOfRange = 2;
-							quantity= 1;
-							absAddress= 0;
-							minBufferLength = 7 + sizeOfRange;
-							break;
-						case 9:
-							sizeOfRange = 4;
-							quantity= 1;
-							absAddress= 0;
-							minBufferLength = 7 + sizeOfRange;
-							break;
-
-						default:
-							break;
-						}
 
 
 
@@ -2678,1647 +2103,65 @@ quantityNo :	if(quantity==0 && absAddress ==0){
 
 
 					switch(rdata->qualifier >> 4)
-							{
-							case 0:
-								sizeOfQuality = 0;
-								break;
-							case 1:
-								sizeOfQuality = 1;
-								break;
-							case 2:
-								sizeOfQuality = 2;
-								break;
-							case 3:
-								sizeOfQuality = 4;
-								break;
-							case 4:
-								sizeOfQuality = 1;
-								break;
-							case 5:
-								sizeOfQuality = 2;
-								break;
-							case 6:
-								sizeOfQuality = 4;
-								break;
-					default:
-						break;
-							}
-
-						rdata->sizeOfRange = sizeOfRange;
-						rdata->sizeOfQuality = sizeOfQuality;
-
-						if(quantity!=0)
-							goto quantityYes;
-					//put cases for each group and sub-cases for variations
-					switch(rdata->obj_group){
-
-					case 1:
-
-						switch(rdata->obj_var)
 						{
-						case 1:
-							sizeOfOneDataPoint = 1;
+						case 0:
 							sizeOfQuality = 0;
-
-							memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-							//start = ntohs(start);
-							memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-							//stop = ntohs(stop);
-
-							rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+sizeOfOneDataPoint*(rdata->stop-rdata->start+1)/8;
+							break;
+						case 1:
+							sizeOfQuality = 1;
 							break;
 						case 2:
-
-							sizeOfOneDataPoint = 1;
-							sizeOfQuality = 0;
-
-							memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-							//start = ntohs(start);
-							memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-							//stop = ntohs(stop);
-
-							rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+sizeOfOneDataPoint*(rdata->stop-rdata->start+1);
-							break;
-						default:
-							sizeOfOneDataPoint = 0;
-							sizeOfQuality = 0;
-							sizeOfCtrlStatus = 0;
-							printf("Group or Variance not found \n");
-							done=1;
-							return -1;
-						}
-						break;
-					case 2:
-						switch(rdata->obj_var){
-						case 1:
-							sizeOfOneDataPoint = 1;
-							sizeOfQuality = 0;
-							memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-							memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-							rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+sizeOfOneDataPoint*(rdata->stop-rdata->start+1);
-							break;
-
-						case 2:
-							sizeOfOneDataPoint = 7;
-							sizeOfQuality = 0;
-							memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-							memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-							rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+sizeOfOneDataPoint*(rdata->stop-rdata->start+1);
+							sizeOfQuality = 2;
 							break;
 						case 3:
-							sizeOfOneDataPoint = 3;
-							sizeOfQuality = 0;
-							memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-							memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-							rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+sizeOfOneDataPoint*(rdata->stop-rdata->start+1);
+							sizeOfQuality = 4;
 							break;
+						case 4:
+							sizeOfQuality = 1;
+							break;
+						case 5:
+							sizeOfQuality = 2;
 
-						default:
-													sizeOfOneDataPoint = 0;
-													sizeOfQuality = 0;
-													sizeOfCtrlStatus = 0;
-													printf("Group or Variance not found \n");
-													done=1;
-													return -1;
+							break;
+						case 6:
+							sizeOfQuality = 4;
+							break;
+				default:
+					break;
 						}
+					rdata->sizeOfRange = sizeOfRange;
+					rdata->sizeOfQuality = sizeOfQuality;
+				if(rdata->buflen<minBufferLength)
+					return 0;
 
-							break;
 
-					case 10:
-						switch(rdata->obj_var)
-						{
-						case 1:
-							sizeOfOneDataPoint = 1;
-							sizeOfQuality = 0;
+				//put cases for each group and sub-cases for variations
+				if(quantity==0 && absAddress==0)	{
+					navigateStrtStopSpecData( rdata, sizeOfOneDataPoint, sizeOfQuality,sizeOfRange,sizeOfIndex,sizeOfCtrlStatus);
 
-							memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-							memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-							rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+sizeOfOneDataPoint*(rdata->stop-rdata->start+1)/8;
-							break;
-						case 2:
-							sizeOfOneDataPoint = 1;
-							sizeOfQuality = 0;
+				}
 
-							memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-							memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-							rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+sizeOfOneDataPoint*(rdata->stop-rdata->start+1);
-							break;
-						default:
-													sizeOfOneDataPoint = 0;
-													sizeOfQuality = 0;
-													sizeOfCtrlStatus = 0;
-													printf("Group or Variance not found \n");
-													done=1;
-													return -1;
-						}
+				else if(quantity==1 && absAddress ==0)
+				{
+					navigateQuantitySpecData( rdata, sizeOfOneDataPoint, sizeOfQuality,sizeOfRange,sizeOfIndex,sizeOfCtrlStatus);
+				}
 
-						break;
 
-					case 12:
-						switch(rdata->obj_var)
-						{
-						case 1:
-							sizeOfOneDataPoint = 11;
-							sizeOfQuality = 0;
 
-							memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-							memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-							rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+sizeOfOneDataPoint*(rdata->stop-rdata->start+1);
-							break;
+		}
 
-						case 3:
-							sizeOfOneDataPoint = 1;
-							sizeOfQuality = 0;
+		else
+		{
+			done =1;
 
-							memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-							memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-							rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+sizeOfOneDataPoint*(rdata->stop-rdata->start+1)/8;
-							break;
-
-						default:
-													sizeOfOneDataPoint = 0;
-													sizeOfQuality = 0;
-													sizeOfCtrlStatus = 0;
-													printf("Group or Variance not found \n");
-													done=1;
-													return -1;
-						}
-						break;
-
-						case 20:
-							switch(rdata->obj_var)
-							{
-							case 1:
-								sizeOfOneDataPoint = 4;
-								sizeOfQuality = 1;
-
-								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-								break;
-
-							case 2:
-								sizeOfOneDataPoint = 2;
-								sizeOfQuality = 1;
-
-								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-								break;
-							case 3:
-								sizeOfOneDataPoint = 4;
-								sizeOfQuality = 1;
-
-								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-								break;
-
-							case 4:
-								sizeOfOneDataPoint = 2;
-								sizeOfQuality = 1;
-
-								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-								break;
-
-							case 5:
-								sizeOfOneDataPoint = 4;
-								sizeOfQuality = 0;
-
-								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-								break;
-
-							case 6:
-								sizeOfOneDataPoint = 2;
-								sizeOfQuality = 0;
-
-								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-								break;
-
-							case 7:
-								sizeOfOneDataPoint = 4;
-								sizeOfQuality = 0;
-
-								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-								break;
-
-							case 8:
-								sizeOfOneDataPoint = 2;
-								sizeOfQuality = 0;
-
-								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-								break;
-
-							default:
-														sizeOfOneDataPoint = 0;
-														sizeOfQuality = 0;
-														sizeOfCtrlStatus = 0;
-														printf("Group or Variance not found \n");
-														done=1;
-														return -1;
-							}
-							break;
-
-
-						case 21:
-							switch(rdata->obj_var)
-							{
-							case 1:
-								sizeOfOneDataPoint = 4;
-								sizeOfQuality = 1;
-
-								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-								break;
-
-							case 2:
-								sizeOfOneDataPoint = 2;
-								sizeOfQuality = 1;
-
-								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-								break;
-							case 3:
-								sizeOfOneDataPoint = 4;
-								sizeOfQuality = 1;
-
-								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-								break;
-
-							case 4:
-								sizeOfOneDataPoint = 2;
-								sizeOfQuality = 1;
-
-								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-								break;
-
-							case 5:
-								sizeOfOneDataPoint = 10;
-								sizeOfQuality = 1;
-
-								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-								break;
-
-							case 6:
-								sizeOfOneDataPoint = 8;
-								sizeOfQuality = 1;
-
-								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-								break;
-
-							case 7:
-								sizeOfOneDataPoint = 8;
-								sizeOfQuality = 1;
-
-								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-								break;
-
-							case 8:
-								sizeOfOneDataPoint = 8;
-								sizeOfQuality = 1;
-
-								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-								break;
-
-							case 9:
-								sizeOfOneDataPoint = 4;
-								sizeOfQuality = 0;
-
-								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-								break;
-							case 10:
-								sizeOfOneDataPoint = 2;
-								sizeOfQuality = 0;
-
-								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-								break;
-							case 11:
-								sizeOfOneDataPoint = 4;
-								sizeOfQuality = 0;
-
-								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-								break;
-							case 12:
-								sizeOfOneDataPoint = 2;
-								sizeOfQuality = 0;
-
-								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-								break;
-
-							default:
-														sizeOfOneDataPoint = 0;
-														sizeOfQuality = 0;
-														sizeOfCtrlStatus = 0;
-														printf("Group or Variance not found \n");
-														done=1;
-														return -1;
-							}
-							break;
-
-							case 22:
-								switch(rdata->obj_var)
-								{
-								case 1:
-									sizeOfOneDataPoint = 4;
-									sizeOfQuality = 1;
-
-									memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-									memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-									rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-									break;
-
-								case 2:
-									sizeOfOneDataPoint = 2;
-									sizeOfQuality = 1;
-
-									memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-									memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-									rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-									break;
-								case 3:
-									sizeOfOneDataPoint = 4;
-									sizeOfQuality = 1;
-
-									memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-									memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-									rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-									break;
-
-								case 4:
-									sizeOfOneDataPoint = 2;
-									sizeOfQuality = 1;
-
-									memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-									memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-									rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-									break;
-
-								case 5:
-									sizeOfOneDataPoint = 10;
-									sizeOfQuality = 1;
-
-									memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-									memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-									rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-									break;
-
-								case 6:
-									sizeOfOneDataPoint = 8;
-									sizeOfQuality = 1;
-
-									memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-									memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-									rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-									break;
-
-								case 7:
-									sizeOfOneDataPoint = 10;
-									sizeOfQuality = 1;
-
-									memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-									memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-									rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-									break;
-
-								case 8:
-									sizeOfOneDataPoint = 8;
-									sizeOfQuality = 1;
-
-									memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-									memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-									rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-									break;
-
-								default:
-															sizeOfOneDataPoint = 0;
-															sizeOfQuality = 0;
-															sizeOfCtrlStatus = 0;
-															printf("Group or Variance not found \n");
-															done=1;
-															return -1;
-								}
-								break;
-
-								case 23:
-									switch(rdata->obj_var)
-											{
-											case 1:
-												sizeOfOneDataPoint = 4;
-												sizeOfQuality = 1;
-
-												memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-												memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-												rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-												break;
-
-											case 2:
-												sizeOfOneDataPoint = 2;
-												sizeOfQuality = 1;
-
-												memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-												memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-												rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-																break;
-											case 3:
-												sizeOfOneDataPoint = 4;
-												sizeOfQuality = 1;
-
-												memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-												memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-												rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-												break;
-
-											case 4:
-												sizeOfOneDataPoint = 2;
-												sizeOfQuality = 1;
-
-												memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-												memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-												rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-												break;
-
-											case 5:
-												sizeOfOneDataPoint = 10;
-												sizeOfQuality = 1;
-
-												memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-												memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-												rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-												break;
-
-											case 6:
-												sizeOfOneDataPoint = 8;
-												sizeOfQuality = 1;
-
-												memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-												memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-												rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-												break;
-
-											case 7:
-												sizeOfOneDataPoint = 10;
-												sizeOfQuality = 1;
-
-												memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-												memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-												rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-												break;
-
-											case 8:
-												sizeOfOneDataPoint = 8;
-												sizeOfQuality = 1;
-
-												memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-												memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-												rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-												break;
-
-											default:
-																		sizeOfOneDataPoint = 0;
-																		sizeOfQuality = 0;
-																		sizeOfCtrlStatus = 0;
-																		printf("Group or Variance not found \n");
-																		done=1;
-																		return -1;
-											}
-											break;
-							case 30:
-								switch(rdata->obj_var)
-								{
-								case 1:
-									sizeOfOneDataPoint = 4;
-									sizeOfQuality = 1;
-
-									memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-									//start = ntohs(start);
-									memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-									rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-									break;
-								case 2:
-									sizeOfOneDataPoint = 2;
-									sizeOfQuality = 1;
-
-									memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-									//start = ntohs(start);
-									memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-									rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-									break;
-								case 3:
-									sizeOfOneDataPoint = 4;
-									sizeOfQuality = 0;
-
-									memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-									//start = ntohs(start);
-									memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-									rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-									break;
-								case 4:
-									sizeOfOneDataPoint = 2;
-									sizeOfQuality = 0;
-
-									memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-									//start = ntohs(start);
-									memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-									rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-									break;
-								case 5:
-									sizeOfOneDataPoint = 4;
-									sizeOfQuality = 1;
-
-									memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-									//start = ntohs(start);
-									memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-									rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-									printf("Modify Analog \n");
-									break;
-								default:
-															sizeOfOneDataPoint = 0;
-															sizeOfQuality = 0;
-															sizeOfCtrlStatus = 0;
-															printf("Group or Variance not found \n");
-															done=1;
-															return -1;
-								}
-
-
-
-								break;
-
-								case 31:
-												switch(rdata->obj_var)
-												{
-												case 1:
-													sizeOfOneDataPoint = 4;
-													sizeOfQuality = 1;
-
-													memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-													//start = ntohs(start);
-													memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-													rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-													break;
-												case 2:
-													sizeOfOneDataPoint = 2;
-													sizeOfQuality = 1;
-
-													memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-													//start = ntohs(start);
-													memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-													rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-													break;
-												case 3:
-													sizeOfOneDataPoint = 10;
-													sizeOfQuality = 1;
-
-													memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-													//start = ntohs(start);
-													memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-													rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-													break;
-												case 4:
-													sizeOfOneDataPoint = 8;
-													sizeOfQuality = 1;
-
-													memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-													//start = ntohs(start);
-													memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-													rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-													break;
-												case 5:
-													sizeOfOneDataPoint = 4;
-													sizeOfQuality = 0;
-
-													memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-													//start = ntohs(start);
-													memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-													rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-													break;
-												case 6:
-													sizeOfOneDataPoint = 2;
-													sizeOfQuality = 0;
-
-													memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-													//start = ntohs(start);
-													memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-													rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-													break;
-												default:
-																			sizeOfOneDataPoint = 0;
-																			sizeOfQuality = 0;
-																			sizeOfCtrlStatus = 0;
-																			printf("Group or Variance not found \n");
-																			done=1;
-																			return -1;
-												}
-
-
-
-												break;
-
-
-												case 32:
-													switch(rdata->obj_var)
-																	{
-																	case 1:
-																		sizeOfOneDataPoint = 4;
-																		sizeOfQuality = 1;
-
-																		memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-																		//start = ntohs(start);
-																		memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-																		rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-																		break;
-																	case 2:
-																		sizeOfOneDataPoint = 2;
-																		sizeOfQuality = 1;
-
-																		memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-																		//start = ntohs(start);
-																		memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-																		rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-																		break;
-																	case 3:
-																		sizeOfOneDataPoint =10;
-																		sizeOfQuality = 1;
-
-																		memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-																		//start = ntohs(start);
-																		memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-																		rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-																		break;
-																	case 4:
-																		sizeOfOneDataPoint = 8;
-																		sizeOfQuality = 1;
-
-																		memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-																		//start = ntohs(start);
-																		memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-																		rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-																		break;
-																	default:
-																								sizeOfOneDataPoint = 0;
-																								sizeOfQuality = 0;
-																								sizeOfCtrlStatus = 0;
-																								printf("Group or Variance not found \n");
-																								done=1;
-																								return -1;
-																	}
-													break;
-
-								case 33:
-									switch(rdata->obj_var)
-									{
-									case 1:
-										sizeOfOneDataPoint = 4;
-										sizeOfQuality = 1;
-
-										memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-										//start = ntohs(start);
-										memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-										rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-										break;
-									case 2:
-										sizeOfOneDataPoint = 2;
-										sizeOfQuality = 1;
-
-										memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-										//start = ntohs(start);
-										memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-										rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-										break;
-									case 3:
-										sizeOfOneDataPoint =10;
-										sizeOfQuality = 1;
-
-										memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-										//start = ntohs(start);
-										memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-										rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-										break;
-									case 4:
-										sizeOfOneDataPoint = 8;
-										sizeOfQuality = 1;
-
-										memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-										//start = ntohs(start);
-										memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-										rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-										break;
-									default:
-																sizeOfOneDataPoint = 0;
-																sizeOfQuality = 0;
-																sizeOfCtrlStatus = 0;
-																printf("Group or Variance not found \n");
-																done=1;
-																return -1;
-									}
-									break;
-
-									case 40:
-										switch(rdata->obj_var)
-										{
-										case 1:
-											sizeOfOneDataPoint = 4;
-											sizeOfQuality = 1;
-
-											memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-											//start = ntohs(start);
-											memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-											rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-											break;
-										case 2:
-											sizeOfOneDataPoint = 2;
-											sizeOfQuality = 1;
-
-											memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-											//start = ntohs(start);
-											memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-											rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-											break;
-
-										case 3:
-											sizeOfOneDataPoint = 4;
-											sizeOfQuality = 1;
-
-											memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-											//start = ntohs(start);
-											memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-											rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-											break;
-
-										default:
-																	sizeOfOneDataPoint = 0;
-																	sizeOfQuality = 0;
-																	sizeOfCtrlStatus = 0;
-																	printf("Group or Variance not found \n");
-																	done=1;
-																	return -1;
-										}
-										break;
-
-										case 41:
-											switch(rdata->obj_var)
-											{
-											case 1:
-												sizeOfOneDataPoint = 1;
-												sizeOfQuality = 4;
-
-												memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-												//start = ntohs(start);
-												memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-												rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-												break;
-											case 2:
-												sizeOfOneDataPoint = 1;
-												sizeOfQuality = 4;
-
-												memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-												//start = ntohs(start);
-												memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-												rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-												break;
-
-											default:
-																		sizeOfOneDataPoint = 0;
-																		sizeOfQuality = 0;
-																		sizeOfCtrlStatus = 0;
-																		printf("Group or Variance not found \n");
-																		done=1;
-																		return -1;
-											}
-											break;
-
-
-											case 50:
-												switch(rdata->obj_var)
-												{
-												case 1:
-													sizeOfOneDataPoint = 6;
-													sizeOfQuality = 0;
-
-													memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-													//start = ntohs(start);
-													memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-													rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-													break;
-												case 2:
-													sizeOfOneDataPoint = 10;
-													sizeOfQuality = 0;
-
-													memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-													//start = ntohs(start);
-													memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-													rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-													break;
-
-												default:
-																			sizeOfOneDataPoint = 0;
-																			sizeOfQuality = 0;
-																			sizeOfCtrlStatus = 0;
-																			printf("Group or Variance not found \n");
-																			done=1;
-																			return -1;
-												}
-												break;
-
-
-
-												case 51:
-													switch(rdata->obj_var)
-													{
-													case 1:
-														sizeOfOneDataPoint = 6;
-														sizeOfQuality += 0;
-
-														rdata->start = 0;
-														//start = ntohs(start);
-														memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange),sizeOfRange);
-														rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-														break;
-													case 2:
-														sizeOfOneDataPoint = 6;
-														sizeOfQuality += 0;
-
-														rdata->start = 0;
-														//start = ntohs(start);
-														memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange),sizeOfRange);
-														rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-														break;
-
-													default:
-																				sizeOfOneDataPoint = 0;
-																				sizeOfQuality = 0;
-																				sizeOfCtrlStatus = 0;
-																				printf("Group or Variance not found \n");
-																				done=1;
-																				return -1;
-													}
-													break;
-
-													case 52:
-														switch(rdata->obj_var)
-														{
-														case 1:
-															sizeOfOneDataPoint = 2;
-															sizeOfQuality = 0;
-
-															memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-															//start = ntohs(start);
-															memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-															rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-															break;
-														case 2:
-															sizeOfOneDataPoint =2;
-															sizeOfQuality = 0;
-
-															memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
-															//start = ntohs(start);
-															memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-															rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
-															break;
-
-														default:
-																					sizeOfOneDataPoint = 0;
-																					sizeOfQuality = 0;
-																					sizeOfCtrlStatus = 0;
-																					printf("Group or Variance not found \n");
-																					done=1;
-																					return -1;
-														}
-														break;
-
-
-
-
-							default:
-														sizeOfOneDataPoint = 0;
-														sizeOfQuality = 0;
-														sizeOfCtrlStatus = 0;
-														printf("Group or Variance not found \n");
-														done=1;
-														return -1;
-					}
-
-			}
-
-			else
-			{
-				done =1;
-
-			}
-				rdata->sizeOfData = sizeOfOneDataPoint;
-				rdata->sizeOfQuality= sizeOfQuality;
-				rdata->sizeOfRange = sizeOfRange;
 		}
 
 
 
-	}
-
-quantityYes :if(quantity==1 && absAddress ==0){
-
-
-
-		switch(rdata->obj_group){
-
-		case 1:
-
-									switch(rdata->obj_var)
-									{
-									case 1:
-										sizeOfOneDataPoint = 1;
-										sizeOfQuality += 0;
-										sizeOfCtrlStatus = 0;
-										memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
-										//start = ntohs(start);
-										rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality +sizeOfCtrlStatus)*(rdata->numberOfValues)/8;
-										break;
-									case 2:
-
-										sizeOfOneDataPoint = 1;
-										sizeOfQuality += 0;
-										sizeOfCtrlStatus = 0;
-										memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
-										//start = ntohs(start);
-										rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality +sizeOfCtrlStatus)*(rdata->numberOfValues)/8;
-										break;
-									default:
-										sizeOfOneDataPoint = 0;
-										sizeOfQuality = 0;
-										sizeOfCtrlStatus = 0;
-										printf("Group or Variance not found \n");
-										done=1;
-										return -1;
-									}
-									break;
-
-	case 2:
-					switch(rdata->obj_var){
-					case 1:
-						sizeOfOneDataPoint = 1;
-						sizeOfQuality += 0;
-						sizeOfCtrlStatus = 0;
-						memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
-						//start = ntohs(start);
-						rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality +sizeOfCtrlStatus)*(rdata->numberOfValues);
-						break;
-
-					case 2:
-						sizeOfOneDataPoint = 7;
-						sizeOfQuality += 0;
-						sizeOfCtrlStatus = 0;
-						memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
-						//start = ntohs(start);
-						rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality +sizeOfCtrlStatus)*(rdata->numberOfValues);
-						break;
-					case 3:
-						sizeOfOneDataPoint = 3;
-						sizeOfQuality += 0;
-						sizeOfCtrlStatus = 0;
-						memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
-						//start = ntohs(start);
-						rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality+sizeOfCtrlStatus)*(rdata->numberOfValues);
-						break;
-
-					default:
-															sizeOfOneDataPoint = 0;
-															sizeOfQuality = 0;
-															sizeOfCtrlStatus = 0;
-															printf("Group or Variance not found \n");
-															done=1;
-															return -1;
-					}
-
-						break;
-			case 41:
-													switch(rdata->obj_var)
-													{
-													case 3:
-														sizeOfOneDataPoint = 4;
-														sizeOfQuality+= 0;
-														sizeOfCtrlStatus = 1;
-
-														memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
-														//start = ntohs(start);
-
-														rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality +sizeOfCtrlStatus)*(rdata->numberOfValues);
-														break;
-
-
-													default:
-																							sizeOfOneDataPoint = 0;
-																							sizeOfQuality = 0;
-																							sizeOfCtrlStatus = 0;
-																							printf("Group or Variance not found \n");
-																							done=1;
-																							return -1;
-													}
-													break;
-
-
-					case 32:
-						switch(rdata->obj_var)
-						{
-						case 5:
-							sizeOfOneDataPoint = 4;
-							sizeOfQuality+= 1;
-							sizeOfCtrlStatus = 0;
-
-							memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
-							//start = ntohs(start);
-
-							rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality +sizeOfCtrlStatus)*(rdata->numberOfValues);
-							break;
-						default:
-																sizeOfOneDataPoint = 0;
-																sizeOfQuality = 0;
-																sizeOfCtrlStatus = 0;
-																printf("Group or Variance not found \n");
-																done=1;
-																return -1;
-
-						}
-						break;
-
-
-
-
-	      case 51:
-			switch(rdata->obj_var)
-						{
-						case 1:
-							sizeOfOneDataPoint = 6;
-							sizeOfQuality += 0;
-							sizeOfCtrlStatus = 0;
-
-							memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
-
-
-																				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality +sizeOfCtrlStatus)*(rdata->numberOfValues);
-																				break;
-						case 2:
-							sizeOfOneDataPoint = 6;
-							sizeOfQuality += 0;
-							sizeOfCtrlStatus = 0;
-
-							memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
-																				//start = ntohs(start);
-
-																				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality +sizeOfCtrlStatus)*(rdata->numberOfValues);
-																				break;
-
-						default:
-																sizeOfOneDataPoint = 0;
-																sizeOfQuality = 0;
-																sizeOfCtrlStatus = 0;
-																printf("Group or Variance not found \n");
-																done=1;
-																return -1;
-						}
-			break;
-
-			default:
-				sizeOfOneDataPoint = 0;
-				sizeOfQuality = 0;
-				sizeOfCtrlStatus=0;
-				done =1;
-				printf("Group or Variance not found \n");
-				return -1;
-				}
-				rdata->sizeOfData = sizeOfOneDataPoint;
-				rdata->sizeOfQuality = sizeOfQuality ;
-				rdata->sizeOfIndex=sizeOfIndex;
-				rdata->sizeOfCtrlStatus =sizeOfCtrlStatus;
-
-
-
-				testCount=0;
-				while(!done) //it will be done when we reach the end of buffer in rdata->server_rdata.buflen
-					{
-				testCount++;
-						if(testCount>5)
-						{
-							printf( "in test count\n");
-
-							done = 1;
-						}
-
-						sizeOfQuality =rdata->sizeOfQuality;
-						sizeOfIndex =rdata->sizeOfIndex;
-						sizeOfCtrlStatus=rdata->sizeOfCtrlStatus;
-						sizeOfOneDataPoint = rdata->sizeOfData;
-
-
-						//check for the occurance of the object in the server_data and modify it
-						for(int i=0;i<config->numAlteredVal;i++)
-						{
-			//				if((config->values_to_alter[i]).done)
-			//				{
-			//					continue;
-			//				}
-
-							if((config->values_to_alter[i]).func_code == rdata->func_code && (config->values_to_alter[i]).obj_group == rdata->obj_group && (config->values_to_alter[i]).obj_var == rdata->obj_var )
-							{
-
-								if(rdata->obj_group==1)
-									byteNumber = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality+sizeOfCtrlStatus)*((config->values_to_alter[i]).identifier)/8;
-								else
-								byteNumber = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality+sizeOfCtrlStatus)*((config->values_to_alter[i]).identifier);
-								//calculate the starting index of the data of concern in the app data of the new packet
-								//if starting index is a negative with modulus less than the length of data that means the first bytes are already in the session buffer
-								//should change partial data existing at the end of the pdu
-								startingIndex = byteNumber-(rdata->buflen-buflen+1);    // buflen is the length of data in the current packet
-								if(startingIndex<0 && abs(startingIndex)>=(sizeOfOneDataPoint+sizeOfQuality))
-								{
-									//you have missed the point
-									continue;
-								}
-
-								else if(startingIndex<0 && abs(startingIndex)<(sizeOfOneDataPoint+sizeOfQuality+sizeOfCtrlStatus))
-								{
-
-									//the data is split between two packets
-									segment = 0;
-									offSet =  startingIndex;
-									byteNumberNewPktBuffer =  offSet +10 ;
-								}
-
-								else if(startingIndex > buflen-1)
-								{
-									done = 1;
-									continue;
-
-								}
-								else{
-									segment = (byteNumber-(rdata->buflen-buflen+1))/16;
-									offSet =  (byteNumber-(rdata->buflen-buflen+1))%16;
-									byteNumberNewPktBuffer = segment*18 + offSet +10;
-								}
-
-								//if the data is in segment 15 and offset over 9 then part of data will be in the next pkt
-
-												uint8_t  tempValueToCopy[sizeOfOneDataPoint];
-
-												float tempFloat = (config->values_to_alter[i]).floating_point_val;
-												int tempInt = (config->values_to_alter[i]).integer_value;
-												memcpy(tempValueToCopy,&tempFloat,4);
-
-
-												if(segment==0 && offSet <0)
-												{
-													startingIndexAlteredVal = abs(offSet);
-												}
-
-												else
-													startingIndexAlteredVal = 0;
-												//10 byte DNP3 link layer frame header, 1 byte DNP3 transport layer header, 3 byte response header and 3 bytes+sizeOfRange object header
-												//copy byte by byte since the value can be between two application segments then calculate the CRC for both segments
-												int twoSegments =0;
-												int count = 0;
-												for(int j=0;j<sizeOfOneDataPoint-startingIndexAlteredVal;j++){
-													int temp = 1+byteNumberNewPktBuffer+sizeOfQuality+startingIndexAlteredVal+j-26;
-
-													if((temp)==0 || ((temp)>0 && (temp)%18==0))
-													{
-														if(sizeOfOneDataPoint>1)
-														{
-														count+=2;
-														twoSegments++;
-														}
-													}
-													int dataIndexAdvance = 1;
-													if(offSet ==15)
-														dataIndexAdvance = 3;
-													if((config->values_to_alter[i]).obj_group==1 )
-													{
-														int p = ((config->values_to_alter[i]).identifier%8);
-														int mask = 1<<p;
-														int n;
-														memcpy(&n,(pdu_start+dataIndexAdvance+byteNumberNewPktBuffer+sizeOfQuality+startingIndexAlteredVal+count),1);
-
-
-														n = (n & ~mask)|((tempInt<<p)& mask);
-														memcpy(tempValueToCopy,&n,4);
-														memcpy((pdu_start+dataIndexAdvance+byteNumberNewPktBuffer+sizeOfQuality+startingIndexAlteredVal+count),tempValueToCopy+startingIndexAlteredVal+j,1);
-
-
-													}
-													else
-													{
-														if((config->values_to_alter[i]).operation==1 )
-															if((config->values_to_alter[i]).obj_group>10 ){
-																memcpy((pdu_start+dataIndexAdvance+byteNumberNewPktBuffer+sizeOfQuality+startingIndexAlteredVal+count),tempValueToCopy+startingIndexAlteredVal+j,1);
-															}
-															else
-															{
-																memcpy(tempValueToCopy,&tempInt,4);
-																memcpy((pdu_start+dataIndexAdvance+byteNumberNewPktBuffer+sizeOfQuality+startingIndexAlteredVal+count),tempValueToCopy+startingIndexAlteredVal+j,1);
-															}
-
-														else if ((config->values_to_alter[i]).operation==2 )
-														{
-															float currentVal;
-															memcpy(&currentVal,(pdu_start+1+byteNumberNewPktBuffer+sizeOfQuality+startingIndexAlteredVal+count),4);
-															currentVal = ntohs(currentVal)*(100+temp)/100;
-															currentVal = htons(currentVal);
-															memcpy(tempValueToCopy,&currentVal ,4);
-															memcpy((pdu_start+dataIndexAdvance+byteNumberNewPktBuffer+sizeOfQuality+startingIndexAlteredVal+count),tempValueToCopy+startingIndexAlteredVal+j,1);
-														}
-													}
-													modified = 1;
-													printf("Group %d Variance %d \n",rdata->obj_group,rdata->obj_var);
-													count++;
-												}
-
-												for(int j=0;j<=twoSegments;j++)
-												{
-													uint16_t idx;
-													uint16_t crc = 0;
-													uint8_t  temp_crc[2];
-													int dataLeft = pdu_length - (segment*18 +10) -2;
-													/* Compute check code for data in received block. This is for a full chunk */
-													if(dataLeft>DNP3_CHUNK_SIZE){
-													for (idx = 0; idx < DNP3_CHUNK_SIZE; idx++)
-														computeCRC(*(pdu_start+idx+segment*18 +10), &crc);
-													}
-													else
-													{
-														for (idx = 0; idx < dataLeft; idx++)
-																				computeCRC(*(pdu_start+idx+segment*18 +10), &crc);
-													}
-
-													crc = ~crc; /* Invert */
-
-													/* Check CRC at end of block */
-													temp_crc[0] = (unsigned char)crc ;
-													temp_crc[1] = (unsigned char)(crc >> 8);
-
-													memcpy((pdu_start+idx+segment*18 +10),temp_crc,2);
-													segment++;
-												}
-
-											}
-										}
-
-
-
-
-						if((rdata->indexOfCurrentResponceObjHeader<rdata->indexOfNextResponceObjHeader && rdata->indexOfNextResponceObjHeader<rdata->buflen)){
-							rdata->indexOfCurrentResponceObjHeader = rdata->indexOfNextResponceObjHeader;
-
-				//			if(rdata->indexOfCurrentResponceObjHeader>=rdata->buflen)
-				//			{
-				//				done = 1;
-				//				break;
-				//			}
-
-
-							rdata->obj_group = rdata->buffer[rdata->indexOfCurrentResponceObjHeader];
-								rdata->obj_var = rdata->buffer[rdata->indexOfCurrentResponceObjHeader+1];
-								 rdata->qualifier= rdata->buffer[rdata->indexOfCurrentResponceObjHeader+2];
-								rdata->start = 0;
-								rdata->stop = 0;
-								rdata->numberOfValues = 0;
-								absAddress = 3;
-								quantity = 3;
-								minBufferLength = 0;
-
-
-								//Setting the Range based on the Qualifier
-
-								switch(rdata->qualifier & 0x0F)
-									{
-									case 0:
-										sizeOfRange = 2;
-										quantity=0;
-										absAddress = 0;
-										minBufferLength = 7 + sizeOfRange;
-										break;
-									case 1:
-										sizeOfRange = 4;
-										quantity=0;
-												absAddress = 0;
-										minBufferLength = 7 + sizeOfRange;
-										break;
-									case 2:
-										sizeOfRange = 8;
-										quantity=0;
-												absAddress = 0;
-										minBufferLength = 7 + sizeOfRange;
-										break;
-									case 3:
-										sizeOfRange = 1;
-										absAddress= 1;
-										quantity=0;
-										minBufferLength = 7 + sizeOfRange;
-										break;
-									case 4:
-										sizeOfRange = 2;
-										absAddress= 1;
-										quantity=0;
-										minBufferLength = 7 + sizeOfRange;
-										break;
-									case 5:
-										sizeOfRange = 4;
-										absAddress= 1;
-										quantity=0;
-										minBufferLength = 7 + sizeOfRange;
-										break;
-									case 6:
-										sizeOfRange = 0;
-										absAddress= 3;
-										quantity=3;
-										minBufferLength = 7 + sizeOfRange;
-										break;
-									case 7:
-										sizeOfRange = 1;
-										quantity= 1;
-										absAddress= 0;
-										minBufferLength = 7 + sizeOfRange;
-										break;
-									case 8:
-										sizeOfRange = 2;
-										quantity= 1;
-										absAddress= 0;
-										minBufferLength = 7 + sizeOfRange;
-										break;
-									case 9:
-										sizeOfRange = 4;
-										quantity= 1;
-										absAddress= 0;
-										minBufferLength = 7 + sizeOfRange;
-										break;
-
-									default:
-										break;
-									}
-
-								if(rdata->buflen<minBufferLength)
-									return 0;
-
-								switch(rdata->qualifier >>4)
-										{
-										case 0:
-											sizeOfQuality = 0;
-											break;
-										case 1:
-											sizeOfQuality = 1;
-											break;
-										case 2:
-											sizeOfQuality = 2;
-											break;
-										case 3:
-											sizeOfQuality = 4;
-											break;
-										case 4:
-											sizeOfQuality = 1;
-											break;
-										case 5:
-											sizeOfQuality = 2;
-											break;
-										case 6:
-											sizeOfQuality = 4;
-											break;
-								default:
-									break;
-										}
-
-									rdata->sizeOfRange = sizeOfRange;
-									rdata->sizeOfQuality = sizeOfQuality;
-								if(quantity!=1)
-								{
-
-									goto quantityNo;
-								}
-
-
-								switch(rdata->obj_group){
-
-								case 1:
-
-										switch(rdata->obj_var)
-										{
-										case 1:
-											sizeOfOneDataPoint = 1;
-											sizeOfQuality += 0;
-											sizeOfCtrlStatus = 0;
-											memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
-											//start = ntohs(start);
-											rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality +sizeOfCtrlStatus)*(rdata->numberOfValues)/8;
-											break;
-										case 2:
-
-											sizeOfOneDataPoint = 1;
-											sizeOfQuality += 0;
-											sizeOfCtrlStatus = 0;
-											memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
-											//start = ntohs(start);
-											rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality +sizeOfCtrlStatus)*(rdata->numberOfValues)/8;
-											break;
-										default:
-																				sizeOfOneDataPoint = 0;
-																				sizeOfQuality = 0;
-																				sizeOfCtrlStatus = 0;
-																				printf("Group or Variance not found \n");
-																				done=1;
-																				return -1;
-										}
-										break;
-
-										case 2:
-												switch(rdata->obj_var){
-												case 1:
-													sizeOfOneDataPoint = 1;
-													sizeOfQuality += 0;
-													sizeOfCtrlStatus = 0;
-													memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
-													//start = ntohs(start);
-													rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality +sizeOfCtrlStatus)*(rdata->numberOfValues);
-													break;
-
-												case 2:
-													sizeOfOneDataPoint = 7;
-													sizeOfQuality += 0;
-													sizeOfCtrlStatus = 0;
-													memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
-													//start = ntohs(start);
-													rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality +sizeOfCtrlStatus)*(rdata->numberOfValues);
-													break;
-												case 3:
-													sizeOfOneDataPoint = 3;
-													sizeOfQuality += 0;
-													sizeOfCtrlStatus = 0;
-													memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
-													//start = ntohs(start);
-													rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality+sizeOfCtrlStatus)*(rdata->numberOfValues);
-													break;
-
-												default:
-																						sizeOfOneDataPoint = 0;
-																						sizeOfQuality = 0;
-																						sizeOfCtrlStatus = 0;
-																						printf("Group or Variance not found \n");
-																						done=1;
-																						return -1;
-
-												}
-
-													break;
-												case 41:
-													switch(rdata->obj_var)
-													{
-													case 3:
-														sizeOfOneDataPoint = 4;
-														sizeOfQuality+= 0;
-														sizeOfCtrlStatus = 1;
-
-														memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
-														//start = ntohs(start);
-
-														rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality +sizeOfCtrlStatus)*(rdata->numberOfValues);
-														break;
-
-
-													default:
-																							sizeOfOneDataPoint = 0;
-																							sizeOfQuality = 0;
-																							sizeOfCtrlStatus = 0;
-																							printf("Group or Variance not found \n");
-																							done=1;
-																							return -1;
-													}
-													break;
-													case 32:
-														switch(rdata->obj_var)
-														{
-														case 5:
-															sizeOfOneDataPoint = 4;
-															sizeOfQuality+= 0;
-															sizeOfCtrlStatus = 1;
-
-															memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
-															//start = ntohs(start);
-
-															rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality +sizeOfCtrlStatus)*(rdata->numberOfValues);
-															break;
-
-														default:
-																								sizeOfOneDataPoint = 0;
-																								sizeOfQuality = 0;
-																								sizeOfCtrlStatus = 0;
-																								printf("Group or Variance not found \n");
-																								done=1;
-																								return -1;
-														}
-														break;
-
-
-
-														case 51:
-										switch(rdata->obj_var)
-													{
-													case 1:
-														sizeOfOneDataPoint = 6;
-														sizeOfQuality += 0;
-														sizeOfCtrlStatus = 0;
-
-														memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
-
-
-																											rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality +sizeOfCtrlStatus)*(rdata->numberOfValues);
-																											break;
-													case 2:
-														sizeOfOneDataPoint = 6;
-														sizeOfQuality += 0;
-														sizeOfCtrlStatus = 0;
-
-														memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
-																											//start = ntohs(start);
-
-																											rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality +sizeOfCtrlStatus)*(rdata->numberOfValues);
-																											break;
-
-													default:
-																							sizeOfOneDataPoint = 0;
-																							sizeOfQuality = 0;
-																							sizeOfCtrlStatus = 0;
-																							printf("Group or Variance not found \n");
-																							done=1;
-																							return -1;
-													}
-										break;
-
-
-										default:
-																				sizeOfOneDataPoint = 0;
-																				sizeOfQuality = 0;
-																				sizeOfCtrlStatus = 0;
-																				printf("Group or Variance not found \n");
-																				done=1;
-																				return -1;
-											}
-											rdata->sizeOfData = sizeOfOneDataPoint;
-											rdata->sizeOfQuality = sizeOfQuality ;
-											rdata->sizeOfIndex=sizeOfIndex;
-											rdata->sizeOfCtrlStatus =sizeOfCtrlStatus;
-
-
-
-					}
-						else
-								{
-									done =1;
-
-								}
-						rdata->sizeOfData = sizeOfOneDataPoint;
-									rdata->sizeOfQuality = sizeOfQuality;
-									rdata->sizeOfIndex=sizeOfIndex;
-									rdata->sizeOfCtrlStatus =sizeOfCtrlStatus;
-			}
 
 
 
 	}
-
-
-
-
-
-
-	else
-		printf("Current ResponceHeader not set \n");
-
 
 
 
@@ -4394,7 +2237,7 @@ int DNP3FullReassembly(dnp3_config_t *config, dnp3_session_data_t *session, SFSn
 
 
 //	{
-		if(modifyData(config,rdata,buflen,packet->payload, packet->payload_size,session->direction))
+		if(modifyData(config,rdata,buflen,pdu_start, pdu_length,session->direction))
 		{
 			printf("Direction %s \n",session->direction==0?"ClientDirection":"ServerDirection");
 			packet->flags|=FLAG_MODIFIED;
