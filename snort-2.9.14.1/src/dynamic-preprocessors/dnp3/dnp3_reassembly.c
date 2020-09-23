@@ -506,6 +506,31 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 			break;
 
+		case 3:
+														switch(rdata->obj_var)
+														{
+														case 1:
+															sizeOfOneDataPoint = 1;
+																						sizeOfQuality = 0;
+
+																						memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
+																						//start = ntohs(start);
+																						memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
+																						//stop = ntohs(stop);
+
+																						rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+sizeOfOneDataPoint*(rdata->stop-rdata->start+1)/4;
+																						break;
+
+														default:
+																					sizeOfOneDataPoint = 0;
+																					sizeOfQuality = 0;
+																					sizeOfCtrlStatus = 0;
+																					printf("Group or Variance not found \n");
+																					done=1;
+																					return -1;
+														}
+
+														break;
 	case 10:
 		switch(rdata->obj_var)
 		{
