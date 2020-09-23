@@ -489,7 +489,7 @@ static void ParseDNP3Args(struct _SnortConfig *sc, dnp3_config_t *config, char *
         						 case(3): (config->values_to_alter[index]).identifier = strtol(token,NULL,10);
         						 	 break;
         						 case(4):
-        								 if((config->values_to_alter[index]).obj_group==1 || (config->values_to_alter[index]).obj_group==10 || (config->values_to_alter[index]).obj_group==2 )
+        								 if((config->values_to_alter[index]).obj_group <=12)
         								 {
         									 (config->values_to_alter[index]).integer_value =strtol(token,NULL,10);
 

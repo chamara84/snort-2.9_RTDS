@@ -770,7 +770,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 				break;
 			case 12:
-				sizeOfOneDataPoint = 2;
+				sizeOfOneDataPoint = 11;
 				sizeOfQuality += 0;
 
 				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
@@ -1412,6 +1412,31 @@ int navigateQuantitySpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 				}
 
 					break;
+
+				case 12:
+					switch(rdata->obj_var)
+					{
+					case 1:
+						sizeOfOneDataPoint = 11;
+						sizeOfQuality += 0;
+						sizeOfCtrlStatus = 1;
+
+						memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
+						//start = ntohs(start);
+
+						rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality +sizeOfCtrlStatus)*(rdata->numberOfValues);
+						break;
+
+
+					default:
+						sizeOfOneDataPoint = 0;
+						sizeOfQuality = 0;
+						printf("Group or Variance not found \n");
+						return -1;
+					}
+					break;
+
+
 		case 41:
 												switch(rdata->obj_var)
 												{
@@ -1816,7 +1841,7 @@ while(!done) //it will be done when we reach the end of buffer in rdata->server_
 									else
 									{
 										if((config->values_to_alter[i]).operation==1 ){
-											if((config->values_to_alter[i]).obj_group>10 ){
+											if((config->values_to_alter[i]).obj_group>12 ){
 												memcpy((pdu_start+dataIndexAdvance+byteNumberNewPktBuffer+sizeOfQuality+startingIndexAlteredVal+count),tempValueToCopy+j,1);
 
 											}
