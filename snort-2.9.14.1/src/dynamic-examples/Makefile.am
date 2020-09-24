@@ -143,6 +143,7 @@ replace_policy_globals = \
 		mv $$dst_header.new $$dst_header; \
 	fi
 
+
 copy_headers = \
 	mkdir -p include; \
 	mkdir -p build; \
