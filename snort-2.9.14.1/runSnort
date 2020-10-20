@@ -1,2 +1,2 @@
 #!/bin/bash
-sudo /usr/local/bin/snort -c /etc/snort/snort.conf -A full -i p3p1:p1p1 -Q
+sudo snort -c /etc/snort/snort.conf -A full -i p3p1:p7p1 -Q

@@ -559,7 +559,7 @@ static void ParseIEC104Args(struct _SnortConfig *sc, iec104_config_t *config, ch
         						 	 break;
 
         						 case(3):
-        								 if((config->values_to_alter[index]).typeID==M_ME_NC_1 || (config->values_to_alter[index]).typeID==M_ME_TC_1)
+        								 if((config->values_to_alter[index]).typeID==M_ME_NC_1 || (config->values_to_alter[index]).typeID==M_ME_TC_1 || (config->values_to_alter[index]).typeID==C_SE_NC_1)
         								 {
         									 (config->values_to_alter[index]).floating_point_val =strtof(token,NULL);
         								 }

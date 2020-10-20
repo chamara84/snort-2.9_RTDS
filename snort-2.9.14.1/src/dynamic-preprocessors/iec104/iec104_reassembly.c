@@ -293,23 +293,29 @@ int IEC104FullReassembly(iec104_config_t *config, iec104_session_data_t *session
 		uint32_t * objAddressKey = g_new0(uint32_t,session->asdu_header.numObjects);
 		uint32_t *tempobjAddressKey = objAddressKey;
 		int ObjOffset=0;
-		for(iec104_Object_header_t *cur = obj;cur<obj+session->asdu_header.numObjects;cur++)
+		int indexObj=0;
+		for(iec104_Object_header_t *cur = obj;indexObj<session->asdu_header.numObjects;cur++,indexObj++)
 		{
 			if(cur==obj ||session->asdu_header.sq==0 )
 			{
 				cur->informationObjAddress = 0;
 			memcpy(&(cur->informationObjAddress),(pdu_start+offset),3);
-		//	_dpd.logMsg("Seq: %d Key: %u Type %u\n",session->apci.sendSeqNo,cur->informationObjAddress,session->asdu_header.type);
+
+			_dpd.logMsg("Seq: %d Key: %u Type %u\n",session->apci.sendSeqNo,cur->informationObjAddress,session->asdu_header.type);
 			//cur->informationObjAddress = ntohl(cur->informationObjAddress);
 			offset+=3;
+			cur->dataOffsetFromStart = offset;
+			memcpy(&(cur->informationElements),(pdu_start+offset),typeLengths[session->asdu_header.type-1]);
 			}
 
 			else
 			{
 				cur->informationObjAddress = obj->informationObjAddress+ObjOffset;
+				cur->dataOffsetFromStart = obj->dataOffsetFromStart+(ObjOffset*typeLengths[session->asdu_header.type-1]);
+				memcpy(&(cur->informationElements),(pdu_start+cur->dataOffsetFromStart),typeLengths[session->asdu_header.type-1]);
 			}
-			cur->dataOffsetFromStart = offset;
-			memcpy(&(cur->informationElements),(pdu_start+offset),typeLengths[session->asdu_header.type]);
+			_dpd.logMsg("IOA: %d Data offset: %d Value %d\n",cur->informationObjAddress,cur->dataOffsetFromStart,cur->informationElements);
+
 			offset+=typeLengths[session->asdu_header.type];
 			*tempobjAddressKey = cur->informationObjAddress;
 
