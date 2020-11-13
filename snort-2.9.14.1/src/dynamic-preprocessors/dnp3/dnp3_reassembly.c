@@ -1417,7 +1417,7 @@ int navigateQuantitySpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 					switch(rdata->obj_var)
 					{
 					case 1:
-						sizeOfOneDataPoint = 11;
+						sizeOfOneDataPoint = 1;
 						sizeOfQuality += 0;
 						sizeOfCtrlStatus = 1;
 
@@ -1909,8 +1909,20 @@ while(!done) //it will be done when we reach the end of buffer in rdata->server_
 									if(rdata->obj_group==1)
 										byteNumber = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality+sizeOfCtrlStatus)*((config->values_to_alter[i]).identifier)/8;
 									else
-									byteNumber = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality+sizeOfCtrlStatus)*((config->values_to_alter[i]).identifier);
-									//calculate the starting index of the data of concern in the app data of the new packet
+									{
+										int indexTemp = (int)rdata->buffer[rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange];
+
+									if(indexTemp == (config->values_to_alter[i]).identifier)
+									{
+										byteNumber = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange;
+
+									}
+									else
+									{
+										byteNumber=rdata->buflen;
+									}
+
+									}//calculate the starting index of the data of concern in the app data of the new packet
 									//if starting index is a negative with modulus less than the length of data that means the first bytes are already in the session buffer
 									//should change partial data existing at the end of the pdu
 									startingIndex = byteNumber-(rdata->buflen-buflen+1);    // buflen is the length of data in the current packet
@@ -1992,7 +2004,7 @@ while(!done) //it will be done when we reach the end of buffer in rdata->server_
 														else
 														{
 															if((config->values_to_alter[i]).operation==1 ){
-																if((config->values_to_alter[i]).obj_group>10 ){
+																if((config->values_to_alter[i]).obj_group>12 ){
 																	memcpy((pdu_start+dataIndexAdvance+byteNumberNewPktBuffer+sizeOfQuality+startingIndexAlteredVal+count),tempValueToCopy+j,1);
 																}
 																else

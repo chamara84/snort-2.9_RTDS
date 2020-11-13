@@ -1,10 +1,10 @@
 #!/bin/bash
 # Setup Interfaces
-#sudo ifconfig p1p1 promisc
-#sudo ifconfig p5p1 promisc
+sudo ifconfig p1p1 promisc
+sudo ifconfig p5p1 promisc
 
-#sudo ifconfig p7p1 promisc
-#sudo ifconfig p3p1 promisc
+sudo ifconfig p7p1 promisc
+sudo ifconfig p3p1 promisc
 
 sudo brctl addbr br00
 
