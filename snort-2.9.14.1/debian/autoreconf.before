@@ -1,7 +1,7 @@
 19844523ff49e1629d6830e420afc40f  ./snortConfig
 9748bd3a5613895cd068689009fc4c4b  ./RELEASE.NOTES
 1092acdb62bd5142d4c84bda880026dd  ./verstuff.pl
-3e5f7435d44882707965e35836e74483  ./setupBridge
+3b767356055d0d898bd7ad830bbd521b  ./setupBridge
 3c4e92e035cd657ecbc514dfe87784ab  ./rpm/snort.logrotate
 547119b50f1ad876bcc385b5359102d3  ./rpm/README.build_rpms
 44e488787ea882643c23654cd67a8177  ./rpm/snort.spec
@@ -71,7 +71,7 @@ f0ef6d742a4f0171a76b3247f3f47de0  ./snort.pc.in
 63c7d8b0900cebf4fe6540dfb28c2d2d  ./preproc_rules/Makefile.am
 b1d2d9d235fe735fd6b27a75c30f4bd0  ./snort.8
 1a3502236e6b226c0e833bf2108ce774  ./LICENSE
-96b0fff93e9e06dd011a3596bb20b7a5  ./runSnort
+81ef81c5dff053868fe0e89b91ac1731  ./runSnort
 0f48083af5a3456a0afe62e423705c9e  ./src/sf_sdlist_types.h
 33a6f8c1bb69319746691a8788282d2d  ./src/strlcpyu.h
 fc649a905e55ed90c9345762531faaed  ./src/spo_plugbase.h
@@ -194,7 +194,7 @@ a0c74dde077b02819413036ef8359a46  ./src/sfdaq.c
 89e682eccc334a9f14f2f7fe36164bb5  ./src/dynamic-examples/dynamic-rule/rules.c
 e8d2202107d81882b75d46fbe33ad4dd  ./src/dynamic-examples/dynamic-rule/detection_lib_meta.h
 1f3338caa006995ebe0bc423e36f8317  ./src/dynamic-examples/dynamic-rule/Makefile.am
-3122b1eeacc8528c3ec7c0f095da13c8  ./src/dynamic-examples/Makefile.am
+fb6bffa6efdbde6f2f98096621082442  ./src/dynamic-examples/Makefile.am
 3f1e0b754c4606c0a6ee5353ee52c84b  ./src/hashstring.c
 f47103080a9d5c5a4311fe18e9c9acce  ./src/treenodes.h
 c1422cd9e7ac0cc53b937280d813fcd4  ./src/detect.c
@@ -702,11 +702,11 @@ fa0bfb540bae29ea4754051c25b4be77  ./src/dynamic-preprocessors/smtp/smtp_config.c
 c6271c37930fdf56117ba40e8a737371  ./src/dynamic-preprocessors/smtp/smtp_config.h
 a2a65fe1a7eebce70ef931d70f46e151  ./src/dynamic-preprocessors/smtp/smtp_xlink2state.h
 bab3a42d4902aee36e6877ca7cbe4b98  ./src/dynamic-preprocessors/iec104/Makefile.in
-141f903d764a9c1128715d66b90e1c00  ./src/dynamic-preprocessors/iec104/spp_iec104.c
-bb39eb343bcb0d5b8140bab2b447f58b  ./src/dynamic-preprocessors/iec104/iec104_reassembly.c
+c1014c9b86b7c968404b8d95b375b552  ./src/dynamic-preprocessors/iec104/spp_iec104.c
+83bdf4252552f2fc7601c17e2c5c0d33  ./src/dynamic-preprocessors/iec104/iec104_reassembly.c
 0bfdd179cd7a03414b1e2a2bb7ca98ff  ./src/dynamic-preprocessors/iec104/iec104_reassembly.h
 d7361c2754b20d62365ac882922c25c6  ./src/dynamic-preprocessors/iec104/iec104_paf.c
-4a58ede743759a162765b11d5e8cade1  ./src/dynamic-preprocessors/iec104/spp_iec104.h
+2a9dea12afb454450930eee33d8aadd9  ./src/dynamic-preprocessors/iec104/spp_iec104.h
 ca6e01741e73bc537b56ff7c94c09e47  ./src/dynamic-preprocessors/iec104/iec104_buffer_dump.h
 adade7be9a27f0dbebaf5ee884a733d5  ./src/dynamic-preprocessors/iec104/iec104_paf.h
 da4b29992db6c106e8ea280af86613cc  ./src/dynamic-preprocessors/iec104/iec104_buffer_dump.c
@@ -728,8 +728,8 @@ ca6e01741e73bc537b56ff7c94c09e47  ./src/dynamic-preprocessors/dnp3/dnp3_buffer_d
 748c1659b75676e9c0efb823f850c0cc  ./src/dynamic-preprocessors/dnp3/dnp3_paf.h
 99106aacbcb26dd7c6705dba834e0268  ./src/dynamic-preprocessors/dnp3/dnp3_chk_crc.c
 18a606cd22effd17ced09ce5478a5f86  ./src/dynamic-preprocessors/dnp3/spp_dnp3.h
-69c430549aa165cccd73a0d0b75663c9  ./src/dynamic-preprocessors/dnp3/spp_dnp3.c
-37d9198ddcf39e2090c81203b9bd3451  ./src/dynamic-preprocessors/dnp3/dnp3_reassembly.c
+7e586d53c6a7dda71cdb122762ecd45a  ./src/dynamic-preprocessors/dnp3/spp_dnp3.c
+814ee8ba4aefc5ba51dc5b741825ba48  ./src/dynamic-preprocessors/dnp3/dnp3_reassembly.c
 15cd6c01a6c5ea9056b29eb8f11ec525  ./src/dynamic-preprocessors/dnp3/dnp3_roptions.c
 30f367410c898a68db03598ed38fd7d2  ./src/dynamic-preprocessors/dnp3/dnp3_map.h
 b7efb4c374075949bf620c76dd15d296  ./src/dynamic-preprocessors/dnp3/sf_dnp3.dsp
@@ -1188,7 +1188,7 @@ f5d495a366b993a485c38df4dce74c42  ./src/preprocessors/snort_httpinspect.h
 683b5a9b6557a19c260a57f2ebefcd62  ./src/preprocessors/spp_sv.h
 0bad88a06a90eebc339ff0e7652ec6a8  ./src/preprocessors/Makefile.am
 a753810b6fd854b66ddf46a858b693f9  ./src/preprocessors/spp_session.c
-a6715f068239fd05cfdadb0b49f7620f  ./src/preprocessors/spp_goose.c
+01d314cff768ee216047001a5740bc76  ./src/preprocessors/spp_goose.c
 7d57ca3bd074097271c44c65ca1bcf68  ./src/preprocessors/perf-flow.c
 0872d2331782dbf52316bb3776d34f3a  ./src/preprocessors/perf-base.h
 72f1102b63e887783467ac1692a0a9f1  ./src/preprocessors/snort_httpinspect.c

@@ -19,9 +19,9 @@ b31d1742a4a82c56a127a4d1553dff59  usr/lib/snort_dynamicengine/libsf_engine.a
 c3a51d1dd0abb3d1928b434cdf99cf5c  usr/lib/snort_dynamicpreprocessor/libsf_dce2_preproc.a
 65e0f3d3df5ff8f91d432b58afd27eed  usr/lib/snort_dynamicpreprocessor/libsf_dce2_preproc.la
 c4090b78911b705df7b5578abf111527  usr/lib/snort_dynamicpreprocessor/libsf_dce2_preproc.so.0.0.0
-2642877ceb69406b7a8abb474c504dcf  usr/lib/snort_dynamicpreprocessor/libsf_dnp3_preproc.a
+4c6c3b872502dd4ae70e32abc875a32f  usr/lib/snort_dynamicpreprocessor/libsf_dnp3_preproc.a
 794cc6bf9eb684660e37faab1a2ecd12  usr/lib/snort_dynamicpreprocessor/libsf_dnp3_preproc.la
-32c58f4ece4a83cc8bdf79341bbde87b  usr/lib/snort_dynamicpreprocessor/libsf_dnp3_preproc.so.0.0.0
+db05b69351bfecae79c01b6580008350  usr/lib/snort_dynamicpreprocessor/libsf_dnp3_preproc.so.0.0.0
 cf151779fd40618a245287b512d9e4da  usr/lib/snort_dynamicpreprocessor/libsf_dns_preproc.a
 968630b041ca980e6dfcc0c9564a4ce9  usr/lib/snort_dynamicpreprocessor/libsf_dns_preproc.la
 77e65b2910ce6776c1f218c90cae7d80  usr/lib/snort_dynamicpreprocessor/libsf_dns_preproc.so.0.0.0
@@ -31,9 +31,9 @@ cf151779fd40618a245287b512d9e4da  usr/lib/snort_dynamicpreprocessor/libsf_dns_pr
 ae3e239df82657cd15c554a05ee8767e  usr/lib/snort_dynamicpreprocessor/libsf_gtp_preproc.a
 b5511fc1f4c4365f9f7e0265362083da  usr/lib/snort_dynamicpreprocessor/libsf_gtp_preproc.la
 eb244686ae80e6525ff46c4d747c53a6  usr/lib/snort_dynamicpreprocessor/libsf_gtp_preproc.so.0.0.0
-3bc11464c114bad8db553f22b10eb720  usr/lib/snort_dynamicpreprocessor/libsf_iec104_preproc.a
+289ad7ee6c1d817b714a603c159b24fd  usr/lib/snort_dynamicpreprocessor/libsf_iec104_preproc.a
 f61a538dc4f87254a3a25f6a49a0f7a2  usr/lib/snort_dynamicpreprocessor/libsf_iec104_preproc.la
-4a273cd41d16948aee7483923fc603a5  usr/lib/snort_dynamicpreprocessor/libsf_iec104_preproc.so.0.0.0
+94566f960cba3dbab1b6a6972e108f20  usr/lib/snort_dynamicpreprocessor/libsf_iec104_preproc.so.0.0.0
 5c79d4140db6abeacc744aea0ed234bd  usr/lib/snort_dynamicpreprocessor/libsf_iec61850_preproc.a
 b26c81a0402451ab0ed4b9e024cc3a12  usr/lib/snort_dynamicpreprocessor/libsf_iec61850_preproc.la
 586e9b6823bfbfc4020a4b66b1877557  usr/lib/snort_dynamicpreprocessor/libsf_iec61850_preproc.so.0.0.0

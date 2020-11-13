@@ -1,6 +1,0 @@
-/etc/snort/classification.config
-/etc/snort/gen-msg.map
-/etc/snort/reference.config
-/etc/snort/rules/black_list.rules
-/etc/snort/rules/local.rules
-/etc/snort/rules/white_list.rules

@@ -84,10 +84,10 @@
 #define HAVE_DLFCN_H 1
 
 /* Define to 1 if you have the <dnet.h> header file. */
-#define HAVE_DNET_H 1
+/* #undef HAVE_DNET_H */
 
 /* Define to 1 if you have the <dumbnet.h> header file. */
-/* #undef HAVE_DUMBNET_H */
+#define HAVE_DUMBNET_H 1
 
 /* Define to 1 if you have the `inet_ntop' function. */
 #define HAVE_INET_NTOP 1
@@ -108,10 +108,10 @@
 #define HAVE_INTTYPES_H 1
 
 /* Define to 1 if you have the `dnet' library (-ldnet). */
-#define HAVE_LIBDNET 1
+/* #undef HAVE_LIBDNET */
 
 /* Define to 1 if you have the `dumbnet' library (-ldumbnet). */
-/* #undef HAVE_LIBDUMBNET */
+#define HAVE_LIBDUMBNET 1
 
 /* Define to 1 if you have the `m' library (-lm). */
 #define HAVE_LIBM 1
@@ -177,7 +177,7 @@
 #define HAVE_PATHS_H 1
 
 /* Can cleanup lex buffer stack created by pcap bpf filter */
-#define HAVE_PCAP_LEX_DESTROY 1
+/* #undef HAVE_PCAP_LEX_DESTROY */
 
 /* Can output the library version. */
 #define HAVE_PCAP_LIB_VERSION 1
@@ -305,8 +305,7 @@
 /* Define if Linux */
 #define LINUX 1
 
-/* Define to the sub-directory in which libtool stores uninstalled libraries.
-   */
+/* Define to the sub-directory where libtool stores uninstalled libraries. */
 #define LT_OBJDIR ".libs/"
 
 /* Define if MacOS */
