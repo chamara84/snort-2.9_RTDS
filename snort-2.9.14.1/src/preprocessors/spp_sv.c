@@ -319,6 +319,7 @@ for(int index = 0 ; index<aconfig->numAlteredVal;index++)
 													int32_t tempIntVal = strtol(aconfig->values_to_alter[index].newVal->str,NULL,10);
 													tempIntVal = htonl(tempIntVal);
 													//int32_t tempVal = 0;
+													int valNumber = aconfig->values_to_alter[index].asduNo;
 													char * tempCharVal = malloc(sizeof(int32_t));
 													memcpy(tempCharVal,&tempIntVal,sizeof(int32_t));
 													sv_frame_identifier_t* frameID = g_new0(sv_frame_identifier_t,1);
@@ -327,8 +328,8 @@ for(int index = 0 ; index<aconfig->numAlteredVal;index++)
 														//memcpy(&tempVal,pdu_start+pdu[asduIndex].offset+i*8,sizeof(int32_t));
 														//memcpy(&tempVal,tempCharVal,4);
 														//tempVal*=tempIntVal;
-
-													memcpy(pdu_start+pdu[asduIndex].offset+i*8,tempCharVal ,4);
+														if(i==valNumber)
+															memcpy(pdu_start+pdu[asduIndex].offset+i*8,tempCharVal ,4);
 													if(i==0 && asduIndex==0)
 													{
 														 char * temp1 = strdup(pdu[asduIndex].svID->str);
