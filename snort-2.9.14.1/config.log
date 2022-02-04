@@ -946,7 +946,7 @@ configure:11603: $? = 0
 configure:11603: result: yes
 configure:11603: checking for strlcpy
 configure:11603: gcc -o conftest -g -O2   -lglib-2.0 conftest.c -lnsl -luuid -lm -lm  >&5
-/usr/bin/ld: /tmp/ccyUE55e.o: in function `main':
+/usr/bin/ld: /tmp/cc3j91bf.o: in function `main':
 /home/rtds-cybersec/repo/snort-2.9_RTDS/snort-2.9.14.1/conftest.c:74: undefined reference to `strlcpy'
 collect2: error: ld returned 1 exit status
 configure:11603: $? = 1
@@ -1031,7 +1031,7 @@ configure: failed program was:
 configure:11603: result: no
 configure:11603: checking for strlcat
 configure:11603: gcc -o conftest -g -O2   -lglib-2.0 conftest.c -lnsl -luuid -lm -lm  >&5
-/usr/bin/ld: /tmp/ccnFI1tF.o: in function `main':
+/usr/bin/ld: /tmp/ccL0w6dC.o: in function `main':
 /home/rtds-cybersec/repo/snort-2.9_RTDS/snort-2.9.14.1/conftest.c:74: undefined reference to `strlcat'
 collect2: error: ld returned 1 exit status
 configure:11603: $? = 1
@@ -2690,7 +2690,7 @@ conftest.c: In function 'main':
 conftest.c:78:4: warning: implicit declaration of function 'pcap_lex_destroy' [-Wimplicit-function-declaration]
    78 |    pcap_lex_destroy();
       |    ^~~~~~~~~~~~~~~~
-/usr/bin/ld: /tmp/ccLjY0hk.o: in function `main':
+/usr/bin/ld: /tmp/ccOQ8Eil.o: in function `main':
 /home/rtds-cybersec/repo/snort-2.9_RTDS/snort-2.9.14.1/conftest.c:78: undefined reference to `pcap_lex_destroy'
 collect2: error: ld returned 1 exit status
 configure:12511: $? = 1

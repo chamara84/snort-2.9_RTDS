@@ -330,7 +330,7 @@ for(int index = 0 ; index<aconfig->numAlteredVal;index++)
 														//memcpy(&tempVal,pdu_start+pdu[asduIndex].offset+i*8,sizeof(int32_t));
 														//memcpy(&tempVal,tempCharVal,4);
 														//tempVal*=tempIntVal;
-														//if(i==valNumber)
+														if(i==valNumber)
 															memcpy(pdu_start+pdu[asduIndex].offset+i*8,tempCharVal ,4);
 													if(i==0 && asduIndex==0)
 													{
@@ -686,7 +686,7 @@ static void SVFullReassembly(Packet *packet, void* context)
 		            	 pdu[indexASDU].smpCnt = BerDecoder_decodeUint32(packet->data, elementLength, offset);
 
 		            	// frameID->smpCnt = pdu->smpCnt;
-		            	// pdu[indexASDU].smpCnt+=5;
+		            	 pdu[indexASDU].smpCnt+=1;
 
 		            	 pdu[indexASDU].smpCnt = (pdu[indexASDU].smpCnt)%(4800);
 		            	 uint16_t val16 = ( uint16_t)pdu[indexASDU].smpCnt;
