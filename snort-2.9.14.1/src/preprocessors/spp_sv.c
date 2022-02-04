@@ -223,15 +223,17 @@ static void ParseSVArgs(SVConfig *config, char *args)
             		 switch(count){
             		 	 	 	 	 case(0):
     								    if((config->values_to_alter[index]).svID)
-    									g_string_free((config->values_to_alter[index]).svID,1);
-            		 	 	 	 	 	(config->values_to_alter[index]).svID = g_string_new(token+1);
-            		 	 	 	 	 	g_string_truncate((config->values_to_alter[index]).svID,(config->values_to_alter[index]).svID->len-1);
+    								    	g_string_free((config->values_to_alter[index]).svID,1);
+
+
+            		 	 	 	 	 	(config->values_to_alter[index]).svID = g_string_new(token);
+            		 	 	 	 	 	//g_string_truncate((config->values_to_alter[index]).svID,(config->values_to_alter[index]).svID->len);
             		 	 	 	 	 	break;
             						 case(1):
     									if((config->values_to_alter[index]).datSet)
     									g_string_free((config->values_to_alter[index]).datSet,1);
-    		        		 	 	 	(config->values_to_alter[index]).datSet = g_string_new(token+1);
-    		        		 	 	  	g_string_truncate((config->values_to_alter[index]).datSet,(config->values_to_alter[index]).datSet->len-1);
+    		        		 	 	 	(config->values_to_alter[index]).datSet = g_string_new(token);
+    		        		 	 	  	//g_string_truncate((config->values_to_alter[index]).datSet,(config->values_to_alter[index]).datSet->len);
     		        		 	 	 	break;
     		   						 case(2):
     		   								 (config->values_to_alter[index]).asduNo = strtol(token,NULL,10);
@@ -328,7 +330,7 @@ for(int index = 0 ; index<aconfig->numAlteredVal;index++)
 														//memcpy(&tempVal,pdu_start+pdu[asduIndex].offset+i*8,sizeof(int32_t));
 														//memcpy(&tempVal,tempCharVal,4);
 														//tempVal*=tempIntVal;
-														if(i==valNumber)
+														//if(i==valNumber)
 															memcpy(pdu_start+pdu[asduIndex].offset+i*8,tempCharVal ,4);
 													if(i==0 && asduIndex==0)
 													{
@@ -684,7 +686,7 @@ static void SVFullReassembly(Packet *packet, void* context)
 		            	 pdu[indexASDU].smpCnt = BerDecoder_decodeUint32(packet->data, elementLength, offset);
 
 		            	// frameID->smpCnt = pdu->smpCnt;
-		            	 pdu[indexASDU].smpCnt+=1;
+		            	// pdu[indexASDU].smpCnt+=5;
 
 		            	 pdu[indexASDU].smpCnt = (pdu[indexASDU].smpCnt)%(4800);
 		            	 uint16_t val16 = ( uint16_t)pdu[indexASDU].smpCnt;
@@ -856,12 +858,29 @@ static void SVFullReassembly(Packet *packet, void* context)
  {
 		if(modifyData(packet->data, packet->dsize,pdu,noASDU))
 			packet->packet_flags|=PKT_MODIFIED;
-		uint8_t * dataPlusEth = (uint8_t *)malloc(packet->dsize+sizeof(EtherHdr));
-		memcpy(dataPlusEth,packet->eh,sizeof(EtherHdr));
-		memcpy(dataPlusEth+sizeof(EtherHdr),packet->data,packet->dsize);
+		uint8_t * dataPlusEth= NULL;
+		if(packet->vh)
+				{
+					dataPlusEth = (uint8_t *)malloc(packet->dsize+sizeof(EtherHdr)+sizeof(VlanTagHdr));
+							memcpy(dataPlusEth,packet->eh,sizeof(EtherHdr));
+				memcpy(dataPlusEth+sizeof(EtherHdr),packet->vh,sizeof(VlanTagHdr));
+				memcpy(dataPlusEth+sizeof(EtherHdr)+sizeof(VlanTagHdr),packet->data,packet->dsize);
+				Active_SendEth (
+						   packet->pkth, !(packet->packet_flags & ENC_FLAG_FWD),dataPlusEth, packet->dsize+sizeof(EtherHdr)+sizeof(VlanTagHdr));
 
-		Active_SendEth (
-		   packet->pkth, !(packet->packet_flags & ENC_FLAG_FWD),dataPlusEth, packet->dsize+sizeof(EtherHdr));
+				}
+				else
+				{
+					//memcpy(dataPlusEth+sizeof(EtherHdr),packet->vh,sizeof(VlanTagHdr));
+					dataPlusEth = (uint8_t *)malloc(packet->dsize+sizeof(EtherHdr));
+					memcpy(dataPlusEth,packet->eh,sizeof(EtherHdr));
+					memcpy(dataPlusEth+sizeof(EtherHdr),packet->data,packet->dsize);
+					Active_SendEth (
+							   packet->pkth, !(packet->packet_flags & ENC_FLAG_FWD),dataPlusEth, packet->dsize+sizeof(EtherHdr));
+
+				}
+//		Active_SendEth (
+//		   packet->pkth, !(packet->packet_flags & ENC_FLAG_FWD),dataPlusEth, packet->dsize+sizeof(EtherHdr));
 		for(int asduIndex = 0;asduIndex<noASDU;asduIndex++)
 		 	{
 			LogMessage("In Modify KEY: |%s|.SQNum %d \n", pdu[asduIndex].svID->str,pdu[asduIndex].smpCnt);

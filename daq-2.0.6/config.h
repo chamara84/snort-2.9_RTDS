@@ -13,7 +13,7 @@
 #define HAVE_DLFCN_H 1
 
 /* Define to 1 if you have the <dnet.h> header file. */
-#define HAVE_DNET_H 1
+/* #undef HAVE_DNET_H */
 
 /* Define to 1 if you have the <dumbnet.h> header file. */
 /* #undef HAVE_DUMBNET_H */
@@ -28,7 +28,7 @@
 #define HAVE_INTTYPES_H 1
 
 /* Define to 1 if you have the `dnet' library (-ldnet). */
-#define HAVE_LIBDNET 1
+/* #undef HAVE_LIBDNET */
 
 /* Define to 1 if you have the `dumbnet' library (-ldumbnet). */
 /* #undef HAVE_LIBDUMBNET */
@@ -38,7 +38,7 @@
 
 /* Define to 1 if you have the <libnetfilter_queue/libnetfilter_queue.h>
    header file. */
-#define HAVE_LIBNETFILTER_QUEUE_LIBNETFILTER_QUEUE_H 1
+/* #undef HAVE_LIBNETFILTER_QUEUE_LIBNETFILTER_QUEUE_H */
 
 /* Define to 1 if you have the `pcap' library (-lpcap). */
 #define HAVE_LIBPCAP 1
@@ -72,10 +72,10 @@
 #define HAVE_NETINET_IN_H 1
 
 /* Define to 1 if you have the <net/netmap.h> header file. */
-#define HAVE_NET_NETMAP_H 1
+/* #undef HAVE_NET_NETMAP_H */
 
 /* Define to 1 if you have the <net/netmap_user.h> header file. */
-#define HAVE_NET_NETMAP_USER_H 1
+/* #undef HAVE_NET_NETMAP_USER_H */
 
 /* Define to 1 if you have the `socket' function. */
 #define HAVE_SOCKET 1
@@ -140,8 +140,7 @@
 /* System IPv6 support */
 #define INET6 1
 
-/* Define to the sub-directory in which libtool stores uninstalled libraries.
-   */
+/* Define to the sub-directory where libtool stores uninstalled libraries. */
 #define LT_OBJDIR ".libs/"
 
 /* Name of package */
