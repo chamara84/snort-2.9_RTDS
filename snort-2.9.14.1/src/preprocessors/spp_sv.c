@@ -686,7 +686,7 @@ static void SVFullReassembly(Packet *packet, void* context)
 		            	 pdu[indexASDU].smpCnt = BerDecoder_decodeUint32(packet->data, elementLength, offset);
 
 		            	// frameID->smpCnt = pdu->smpCnt;
-		            	 pdu[indexASDU].smpCnt+=1;
+		            	// pdu[indexASDU].smpCnt+=1;
 
 		            	 pdu[indexASDU].smpCnt = (pdu[indexASDU].smpCnt)%(4800);
 		            	 uint16_t val16 = ( uint16_t)pdu[indexASDU].smpCnt;
