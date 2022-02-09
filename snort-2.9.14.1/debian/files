@@ -1,5 +1,8 @@
-snort-common-libraries-dbgsym_2.9.14.1-1_amd64.ddeb debug optional
+snort-common-libraries-dbgsym_2.9.14.1-1_amd64.ddeb debug optional automatic=yes
 snort-common-libraries_2.9.14.1-1_amd64.deb net optional
-snort-dbgsym_2.9.14.1-1_amd64.ddeb debug optional
+snort-common_2.9.14.1-1_all.deb net optional
+snort-dbgsym_2.9.14.1-1_amd64.ddeb debug optional automatic=yes
+snort-doc_2.9.14.1-1_all.deb doc optional
+snort-rules-default_2.9.14.1-1_all.deb net optional
 snort_2.9.14.1-1_amd64.buildinfo net optional
 snort_2.9.14.1-1_amd64.deb net optional

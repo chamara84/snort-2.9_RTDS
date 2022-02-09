@@ -215,10 +215,10 @@ AWK = mawk
 CC = gcc
 CCDEPMODE = depmode=gcc3
 CCONFIGFLAGS = 
-CFLAGS = -g -O0 -DSF_VISIBILITY -fvisibility=hidden -g -ggdb -Wall
-CONFIGFLAGS =  -DSF_WCHAR -DTARGET_BASED -DPERF_PROFILING -DSNORT_RELOAD -DRELOAD_ERROR_FATAL -DNO_NON_ETHER_DECODER -DNORMALIZER -DACTIVE_RESPONSE -DFEAT_OPEN_APPID -DHAVE_LIBLUAJIT
+CFLAGS = -g -O2 -fdebug-prefix-map=/home/rtds-cybersec/repo/snort-2.9_RTDS/snort-2.9.14.1=. -fstack-protector-strong -Wformat -Werror=format-security -D_GNU_SOURCE -DSF_VISIBILITY -fvisibility=hidden -Wall
+CONFIGFLAGS =  -DSF_WCHAR -DTARGET_BASED -DPERF_PROFILING -DSNORT_RELOAD -DNO_NON_ETHER_DECODER -DNORMALIZER -DACTIVE_RESPONSE -DFEAT_OPEN_APPID -DHAVE_LIBLUAJIT
 CPP = gcc -E
-CPPFLAGS = -DGRE -DMPLS -DPPM_MGR -DDEBUG -DENABLE_REACT -DENABLE_RESPOND -DENABLE_RESPONSE3 -DSF_WCHAR -DTARGET_BASED -DPERF_PROFILING -DSNORT_RELOAD -DRELOAD_ERROR_FATAL -DNO_NON_ETHER_DECODER -DNORMALIZER -DACTIVE_RESPONSE -DFEAT_OPEN_APPID -DHAVE_LIBLUAJIT
+CPPFLAGS = -Wdate-time -D_FORTIFY_SOURCE=2 -DLZMA -DGRE -DMPLS -DPPM_MGR -DNDEBUG -DENABLE_REACT -DENABLE_RESPOND -DENABLE_RESPONSE3 -DSF_WCHAR -DTARGET_BASED -DPERF_PROFILING -DSNORT_RELOAD -DNO_NON_ETHER_DECODER -DNORMALIZER -DACTIVE_RESPONSE -DFEAT_OPEN_APPID -DHAVE_LIBLUAJIT
 CYGPATH_W = echo
 DEFS = -DHAVE_CONFIG_H
 DEPDIR = .deps
@@ -242,10 +242,10 @@ INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
 LD = /usr/bin/ld -m elf_x86_64
-LDFLAGS =  -lglib-2.0 -lpcre -ldumbnet
+LDFLAGS = -Wl,-Bsymbolic-functions -Wl,-z,relro -lglib-2.0 -lpcre -ldumbnet
 LEX = flex
 LIBOBJS = 
-LIBS = -lz -ldaq_static -ldumbnet -lpcre -lpcap -lnsl -luuid -lm -lm  -lcrypto -ldl -L/usr/local/lib -ldaq_static_modules  -lsfbpf -lpcap -lsfbpf -lpcap -lz -lpthread -lglib-2.0 -lpthread -lglib-2.0 -lpthread -lglib-2.0
+LIBS = -lz -ldaq_static -ldumbnet -lpcre -lpcap -lnsl -luuid -lm -lm  -lcrypto -ldl -L/usr/lib -ldaq_static_modules  -lsfbpf -lpcap -lsfbpf -lpcap -lz -llzma -lpthread -lglib-2.0 -lpthread -lglib-2.0 -lpthread -lglib-2.0
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
 LIPO = 
 LN_S = ln -s
@@ -297,7 +297,7 @@ am__leading_dot = .
 am__quote = 
 am__tar = $${TAR-tar} chof - "$$tardir"
 am__untar = $${TAR-tar} xf -
-bindir = ${exec_prefix}/bin
+bindir = ${exec_prefix}/sbin
 build = x86_64-pc-linux-gnu
 build_alias = 
 build_cpu = x86_64
@@ -327,11 +327,11 @@ localedir = ${datarootdir}/locale
 localstatedir = ${prefix}/var
 luajit_CFLAGS = -I/usr/include/luajit-2.1
 luajit_LIBS = -lluajit-5.1
-mandir = ${datarootdir}/man
+mandir = ${exec_prefix}/share/man
 mkdir_p = $(MKDIR_P)
 oldincludedir = /usr/include
 pdfdir = ${docdir}
-prefix = /usr/local
+prefix = /usr
 program_transform_name = s,x,x,
 psdir = ${docdir}
 runstatedir = ${localstatedir}/run
@@ -345,7 +345,7 @@ top_builddir = ../..
 top_srcdir = ../..
 AUTOMAKE_OPTIONS = foreign
 u2boat_SOURCES = u2boat.c u2boat.h
-u2boat_CFLAGS = -g -O0 -DSF_VISIBILITY -fvisibility=hidden -g -ggdb -Wall $(AM_CFLAGS)
+u2boat_CFLAGS = -g -O2 -fdebug-prefix-map=/home/rtds-cybersec/repo/snort-2.9_RTDS/snort-2.9.14.1=. -fstack-protector-strong -Wformat -Werror=format-security -D_GNU_SOURCE -DSF_VISIBILITY -fvisibility=hidden -Wall $(AM_CFLAGS)
 u2boat_LDADD = -lpcap
 dist_doc_DATA = README.u2boat
 all: all-am

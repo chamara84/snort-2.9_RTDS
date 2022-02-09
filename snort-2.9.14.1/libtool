@@ -164,7 +164,7 @@ lock_old_archive_extraction=no
 LTCC="gcc"
 
 # LTCC compiler flags.
-LTCFLAGS="-g -O0 -DSF_VISIBILITY -fvisibility=hidden -g -ggdb -Wall"
+LTCFLAGS="-g -O2 -fdebug-prefix-map=/home/rtds-cybersec/repo/snort-2.9_RTDS/snort-2.9.14.1=. -fstack-protector-strong -Wformat -Werror=format-security -D_GNU_SOURCE -DSF_VISIBILITY -fvisibility=hidden -Wall"
 
 # Take the output of nm and produce a listing of raw symbols and C names.
 global_symbol_pipe="sed -n -e 's/^.*[	 ]\\([ABCDGIRSTW][ABCDGIRSTW]*\\)[	 ][	 ]*\\([_A-Za-z][_A-Za-z0-9]*\\)\$/\\1 \\2 \\2/p' | sed '/ __gnu_lto/d'"

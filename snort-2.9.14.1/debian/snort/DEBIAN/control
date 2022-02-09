@@ -2,7 +2,7 @@ Package: snort
 Version: 2.9.14.1-1
 Architecture: amd64
 Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
-Installed-Size: 2087
+Installed-Size: 2121
 Pre-Depends: adduser (>= 3.11)
 Depends: snort-common-libraries (>= 2.9.14.1-1), snort-rules-default (>= 2.9.14.1-1), snort-common (>= 2.9.14.1-1), debconf (>= 0.5) | debconf-2.0, rsyslog | system-log-daemon, logrotate, net-tools, libc6 (>= 2.16), libdaq2, libdumbnet1 (>= 1.8), libglib2.0-0 (>= 2.24.0), liblzma5 (>= 5.1.1alpha+20120614), libpcap0.8 (>= 1.0.0), libpcre3, libssl1.1 (>= 1.1.0), zlib1g (>= 1:1.1.4)
 Recommends: iproute2

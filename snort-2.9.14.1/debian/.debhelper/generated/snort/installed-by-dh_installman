@@ -2,3 +2,7 @@
 ./debian/snort-stat.8
 ./debian/u2boat.1
 ./debian/u2spewfoo.1
+./snort.8
+./debian/snort-stat.8
+./debian/u2boat.1
+./debian/u2spewfoo.1

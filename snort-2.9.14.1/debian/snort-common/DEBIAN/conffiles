@@ -1,0 +1,4 @@
+/etc/cron.daily/5snort
+/etc/snort/snort.conf
+/etc/snort/threshold.conf
+/etc/snort/unicode.map
