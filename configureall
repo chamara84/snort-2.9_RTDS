@@ -30,6 +30,7 @@ sudo apt install libglib2.0-dev
 #sudo ninja install -C _build
 
 cd ./daq-2.0.6/
+make clean
 libtoolize --force
 autoreconf -i -f -I m4
 automake

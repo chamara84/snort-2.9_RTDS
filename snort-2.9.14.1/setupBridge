@@ -1,16 +1,16 @@
 #!/bin/bash
 # Setup Interfaces
-sudo ifconfig enp3s0 promisc
+sudo ifconfig enp4s0 promisc
 sudo ifconfig enp5s0 promisc
 
 sudo ifconfig enp6s0 promisc
-sudo ifconfig enp4s0 promisc
+sudo ifconfig enp7s0 promisc
 
 sudo brctl addbr br00
 
 
 sudo brctl addif br00 enp5s0
-sudo brctl addif br00 enp3s0
+sudo brctl addif br00 enp7s0
 sudo ifconfig br00 up
 
 #sudo brctl addbr br01	

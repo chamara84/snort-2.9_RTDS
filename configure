@@ -18,6 +18,7 @@ ninja -C _build
 sudo ninja install -C _build
 
 cd cd ../daq-2.0.6/
+make clean
 ./configure --prefix=/usr
 make
 sudo make install

@@ -1,1 +1,1 @@
--g -O2 -fdebug-prefix-map=/home/rtds-cybersec/repo/snort-2.9_RTDS/snort-2.9.14.1=. -fstack-protector-strong -Wformat -Werror=format-security -D_GNU_SOURCE -DSF_VISIBILITY -fvisibility=hidden -Wall
+-g -O0 -DSF_VISIBILITY -fvisibility=hidden -g -ggdb -Wall
