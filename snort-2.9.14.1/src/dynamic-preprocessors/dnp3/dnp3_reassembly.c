@@ -451,7 +451,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 			memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
 			//stop = ntohs(stop);
 
-			rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+sizeOfOneDataPoint*(rdata->stop-rdata->start+1)/8;
+			rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+sizeOfOneDataPoint*ceil((rdata->stop-rdata->start+1)/8.0);
 			break;
 		case 2:
 
@@ -463,7 +463,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 			memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
 			//stop = ntohs(stop);
 
-			rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+sizeOfOneDataPoint*(rdata->stop-rdata->start+1);
+			rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+sizeOfOneDataPoint*(rdata->stop-rdata->start+1);
 			break;
 		default:
 			sizeOfOneDataPoint = 0;
@@ -479,7 +479,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 			sizeOfQuality += 0;
 			memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 			memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-			rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+sizeOfOneDataPoint*(rdata->stop-rdata->start+1);
+			rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+sizeOfOneDataPoint*(rdata->stop-rdata->start+1);
 			break;
 
 		case 2:
@@ -487,14 +487,14 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 			sizeOfQuality += 0;
 			memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 			memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-			rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+sizeOfOneDataPoint*(rdata->stop-rdata->start+1);
+			rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+sizeOfOneDataPoint*(rdata->stop-rdata->start+1);
 			break;
 		case 3:
 			sizeOfOneDataPoint = 3;
 			sizeOfQuality += 0;
 			memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 			memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-			rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+sizeOfOneDataPoint*(rdata->stop-rdata->start+1);
+			rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+sizeOfOneDataPoint*(rdata->stop-rdata->start+1);
 			break;
 
 		default:
@@ -507,28 +507,39 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 			break;
 
 		case 3:
-														switch(rdata->obj_var)
-														{
-														case 1:
-															sizeOfOneDataPoint = 1;
-																						sizeOfQuality = 0;
+			switch(rdata->obj_var)
+			{
+			case 1:
+				sizeOfOneDataPoint = 1;
+				sizeOfQuality = 0;
 
-																						memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
-																						//start = ntohs(start);
-																						memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-																						//stop = ntohs(stop);
+				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
+				//start = ntohs(start);
+				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
+				//stop = ntohs(stop);
 
-																						rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+sizeOfOneDataPoint*(rdata->stop-rdata->start+1)/4;
-																						break;
+				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+sizeOfOneDataPoint*(rdata->stop-rdata->start+1)/4;
+				break;
+			case 2:
+				sizeOfOneDataPoint = 1;
+				sizeOfQuality = 0;
 
-														default:
-																					sizeOfOneDataPoint = 0;
-																					sizeOfQuality = 0;
-																					sizeOfCtrlStatus = 0;
-																					printf("Group or Variance not found \n");
-																					done=1;
-																					return -1;
-														}
+				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
+				//start = ntohs(start);
+				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
+				//stop = ntohs(stop);
+
+				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+sizeOfOneDataPoint*(rdata->stop-rdata->start+1);
+				break;
+
+			default:
+				sizeOfOneDataPoint = 0;
+				sizeOfQuality = 0;
+				sizeOfCtrlStatus = 0;
+				printf("Group or Variance not found \n");
+				done=1;
+				return -1;
+			}
 
 														break;
 	case 10:
@@ -540,7 +551,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 			memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 			memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-			rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+sizeOfOneDataPoint*(rdata->stop-rdata->start+1)/8;
+			rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+sizeOfOneDataPoint*(rdata->stop-rdata->start+1)/8;
 			break;
 		case 2:
 			sizeOfOneDataPoint = 1;
@@ -548,7 +559,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 			memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 			memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-			rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+sizeOfOneDataPoint*(rdata->stop-rdata->start+1);
+			rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+sizeOfOneDataPoint*(rdata->stop-rdata->start+1);
 			break;
 		default:
 			sizeOfOneDataPoint = 0;
@@ -568,7 +579,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 			memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 			memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-			rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+sizeOfOneDataPoint*(rdata->stop-rdata->start+1);
+			rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+sizeOfOneDataPoint*(rdata->stop-rdata->start+1);
 			break;
 
 		case 3:
@@ -577,7 +588,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 			memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 			memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-			rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+sizeOfOneDataPoint*(rdata->stop-rdata->start+1)/8;
+			rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+sizeOfOneDataPoint*(rdata->stop-rdata->start+1)/8;
 			break;
 
 		default:
@@ -597,7 +608,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 				break;
 
 			case 2:
@@ -606,7 +617,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 				break;
 			case 3:
 				sizeOfOneDataPoint = 4;
@@ -614,7 +625,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 				break;
 
 			case 4:
@@ -623,7 +634,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 				break;
 
 			case 5:
@@ -632,7 +643,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 				break;
 
 			case 6:
@@ -641,7 +652,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 				break;
 
 			case 7:
@@ -650,7 +661,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 				break;
 
 			case 8:
@@ -659,7 +670,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 				break;
 
 			default:
@@ -680,7 +691,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 				break;
 
 			case 2:
@@ -689,7 +700,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 				break;
 			case 3:
 				sizeOfOneDataPoint = 4;
@@ -697,7 +708,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 				break;
 
 			case 4:
@@ -706,7 +717,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 				break;
 
 			case 5:
@@ -715,7 +726,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 				break;
 
 			case 6:
@@ -724,7 +735,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 				break;
 
 			case 7:
@@ -733,7 +744,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 				break;
 
 			case 8:
@@ -742,7 +753,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 				break;
 
 			case 9:
@@ -751,7 +762,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 				break;
 			case 10:
 				sizeOfOneDataPoint = 2;
@@ -759,7 +770,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 				break;
 			case 11:
 				sizeOfOneDataPoint = 4;
@@ -767,7 +778,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 				break;
 			case 12:
 				sizeOfOneDataPoint = 11;
@@ -775,7 +786,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 				memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 				memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+				rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 				break;
 
 			default:
@@ -795,7 +806,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 					memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 					memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 					break;
 
 				case 2:
@@ -804,7 +815,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 					memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 					memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 					break;
 				case 3:
 					sizeOfOneDataPoint = 4;
@@ -812,7 +823,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 					memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 					memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 					break;
 
 				case 4:
@@ -821,7 +832,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 					memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 					memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 					break;
 
 				case 5:
@@ -830,7 +841,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 					memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 					memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 					break;
 
 				case 6:
@@ -839,7 +850,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 					memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 					memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 					break;
 
 				case 7:
@@ -848,7 +859,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 					memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 					memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 					break;
 
 				case 8:
@@ -857,7 +868,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 					memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 					memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 					break;
 
 				default:
@@ -877,7 +888,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 								break;
 
 							case 2:
@@ -886,7 +897,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 												break;
 							case 3:
 								sizeOfOneDataPoint = 4;
@@ -894,7 +905,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 								break;
 
 							case 4:
@@ -903,7 +914,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 								break;
 
 							case 5:
@@ -912,7 +923,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 								break;
 
 							case 6:
@@ -921,7 +932,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 								break;
 
 							case 7:
@@ -930,7 +941,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 								break;
 
 							case 8:
@@ -939,7 +950,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 
 								memcpy(&(rdata->start),rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3,sizeOfRange/2);
 								memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+								rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 								break;
 
 							default:
@@ -959,7 +970,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 					memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
 					//start = ntohs(start);
 					memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 					break;
 				case 2:
 					sizeOfOneDataPoint = 2;
@@ -968,7 +979,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 					memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
 					//start = ntohs(start);
 					memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 					break;
 				case 3:
 					sizeOfOneDataPoint = 4;
@@ -977,7 +988,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 					memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
 					//start = ntohs(start);
 					memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 					break;
 				case 4:
 					sizeOfOneDataPoint = 2;
@@ -986,7 +997,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 					memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
 					//start = ntohs(start);
 					memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 					break;
 				case 5:
 					sizeOfOneDataPoint = 4;
@@ -995,7 +1006,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 					memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
 					//start = ntohs(start);
 					memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+					rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 					break;
 				default:
 					sizeOfOneDataPoint = 0;
@@ -1018,7 +1029,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 									memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
 									//start = ntohs(start);
 									memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-									rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+									rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 									break;
 								case 2:
 									sizeOfOneDataPoint = 2;
@@ -1027,7 +1038,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 									memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
 									//start = ntohs(start);
 									memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-									rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+									rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 									break;
 								case 3:
 									sizeOfOneDataPoint = 10;
@@ -1036,7 +1047,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 									memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
 									//start = ntohs(start);
 									memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-									rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+									rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 									break;
 								case 4:
 									sizeOfOneDataPoint = 8;
@@ -1045,7 +1056,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 									memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
 									//start = ntohs(start);
 									memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-									rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+									rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 									break;
 								case 5:
 									sizeOfOneDataPoint = 4;
@@ -1054,7 +1065,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 									memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
 									//start = ntohs(start);
 									memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-									rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+									rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 									break;
 								case 6:
 									sizeOfOneDataPoint = 2;
@@ -1063,7 +1074,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 									memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
 									//start = ntohs(start);
 									memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-									rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+									rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 									break;
 								default:
 									sizeOfOneDataPoint = 0;
@@ -1087,7 +1098,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 														memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
 														//start = ntohs(start);
 														memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-														rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+														rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 														break;
 													case 2:
 														sizeOfOneDataPoint = 2;
@@ -1096,7 +1107,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 														memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
 														//start = ntohs(start);
 														memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-														rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+														rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 														break;
 													case 3:
 														sizeOfOneDataPoint =10;
@@ -1105,7 +1116,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 														memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
 														//start = ntohs(start);
 														memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-														rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+														rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 														break;
 													case 4:
 														sizeOfOneDataPoint = 8;
@@ -1114,7 +1125,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 														memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
 														//start = ntohs(start);
 														memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-														rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+														rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 														break;
 													default:
 														sizeOfOneDataPoint = 0;
@@ -1134,7 +1145,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 						memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
 						//start = ntohs(start);
 						memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-						rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+						rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 						break;
 					case 2:
 						sizeOfOneDataPoint = 2;
@@ -1143,7 +1154,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 						memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
 						//start = ntohs(start);
 						memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-						rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+						rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 						break;
 					case 3:
 						sizeOfOneDataPoint =10;
@@ -1152,7 +1163,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 						memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
 						//start = ntohs(start);
 						memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-						rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+						rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 						break;
 					case 4:
 						sizeOfOneDataPoint = 8;
@@ -1161,7 +1172,7 @@ int navigateStrtStopSpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 						memcpy(&(rdata->start),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange/2);
 						//start = ntohs(start);
 						memcpy(&(rdata->stop),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange/2),sizeOfRange/2);
-						rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+7+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
+						rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality)*(rdata->stop-rdata->start+1);
 						break;
 					default:
 						sizeOfOneDataPoint = 0;
@@ -1435,6 +1446,28 @@ int navigateQuantitySpecData( dnp3_reassembly_data_t *rdata, unsigned int sizeOf
 						return -1;
 					}
 					break;
+				case 32:
+																	switch(rdata->obj_var)
+																	{
+																	case 1:
+																		sizeOfOneDataPoint = 4;
+																		sizeOfQuality += 0;
+																		sizeOfCtrlStatus = 1;
+
+																		memcpy(&(rdata->numberOfValues),(rdata->buffer+rdata->indexOfCurrentResponceObjHeader+3),sizeOfRange);
+																		//start = ntohs(start);
+
+																		rdata->indexOfNextResponceObjHeader = rdata->indexOfCurrentResponceObjHeader+3+sizeOfRange+(sizeOfOneDataPoint+sizeOfQuality +sizeOfCtrlStatus)*(rdata->numberOfValues);
+																		break;
+
+
+																	default:
+																		sizeOfOneDataPoint = 0;
+																		sizeOfQuality = 0;
+																		printf("Group or Variance not found \n");
+																		return -1;
+																	}
+																	break;
 
 
 		case 41:
@@ -1734,13 +1767,13 @@ default:
 
 while(!done) //it will be done when we reach the end of buffer in rdata->server_rdata.buflen
 	{
-		testCount++;
-		if(testCount>5)
-		{
-			printf( "in test count\n");
-
-			done = 1;
-		}
+//		testCount++;
+//		if(testCount>5)
+//		{
+//			printf( "in test count\n");
+//
+//			//done = 1;
+//		}
 		sizeOfOneDataPoint = rdata->sizeOfData;
 			 sizeOfQuality = rdata->sizeOfQuality;
 			 sizeOfRange = rdata->sizeOfRange;
@@ -1862,7 +1895,7 @@ while(!done) //it will be done when we reach the end of buffer in rdata->server_
 //										}
 									}
 									modified = 1;
-									printf("Group %d Variance %d \n",rdata->obj_group,rdata->obj_var);
+
 									count++;
 								}
 
@@ -2082,7 +2115,7 @@ while(!done) //it will be done when we reach the end of buffer in rdata->server_
 				rdata->start = 0;
 				rdata->stop = 0;
 				rdata->numberOfValues = 0;
-
+				printf("Group %d Variance %d \n",rdata->obj_group,rdata->obj_var);
 				uint8_t minBufferLength = 0;
 
 

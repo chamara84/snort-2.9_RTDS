@@ -236,7 +236,7 @@ CCONFIGFLAGS =
 CFLAGS = -g -O0 -DSF_VISIBILITY -fvisibility=hidden -g -ggdb -Wall
 CONFIGFLAGS =  -DSF_WCHAR -DTARGET_BASED -DPERF_PROFILING -DSNORT_RELOAD -DRELOAD_ERROR_FATAL -DNO_NON_ETHER_DECODER -DNORMALIZER -DACTIVE_RESPONSE -DFEAT_OPEN_APPID -DHAVE_LIBLUAJIT
 CPP = gcc -E
-CPPFLAGS = -DGRE -DMPLS -DPPM_MGR -DDEBUG -DENABLE_REACT -DENABLE_RESPOND -DENABLE_RESPONSE3 -DSF_WCHAR -DTARGET_BASED -DPERF_PROFILING -DSNORT_RELOAD -DRELOAD_ERROR_FATAL -DNO_NON_ETHER_DECODER -DNORMALIZER -DACTIVE_RESPONSE -DFEAT_OPEN_APPID -DHAVE_LIBLUAJIT
+CPPFLAGS = -DLZMA -DGRE -DMPLS -DPPM_MGR -DDEBUG -DENABLE_REACT -DENABLE_RESPOND -DENABLE_RESPONSE3 -DSF_WCHAR -DTARGET_BASED -DPERF_PROFILING -DSNORT_RELOAD -DRELOAD_ERROR_FATAL -DNO_NON_ETHER_DECODER -DNORMALIZER -DACTIVE_RESPONSE -DFEAT_OPEN_APPID -DHAVE_LIBLUAJIT
 CYGPATH_W = echo
 DEFS = -DHAVE_CONFIG_H
 DEPDIR = .deps
@@ -263,7 +263,7 @@ LD = /usr/bin/ld -m elf_x86_64
 LDFLAGS =  -lglib-2.0 -lpcre -ldumbnet
 LEX = flex
 LIBOBJS = 
-LIBS = -lz -ldaq_static -ldumbnet -lpcre -lpcap -lnsl -luuid -lm -lm  -lcrypto -ldl -L/usr/local/lib -ldaq_static_modules  -lsfbpf -lpcap -lsfbpf -lpcap -lz -lpthread -lglib-2.0 -lpthread -lglib-2.0 -lpthread -lglib-2.0
+LIBS = -lz -ldaq_static -ldumbnet -lpcre -lpcap -lnsl -luuid -lm -lm  -lcrypto -ldl -L/usr/local/lib -ldaq_static_modules  -lsfbpf -lpcap -lsfbpf -lpcap -lz -llzma -lpthread -lglib-2.0 -lpthread -lglib-2.0 -lpthread -lglib-2.0
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
 LIPO = 
 LN_S = ln -s
