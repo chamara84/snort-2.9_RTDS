@@ -111,9 +111,12 @@ static int modifyData(pmu_config_t *config, pmu_session_data_t *session, SFSnort
 				memcpy(tempArray,trimwhitespace(PMUId->str),strlen(trimwhitespace(PMUId->str)));
 				GString *Id = config->values_to_alter[index].identifier;
 				strcat(tempArray,trimwhitespace(Id->str));
-
+				if(!g_hash_table_contains(session->pmuRefTable,tempArray))
+									continue;
 
 				pktOffset = g_hash_table_lookup(session->pmuRefTable,tempArray);
+				if(pktOffset==NULL)
+					continue;
 				startingIndex = *pktOffset-(session->FrameData->len-packet->payload_size);    // buflen is the length of data in the current packet
 
 				if(config->values_to_alter[index].type == 0){

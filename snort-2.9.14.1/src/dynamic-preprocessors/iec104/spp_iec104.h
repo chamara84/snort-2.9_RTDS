@@ -358,6 +358,8 @@ typedef struct _iec104_alter_values //structure introduced to keep the obj, vari
 	uint32_t infObjAddress;
 	float floating_point_val;
 	uint64_t integer_value;
+	float floating_point_val_old;
+	uint64_t integer_value_old;
 	boolean done;
 
 }iec104_alter_values;

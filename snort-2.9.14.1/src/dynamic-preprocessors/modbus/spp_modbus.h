@@ -52,6 +52,7 @@ typedef struct _modbus_alter_values //structure introduced to keep the obj, vari
 	uint8_t type;
 	uint16_t identifier;
 	uint16_t integer_value;
+	uint16_t old_value;
 	bool done;
 
 }modbus_alter_values_t;

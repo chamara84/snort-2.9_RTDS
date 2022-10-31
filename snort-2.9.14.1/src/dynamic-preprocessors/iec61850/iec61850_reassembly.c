@@ -33,7 +33,7 @@
 #include "sf_dynamic_preprocessor.h"
 #include "sf_snort_packet.h"
 #include "snort_bounds.h"
-
+#include "glib.h"
 
 #include "spp_iec61850.h"
 

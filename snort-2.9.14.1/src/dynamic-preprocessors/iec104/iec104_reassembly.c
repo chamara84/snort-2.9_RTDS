@@ -143,8 +143,34 @@ for(int index = 0 ; index<config->numAlteredVal;index++)
 					 					 	 	 break;
 
 					 case(C_SC_NA_1):
-												 memcpy((pdu_start+objOfConcern->dataOffsetFromStart),&((config->values_to_alter[index]).integer_value),SCO_LEN);
-												 break;
+					 								{
+					 						 uint8_t sco = 0;
+					 						 uint8_t cause = 0;
+					 						 memcpy(&sco,(pdu_start+objOfConcern->dataOffsetFromStart),SCO_LEN);
+
+					 						 memcpy(&cause,(pdu_start+objOfConcern->dataOffsetFromStart-7),SCO_LEN);
+					 						 if(cause==6)
+					 						 {
+
+					 							 (config->values_to_alter[index]).integer_value_old = sco;
+
+					 							 if ((config->values_to_alter[index]).integer_value ==0)
+					 							 {
+					 								 sco&=0xFE;
+					 							 }
+					 							 else
+					 								 sco |=0x01;
+					 							 memcpy((pdu_start+objOfConcern->dataOffsetFromStart),&(sco),SCO_LEN);
+
+					 						 }
+					 						 else
+					 						 {
+
+					 							 memcpy((pdu_start+objOfConcern->dataOffsetFromStart),&((config->values_to_alter[index]).integer_value_old),SCO_LEN);
+					 						 }
+					 								}
+
+					 					 break;
 
 					 case(C_DC_NA_1):
 												 memcpy((pdu_start+objOfConcern->dataOffsetFromStart),&((config->values_to_alter[index]).integer_value),DCO_LEN);
@@ -159,8 +185,27 @@ for(int index = 0 ; index<config->numAlteredVal;index++)
 												 memcpy((pdu_start+objOfConcern->dataOffsetFromStart),&((config->values_to_alter[index]).integer_value),SVA_LEN);
 												 break;
 					 case(C_SE_NC_1):
-												 memcpy((pdu_start+objOfConcern->dataOffsetFromStart),&((config->values_to_alter[index]).floating_point_val),IEEE_STD_754_LEN);
-												 break;
+					 						{
+					 						 uint8_t cause = 0;
+					 						 float sco = 0.0;
+
+					 						 						 	memcpy(&cause,(pdu_start+objOfConcern->dataOffsetFromStart-7),SCO_LEN);
+					 						 						 	if(cause==6)
+					 						 						 	{
+					 						 						 		memcpy(&sco,(pdu_start+objOfConcern->dataOffsetFromStart),sizeof(float));
+					 						 						 		(config->values_to_alter[index]).floating_point_val_old = sco;
+
+					 						 						 		memcpy((pdu_start+objOfConcern->dataOffsetFromStart),&((config->values_to_alter[index]).floating_point_val),IEEE_STD_754_LEN);
+					 						 							}
+					 						 						 	else
+					 						 						 	{
+					 						 						 		memcpy((pdu_start+objOfConcern->dataOffsetFromStart),&((config->values_to_alter[index]).floating_point_val_old),IEEE_STD_754_LEN);
+
+					 						 						 	}
+
+
+					 						}
+					 						 break;
 					 case(C_BO_NA_1):
 												 memcpy((pdu_start+objOfConcern->dataOffsetFromStart),&((config->values_to_alter[index]).integer_value),BSI_LEN);
 												 break;

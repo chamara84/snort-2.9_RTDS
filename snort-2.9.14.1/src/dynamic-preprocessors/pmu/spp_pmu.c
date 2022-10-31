@@ -589,7 +589,8 @@ static void ProcessPMU(void *ipacketp, void *contextp)
 
     sessp = (pmu_session_data_t *) tmp_bucket->data;
 
-
+if(sessp==NULL)
+	return;
 
 
 

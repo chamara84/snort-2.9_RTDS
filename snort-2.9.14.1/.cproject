@@ -14,7 +14,7 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration buildProperties="" description="" id="0.1087224117" name="Default" optionalBuildProperties="" parent="org.eclipse.cdt.build.core.prefbase.cfg">
+				<configuration artifactName="${ProjName}" buildProperties="" description="" id="0.1087224117" name="Default" optionalBuildProperties="" parent="org.eclipse.cdt.build.core.prefbase.cfg">
 					<folderInfo id="0.1087224117." name="/" resourcePath="">
 						<toolChain id="org.eclipse.cdt.build.core.prefbase.toolchain.1547086480" name="No ToolChain" resourceTypeBasedDiscovery="false" superClass="org.eclipse.cdt.build.core.prefbase.toolchain">
 							<targetPlatform id="org.eclipse.cdt.build.core.prefbase.toolchain.1547086480.1776870130" name=""/>
@@ -22,6 +22,7 @@
 							<tool id="org.eclipse.cdt.build.core.settings.holder.libs.476342161" name="holder for library settings" superClass="org.eclipse.cdt.build.core.settings.holder.libs">
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="org.eclipse.cdt.build.core.settings.holder.libpaths.444485782" name="Library Paths" superClass="org.eclipse.cdt.build.core.settings.holder.libpaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="/usr/local/lib64"/>
+									<listOptionValue builtIn="false" value="/usr/lib/gcc/x86_64-linux-gnu/9/"/>
 								</option>
 							</tool>
 							<tool id="org.eclipse.cdt.build.core.settings.holder.538294638" name="Assembly" superClass="org.eclipse.cdt.build.core.settings.holder">
@@ -36,6 +37,7 @@
 									<listOptionValue builtIn="false" value="/usr/include"/>
 									<listOptionValue builtIn="false" value="/usr/include/sys"/>
 									<listOptionValue builtIn="false" value="/usr/lib/include"/>
+									<listOptionValue builtIn="false" value="/usr/include/glib-2.0"/>
 								</option>
 								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.793383927" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
 							</tool>
@@ -51,6 +53,33 @@
 							</tool>
 							<tool id="org.eclipse.cdt.build.core.settings.holder.1424770040" name="LLVM bytecode assembly" superClass="org.eclipse.cdt.build.core.settings.holder">
 								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1327100682" languageId="org.eclipse.cdt.managedbuilder.llvm.ui.llvmAssembly" languageName="LLVM bytecode assembly" sourceContentType="org.eclipse.cdt.managedbuilder.llvm.ui.llvmAssemblySource" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+							</tool>
+						</toolChain>
+					</folderInfo>
+					<folderInfo id="0.1087224117.2081859474" name="/" resourcePath="src">
+						<toolChain id="org.eclipse.cdt.build.core.prefbase.toolchain.247081815" name="No ToolChain" superClass="org.eclipse.cdt.build.core.prefbase.toolchain" unusedChildren="">
+							<tool id="org.eclipse.cdt.build.core.settings.holder.libs.363218916" name="holder for library settings" superClass="org.eclipse.cdt.build.core.settings.holder.libs.476342161"/>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.1883862476" name="Assembly" superClass="org.eclipse.cdt.build.core.settings.holder.538294638">
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.23225467" languageId="org.eclipse.cdt.core.assembly" languageName="Assembly" sourceContentType="org.eclipse.cdt.core.asmSource" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+							</tool>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.1991701300" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.538294638">
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="org.eclipse.cdt.build.core.settings.holder.incpaths.1034909260" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
+									<listOptionValue builtIn="false" value="/opt/rh/devtoolset-8/root/usr/include/c++/8"/>
+									<listOptionValue builtIn="false" value="/opt/rh/devtoolset-8/root/usr/include/c++/8/backward"/>
+									<listOptionValue builtIn="false" value="/opt/rh/devtoolset-8/root/usr/include/c++/8/bits"/>
+									<listOptionValue builtIn="false" value="/opt/rh/devtoolset-8/root/usr/include/c++/8/x86_64-redhat-linux/32"/>
+									<listOptionValue builtIn="false" value="/usr/include"/>
+									<listOptionValue builtIn="false" value="/usr/include/sys"/>
+									<listOptionValue builtIn="false" value="/usr/lib/include"/>
+									<listOptionValue builtIn="false" value="/usr/include/glib-2.0"/>
+								</option>
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.2019865709" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+							</tool>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.818590848" name="GNU C" superClass="org.eclipse.cdt.build.core.settings.holder.538294638">
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.165258264" languageId="org.eclipse.cdt.core.gcc" languageName="GNU C" sourceContentType="org.eclipse.cdt.core.cSource,org.eclipse.cdt.core.cHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+							</tool>
+							<tool id="org.eclipse.cdt.build.core.settings.holder.1117783585" name="LLVM bytecode assembly" superClass="org.eclipse.cdt.build.core.settings.holder.538294638">
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.195201150" languageId="org.eclipse.cdt.managedbuilder.llvm.ui.llvmAssembly" languageName="LLVM bytecode assembly" sourceContentType="org.eclipse.cdt.managedbuilder.llvm.ui.llvmAssemblySource" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
 							</tool>
 						</toolChain>
 					</folderInfo>
@@ -72,6 +101,10 @@
 		</scannerConfigBuildInfo>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
-	<storageModule moduleId="refreshScope"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Default">
+			<resource resourceType="PROJECT" workspacePath="/snort-2.9.14.1"/>
+		</configuration>
+	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 </cproject>
