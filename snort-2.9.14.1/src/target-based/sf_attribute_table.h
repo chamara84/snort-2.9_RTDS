@@ -34,8 +34,8 @@
 /* Undocumented macros, especially those whose name start with YY_,
    are private implementation details.  Do not rely on them.  */
 
-#ifndef YY_SFAT_Y_TAB_H_INCLUDED
-# define YY_SFAT_Y_TAB_H_INCLUDED
+#ifndef YY_SFAT_SF_ATTRIBUTE_TABLE_H_INCLUDED
+# define YY_SFAT_SF_ATTRIBUTE_TABLE_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -176,7 +176,7 @@ union YYSTYPE
   AttributeData data;
   MapData mapEntry;
 
-#line 180 "y.tab.h"
+#line 180 "sf_attribute_table.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -189,4 +189,4 @@ extern YYSTYPE sfat_lval;
 
 int sfat_parse (void);
 
-#endif /* !YY_SFAT_Y_TAB_H_INCLUDED  */
+#endif /* !YY_SFAT_SF_ATTRIBUTE_TABLE_H_INCLUDED  */

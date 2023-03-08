@@ -2037,7 +2037,7 @@ while(!done) //it will be done when we reach the end of buffer in rdata->server_
 														else
 														{
 															if((config->values_to_alter[i]).operation==1 ){
-																if((config->values_to_alter[i]).obj_group>12 ){
+																if(((config->values_to_alter[i]).obj_group>12 && (config->values_to_alter[i]).obj_group<40 && (config->values_to_alter[i]).obj_var>=5) ){
 																	memcpy((pdu_start+dataIndexAdvance+byteNumberNewPktBuffer+sizeOfQuality+startingIndexAlteredVal+count),tempValueToCopy+j,1);
 																}
 																else

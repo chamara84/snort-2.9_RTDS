@@ -489,7 +489,7 @@ static void ParseDNP3Args(struct _SnortConfig *sc, dnp3_config_t *config, char *
         						 case(3): (config->values_to_alter[index]).identifier = strtol(token,NULL,10);
         						 	 break;
         						 case(4):
-        								 if((config->values_to_alter[index]).obj_group <=12)
+        								 if((config->values_to_alter[index]).obj_group <=12 || ( (config->values_to_alter[index]).obj_group<40 && (config->values_to_alter[index]).obj_var<5))
         								 {
         									 (config->values_to_alter[index]).integer_value =strtol(token,NULL,10);
 
@@ -498,6 +498,7 @@ static void ParseDNP3Args(struct _SnortConfig *sc, dnp3_config_t *config, char *
         								 {
         									 (config->values_to_alter[index]).floating_point_val =strtof(token,NULL);
         								 }
+        						 	 	 printf("Group: %d Var: %d Index: %d \n",(config->values_to_alter[index]).obj_group,(config->values_to_alter[index]).obj_var,(config->values_to_alter[index]).identifier );
         						 	 break;
         						 default:
         							 break;
