@@ -21,6 +21,7 @@ sudo apt-get install libssl-dev
 sudo apt install pkg-config
 sudo apt install automake1.11
 sudo apt install libglib2.0-dev
+sudo apt install libntirpc-dev
 
 
 

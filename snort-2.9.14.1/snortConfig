@@ -7,13 +7,15 @@ autoreconf -i -f -I m4
 
 touch ./src/preprocessors/*.c
 touch ./src/preprocessors/*.h
+touch ./src/preprocessors/*/*.c
+touch ./src/preprocessors/*/*.h
 touch ./src/dynamic-preprocessors/dnp3/*.h
 touch ./src/detection-plugins/*.c
 touch ./src/detection-plugins/*.h
 touch ./src/*.c
 touch ./src/*.h
 export SNORT_DEBUG=0x0000000000000080LL
-./configure   --enable-gdb --enable-debug  --disable-reload-error-restart  --enable-build-dynamic-examples --enable-dependency-tracking  --enable-zlib --enable-active-response  --enable-reload --enable-react --enable-flexresp3 --enable-inline
+./configure   --enable-gdb --enable-debug  --disable-reload-error-restart  --enable-build-dynamic-examples --enable-dependency-tracking  --enable-zlib --enable-active-response  --enable-reload --enable-react --enable-flexresp3
 make -j8 && sudo make install
 
 

@@ -85,7 +85,7 @@ static tSfPolicyUserContextId sv_config = NULL;
 GHashTable * svRefTable;
 
 #ifdef PERF_PROFILING
-PreprocStats arpPerfStats;
+static PreprocStats arpPerfStats;
 #endif
 
 

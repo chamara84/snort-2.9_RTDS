@@ -1,8 +1,8 @@
-/* A Bison parser, made by GNU Bison 3.5.1.  */
+/* A Bison parser, made by GNU Bison 3.8.2.  */
 
 /* Bison interface for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2015, 2018-2020 Free Software Foundation,
+   Copyright (C) 1984, 1989-1990, 2000-2015, 2018-2021 Free Software Foundation,
    Inc.
 
    This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
+   along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
 
 /* As a special exception, you may create a larger work that contains
    part or all of the Bison parser skeleton and distribute that work
@@ -31,8 +31,9 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-/* Undocumented macros, especially those whose name start with YY_,
-   are private implementation details.  Do not rely on them.  */
+/* DO NOT RELY ON FEATURES THAT ARE NOT DOCUMENTED in the manual,
+   especially those whose name start with YY_ or yy_.  They are
+   private implementation details that can be changed or removed.  */
 
 #ifndef YY_SFBPF_Y_TAB_H_INCLUDED
 # define YY_SFBPF_Y_TAB_H_INCLUDED
@@ -44,122 +45,131 @@
 extern int sfbpf_debug;
 #endif
 
-/* Token type.  */
+/* Token kinds.  */
 #ifndef YYTOKENTYPE
 # define YYTOKENTYPE
   enum yytokentype
   {
-    DST = 258,
-    SRC = 259,
-    HOST = 260,
-    GATEWAY = 261,
-    NET = 262,
-    NETMASK = 263,
-    PORT = 264,
-    PORTRANGE = 265,
-    LESS = 266,
-    GREATER = 267,
-    PROTO = 268,
-    PROTOCHAIN = 269,
-    CBYTE = 270,
-    ARP = 271,
-    RARP = 272,
-    IP = 273,
-    SCTP = 274,
-    TCP = 275,
-    UDP = 276,
-    ICMP = 277,
-    IGMP = 278,
-    IGRP = 279,
-    PIM = 280,
-    VRRP = 281,
-    ATALK = 282,
-    AARP = 283,
-    DECNET = 284,
-    LAT = 285,
-    SCA = 286,
-    MOPRC = 287,
-    MOPDL = 288,
-    TK_BROADCAST = 289,
-    TK_MULTICAST = 290,
-    NUM = 291,
-    INBOUND = 292,
-    OUTBOUND = 293,
-    PF_IFNAME = 294,
-    PF_RSET = 295,
-    PF_RNR = 296,
-    PF_SRNR = 297,
-    PF_REASON = 298,
-    PF_ACTION = 299,
-    TYPE = 300,
-    SUBTYPE = 301,
-    DIR = 302,
-    ADDR1 = 303,
-    ADDR2 = 304,
-    ADDR3 = 305,
-    ADDR4 = 306,
-    LINK = 307,
-    GEQ = 308,
-    LEQ = 309,
-    NEQ = 310,
-    ID = 311,
-    EID = 312,
-    HID = 313,
-    HID6 = 314,
-    AID = 315,
-    LSH = 316,
-    RSH = 317,
-    LEN = 318,
-    IPV6 = 319,
-    ICMPV6 = 320,
-    AH = 321,
-    ESP = 322,
-    VLAN = 323,
-    MPLS = 324,
-    PPPOED = 325,
-    PPPOES = 326,
-    ISO = 327,
-    ESIS = 328,
-    CLNP = 329,
-    ISIS = 330,
-    L1 = 331,
-    L2 = 332,
-    IIH = 333,
-    LSP = 334,
-    SNP = 335,
-    CSNP = 336,
-    PSNP = 337,
-    STP = 338,
-    IPX = 339,
-    NETBEUI = 340,
-    LANE = 341,
-    LLC = 342,
-    METAC = 343,
-    BCC = 344,
-    SC = 345,
-    ILMIC = 346,
-    OAMF4EC = 347,
-    OAMF4SC = 348,
-    OAM = 349,
-    OAMF4 = 350,
-    CONNECTMSG = 351,
-    METACONNECT = 352,
-    VPI = 353,
-    VCI = 354,
-    RADIO = 355,
-    FISU = 356,
-    LSSU = 357,
-    MSU = 358,
-    SIO = 359,
-    OPC = 360,
-    DPC = 361,
-    SLS = 362,
-    OR = 363,
-    AND = 364,
-    UMINUS = 365
+    YYEMPTY = -2,
+    YYEOF = 0,                     /* "end of file"  */
+    YYerror = 256,                 /* error  */
+    YYUNDEF = 257,                 /* "invalid token"  */
+    DST = 258,                     /* DST  */
+    SRC = 259,                     /* SRC  */
+    HOST = 260,                    /* HOST  */
+    GATEWAY = 261,                 /* GATEWAY  */
+    NET = 262,                     /* NET  */
+    NETMASK = 263,                 /* NETMASK  */
+    PORT = 264,                    /* PORT  */
+    PORTRANGE = 265,               /* PORTRANGE  */
+    LESS = 266,                    /* LESS  */
+    GREATER = 267,                 /* GREATER  */
+    PROTO = 268,                   /* PROTO  */
+    PROTOCHAIN = 269,              /* PROTOCHAIN  */
+    CBYTE = 270,                   /* CBYTE  */
+    ARP = 271,                     /* ARP  */
+    RARP = 272,                    /* RARP  */
+    IP = 273,                      /* IP  */
+    SCTP = 274,                    /* SCTP  */
+    TCP = 275,                     /* TCP  */
+    UDP = 276,                     /* UDP  */
+    ICMP = 277,                    /* ICMP  */
+    IGMP = 278,                    /* IGMP  */
+    IGRP = 279,                    /* IGRP  */
+    PIM = 280,                     /* PIM  */
+    VRRP = 281,                    /* VRRP  */
+    ATALK = 282,                   /* ATALK  */
+    AARP = 283,                    /* AARP  */
+    DECNET = 284,                  /* DECNET  */
+    LAT = 285,                     /* LAT  */
+    SCA = 286,                     /* SCA  */
+    MOPRC = 287,                   /* MOPRC  */
+    MOPDL = 288,                   /* MOPDL  */
+    TK_BROADCAST = 289,            /* TK_BROADCAST  */
+    TK_MULTICAST = 290,            /* TK_MULTICAST  */
+    NUM = 291,                     /* NUM  */
+    INBOUND = 292,                 /* INBOUND  */
+    OUTBOUND = 293,                /* OUTBOUND  */
+    PF_IFNAME = 294,               /* PF_IFNAME  */
+    PF_RSET = 295,                 /* PF_RSET  */
+    PF_RNR = 296,                  /* PF_RNR  */
+    PF_SRNR = 297,                 /* PF_SRNR  */
+    PF_REASON = 298,               /* PF_REASON  */
+    PF_ACTION = 299,               /* PF_ACTION  */
+    TYPE = 300,                    /* TYPE  */
+    SUBTYPE = 301,                 /* SUBTYPE  */
+    DIR = 302,                     /* DIR  */
+    ADDR1 = 303,                   /* ADDR1  */
+    ADDR2 = 304,                   /* ADDR2  */
+    ADDR3 = 305,                   /* ADDR3  */
+    ADDR4 = 306,                   /* ADDR4  */
+    LINK = 307,                    /* LINK  */
+    GEQ = 308,                     /* GEQ  */
+    LEQ = 309,                     /* LEQ  */
+    NEQ = 310,                     /* NEQ  */
+    ID = 311,                      /* ID  */
+    EID = 312,                     /* EID  */
+    HID = 313,                     /* HID  */
+    HID6 = 314,                    /* HID6  */
+    AID = 315,                     /* AID  */
+    LSH = 316,                     /* LSH  */
+    RSH = 317,                     /* RSH  */
+    LEN = 318,                     /* LEN  */
+    IPV6 = 319,                    /* IPV6  */
+    ICMPV6 = 320,                  /* ICMPV6  */
+    AH = 321,                      /* AH  */
+    ESP = 322,                     /* ESP  */
+    VLAN = 323,                    /* VLAN  */
+    MPLS = 324,                    /* MPLS  */
+    PPPOED = 325,                  /* PPPOED  */
+    PPPOES = 326,                  /* PPPOES  */
+    ISO = 327,                     /* ISO  */
+    ESIS = 328,                    /* ESIS  */
+    CLNP = 329,                    /* CLNP  */
+    ISIS = 330,                    /* ISIS  */
+    L1 = 331,                      /* L1  */
+    L2 = 332,                      /* L2  */
+    IIH = 333,                     /* IIH  */
+    LSP = 334,                     /* LSP  */
+    SNP = 335,                     /* SNP  */
+    CSNP = 336,                    /* CSNP  */
+    PSNP = 337,                    /* PSNP  */
+    STP = 338,                     /* STP  */
+    IPX = 339,                     /* IPX  */
+    NETBEUI = 340,                 /* NETBEUI  */
+    LANE = 341,                    /* LANE  */
+    LLC = 342,                     /* LLC  */
+    METAC = 343,                   /* METAC  */
+    BCC = 344,                     /* BCC  */
+    SC = 345,                      /* SC  */
+    ILMIC = 346,                   /* ILMIC  */
+    OAMF4EC = 347,                 /* OAMF4EC  */
+    OAMF4SC = 348,                 /* OAMF4SC  */
+    OAM = 349,                     /* OAM  */
+    OAMF4 = 350,                   /* OAMF4  */
+    CONNECTMSG = 351,              /* CONNECTMSG  */
+    METACONNECT = 352,             /* METACONNECT  */
+    VPI = 353,                     /* VPI  */
+    VCI = 354,                     /* VCI  */
+    RADIO = 355,                   /* RADIO  */
+    FISU = 356,                    /* FISU  */
+    LSSU = 357,                    /* LSSU  */
+    MSU = 358,                     /* MSU  */
+    SIO = 359,                     /* SIO  */
+    OPC = 360,                     /* OPC  */
+    DPC = 361,                     /* DPC  */
+    SLS = 362,                     /* SLS  */
+    OR = 363,                      /* OR  */
+    AND = 364,                     /* AND  */
+    UMINUS = 365                   /* UMINUS  */
   };
+  typedef enum yytokentype yytoken_kind_t;
 #endif
-/* Tokens.  */
+/* Token kinds.  */
+#define YYEMPTY -2
+#define YYEOF 0
+#define YYerror 256
+#define YYUNDEF 257
 #define DST 258
 #define SRC 259
 #define HOST 260
@@ -289,7 +299,7 @@ union YYSTYPE
 	} blk;
 	struct block *rblk;
 
-#line 293 "y.tab.h"
+#line 303 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -300,6 +310,8 @@ typedef union YYSTYPE YYSTYPE;
 
 extern YYSTYPE sfbpf_lval;
 
+
 int sfbpf_parse (void);
+
 
 #endif /* !YY_SFBPF_Y_TAB_H_INCLUDED  */

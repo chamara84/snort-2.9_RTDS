@@ -90,7 +90,7 @@ typedef enum {
     ACT_UNESCAPE
 } ActionJSNorm;
 
-int hex_lookup[256];
+static int hex_lookup[256];
 int valid_chars[256];
 
 char decoded_out[6335];

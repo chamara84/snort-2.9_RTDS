@@ -144,7 +144,7 @@ static tSfPolicyUserContextId arp_spoof_config = NULL;
 static const uint8_t bcast[6] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
 #ifdef PERF_PROFILING
-PreprocStats arpPerfStats;
+static PreprocStats arpPerfStats;
 #endif
 
 

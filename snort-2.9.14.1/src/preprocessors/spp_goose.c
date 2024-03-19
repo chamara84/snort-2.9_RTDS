@@ -85,7 +85,7 @@ static tSfPolicyUserContextId iec61850_config = NULL;
 GHashTable * gooseRefTable;
 
 #ifdef PERF_PROFILING
-PreprocStats arpPerfStats;
+static PreprocStats arpPerfStats;
 #endif
 
 

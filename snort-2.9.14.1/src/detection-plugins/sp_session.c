@@ -80,7 +80,7 @@
 #include "snort.h"
 #include "profiler.h"
 #ifdef PERF_PROFILING
-PreprocStats sessionPerfStats;
+static PreprocStats sessionPerfStats;
 extern PreprocStats ruleOTNEvalPerfStats;
 #endif
 
