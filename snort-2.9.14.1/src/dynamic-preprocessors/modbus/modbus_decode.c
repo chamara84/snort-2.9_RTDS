@@ -312,7 +312,7 @@ static void ModbusCheckResponseLengths(modbus_session_data_t *session, SFSnortPa
         case MODBUS_FUNC_GET_COMM_EVENT_COUNTER:
         case MODBUS_FUNC_WRITE_MULTIPLE_COILS:
         case MODBUS_FUNC_WRITE_MULTIPLE_REGISTERS:
-            if (modbus_payload_len == MODBUS_FOUR_DATA_BYTES)
+            if (modbus_payload_len >= MODBUS_BYTE_COUNT_SIZE )
                 check_passed = 1;
             break;
 
@@ -462,7 +462,8 @@ static int modifyWriteData(modbus_config_t *config, modbus_session_data_t *sessi
 	uint8_t p=0;
 	uint16_t bit_cnt = 0, byte_cnt = 0;
 	uint8_t * pdu_start = packet->payload;
-
+	uint16_t zeros[8] = {0,0,0,0,0,0,0,0};
+	uint16_t data = 0;
 	header = (modbus_header_t *) pdu_start;
 	if(header->transaction_id!=(session->request_data).transactionID)
 	{
@@ -475,7 +476,7 @@ static int modifyWriteData(modbus_config_t *config, modbus_session_data_t *sessi
 
 	for(int index = 0 ; index<config->numAlteredVal;index++)
 	{
-		if((config->values_to_alter[index]).type == header->function_code && ((config->values_to_alter[index]).identifier)>=start && ((config->values_to_alter[index]).identifier)<=stop )
+		if((config->values_to_alter[index]).type == header->function_code  )
 		{
 			uint16_t byteNumber;
 			switch(header->function_code)
@@ -503,7 +504,7 @@ static int modifyWriteData(modbus_config_t *config, modbus_session_data_t *sessi
 					 }
 					 else
 					 {
-						 temp = 0xFF00;
+						 temp = 0x00FF;
 					 }
 					 memcpy(pdu_start+MODBUS_MIN_LEN+2,&(temp),2);
 					 modified = 1;
@@ -515,18 +516,20 @@ static int modifyWriteData(modbus_config_t *config, modbus_session_data_t *sessi
 			case MODBUS_FUNC_WRITE_SINGLE_REGISTER:
 				memcpy(&n,(pdu_start+MODBUS_MIN_LEN),2); //copy the index
 								 n = ntohs(n);
+								 memcpy(&data,(pdu_start+MODBUS_MIN_LEN+2),2); //copy the data
+								 printf("In WriteHoldReg id=%d value=%d\n",n,ntohs(data) );
 								 if(n==(config->values_to_alter[index]).identifier)
 										{
-									 uint16_t data = 0;
+
 
 									 memcpy(&data,(pdu_start+MODBUS_MIN_LEN+2),2); //copy the data
 									 (config->values_to_alter[index]).old_value = ntohs(data);
-										 temp = htons((config->values_to_alter[index]).integer_value);
+										 temp = ((config->values_to_alter[index]).integer_value);
 
 
 									 memcpy(pdu_start+MODBUS_MIN_LEN+2,&(temp),2);
 									 modified = 1;
-									 printf("Modify WriteCoils id=%d value=%d\n",(config->values_to_alter[index]).identifier,temp );
+									 printf("Modify WriteHoldReg id=%d value=%d\n",(config->values_to_alter[index]).identifier,temp );
 										}
 
 
@@ -565,6 +568,9 @@ static int modifyWriteData(modbus_config_t *config, modbus_session_data_t *sessi
 				break;
 			}
 			case MODBUS_FUNC_WRITE_MULTIPLE_REGISTERS:
+				printf("Modify Multiple registers\n");
+				memcpy(pdu_start+MODBUS_MIN_LEN+5,&zeros[0],16); //copy the data
+				break;
 
 
 			case MODBUS_FUNC_READ_EXCEPTION_STATUS:
@@ -618,7 +624,8 @@ static int modifyData(modbus_config_t *config, modbus_session_data_t *session, S
 
 	for(int index = 0 ; index<config->numAlteredVal;index++)
 	{
-		if((config->values_to_alter[index]).type == header->function_code && ((config->values_to_alter[index]).identifier)>=start && ((config->values_to_alter[index]).identifier)<=stop )
+		if((config->values_to_alter[index]).type == header->function_code && (((config->values_to_alter[index]).identifier)>=start
+				&& ((config->values_to_alter[index]).identifier)<=stop ) && header->function_code<=4)
 		{
 			uint16_t byteNumber;
 		switch(header->function_code)
@@ -686,12 +693,12 @@ static int modifyData(modbus_config_t *config, modbus_session_data_t *session, S
         								 memcpy(&data,(packet->payload+MODBUS_MIN_LEN+2),2); //copy the data
         								 if((config->values_to_alter[index]).old_value == 0)
         								 {
-        									 temp = 0;
+        									 temp = 0x0000;
 
         								 }
         								 else
         								 {
-        									 temp = 0xFF00;
+        									 temp = 0x00FF;
         								 }
         								 memcpy(packet->payload+MODBUS_MIN_LEN+2,&(temp),2);
         								 modified = 1;
@@ -709,7 +716,7 @@ static int modifyData(modbus_config_t *config, modbus_session_data_t *session, S
 
         												 memcpy(&data,(packet->payload+MODBUS_MIN_LEN+2),2); //copy the data
 
-        													 temp = htons((config->values_to_alter[index]).old_value);
+        													 temp = ((config->values_to_alter[index]).old_value);
 
 
         												 memcpy(packet->payload+MODBUS_MIN_LEN+2,&(temp),2);
