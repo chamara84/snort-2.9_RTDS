@@ -1,27 +1,32 @@
 #!/bin/bash
 sudo apt-get update
-sudo apt-get install openssh-server
-sudo apt-get install ethtool
+sudo apt-get install -y openssh-server
+sudo apt-get install -y ethtool
 sudo apt-get install -y build-essential
 sudo apt-get install -y libpcap-dev
-sudo apt-get install  libpcre3-dev
+sudo apt-get install  -y libpcre3-dev
 sudo apt-get install -y libdumbnet-dev
-sudo apt-get install zlib1g-dev
-sudo apt-get install bison flex
-sudo apt-get install meson
-sudo apt-get install libmount-dev
-sudo apt install python3-pip
-sudo apt-get install xsltproc
-sudo apt install libtool
-sudo apt install libluajit-5.1-dev
-sudo apt install cmake
-sudo apt install libffi-dev
-sudo apt install libelf-dev
-sudo apt-get install libssl-dev
-sudo apt install pkg-config
-sudo apt install automake1.11
-sudo apt install libglib2.0-dev
-sudo apt install libntirpc-dev
+sudo apt-get install -y zlib1g-dev
+sudo apt-get install -y bison flex
+sudo apt-get install -y meson
+sudo apt-get install -y libmount-dev
+sudo apt-get install -y python3-pip
+sudo apt-get install -y  xsltproc
+sudo apt-get install -y libtool
+sudo apt-get install -y  libluajit-5.1-dev
+sudo apt-get install -y cmake
+sudo apt-get install -y libffi-dev
+sudo apt-get install -y libelf-dev
+sudo apt-get install -y libssl-dev
+sudo apt-get install -y pkg-config
+sudo apt-get install -y automake1.11
+sudo apt-get install -y libglib2.0-dev
+sudo apt-get install -y net-tools
+sudo apt-get install -y libntirpc-dev
+sudo apt-get install -y bridge-utils
+cd /usr/include
+sudo cp -r ntirpc/* .
+
 
 
 
