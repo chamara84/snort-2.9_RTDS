@@ -1829,7 +1829,10 @@ while(!done) //it will be done when we reach the end of buffer in rdata->server_
 
 								float tempfloat = (config->values_to_alter[i]).floating_point_val;
 								int tempInt = (config->values_to_alter[i]).integer_value;
-								memcpy(tempValueToCopy,&tempfloat,4);
+								if(rdata->obj_group == 30 && rdata->obj_var <5)
+									memcpy(tempValueToCopy,&tempInt,4);
+								else
+									memcpy(tempValueToCopy,&tempfloat ,4);
 
 
 								if(segment==0 && offSet <0)
